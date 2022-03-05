@@ -1,24 +1,10 @@
-import React from "react";
-import "./App.css";
+import React from 'react';
+import RootRouter from '../routes/RootRouter';
+import './App.css';
 
+// eslint-disable-next-line require-jsdoc
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <RootRouter />;
 }
 
 export default App;
