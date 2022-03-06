@@ -1,12 +1,14 @@
+import Main from 'pages/Main';
+import SetOption from 'pages/SetOption';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from '../components/Home/Home';
 
 const RootRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/option" element={<SetOption />} />
       </Routes>
     </BrowserRouter>
   );
