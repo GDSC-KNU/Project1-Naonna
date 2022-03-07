@@ -1,7 +1,6 @@
 import React from 'react';
-
+import Calendar from 'components/Calendar'
 const SetOption = () => {
-  return <div>setOption</div>;
+  return <Calendar/>
 };
-
 export default SetOption;
