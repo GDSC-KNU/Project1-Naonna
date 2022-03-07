@@ -34,7 +34,7 @@ const WeatherMain = ({
       <StrongSpan>{locationName}</StrongSpan>
       <div style={{ width: 250, height: 250 }}>
         <img
-          src={`weather-svg/${weatherCode}.svg`}
+          src={`image/weather-svg/${weatherCode}.svg`}
           alt="weather Icon"
           style={{ width: '100%', height: '100%' }}
         />

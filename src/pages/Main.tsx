@@ -22,7 +22,8 @@ const MainWrapper = styled.div`
   @media screen and (min-width: 768px) {
     width: 375px;
     height: 820px;
-    border: 1px solid black;
+    border: 5px solid black;
+    border-radius: 5px;
   }
   padding: 30px;
   display: flex;
@@ -31,14 +32,16 @@ const MainWrapper = styled.div`
 
 const AppointmentWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
   padding: 15px;
   width: calc(100% - 50px);
   border: 2.5px solid rgba(93, 95, 239, 0.5);
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
+  border-radius: 999px;
   font-size: 20px;
   font-weight: bold;
-  color: rgba(0, 0, 0, 0.5);
+  color: white;
+  background-color: #001f8e;
 `;
 
 const WeatherScoreContainer = styled.div`
@@ -53,8 +56,9 @@ const WeatherScore = styled.div`
   align-items: center;
   height: 70px;
   border-radius: 15px;
-  font-size: 18px;
+  font-size: 13pt;
   & strong {
+    font-size: 20pt;
     color: #1814af;
   }
 `;
@@ -93,7 +97,10 @@ const Main = () => {
       </header>
       <MainContent>
         <StyledLink to="/option">
-          <AppointmentWrapper>약속을 정해보세요</AppointmentWrapper>
+          <AppointmentWrapper>
+            <span>약속을 정해보세요</span>
+            <span> &gt; </span>
+          </AppointmentWrapper>
         </StyledLink>
         <WeatherMain
           locationName={weatherInfo.location}
