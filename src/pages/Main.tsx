@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { getWeatherInfo } from 'api/mockApi';
 import { weatherType } from 'types/apiTypes';
 
-const StyledLink = styled(Link)`
+const UnstyledLink = styled(Link)`
   text-decoration: none;
   width: 100%;
   &:focus,
@@ -28,6 +28,7 @@ const MainWrapper = styled.div`
   padding: 30px;
   display: flex;
   flex-direction: column;
+  background-color: #e5e5e5;
 `;
 
 const AppointmentWrapper = styled.div`
@@ -42,15 +43,12 @@ const AppointmentWrapper = styled.div`
   font-weight: bold;
   color: white;
   background-color: #001f8e;
-`;
-
-const WeatherScoreContainer = styled.div`
-  border: 3px solid #9394d0;
-  border-radius: 15px;
+  margin-bottom: 20px;
 `;
 
 const WeatherScore = styled.div`
-  background-color: #f5f5f5;
+  margin-top: 15px;
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,12 +73,55 @@ const MainContent = styled.div`
   }
 `;
 
-const ComponentTitle = styled.div`
-  color: rgba(0, 0, 0, 0.6);
-  font-weight: 600;
-  font-size: 18px;
+const WeatherScoreListContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  & > .mini-calendar {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    height: 87px;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    & > .date {
+      background-color: #dbdbdb;
+      height: 34px;
+      width: 100%;
+      font-size: 16px;
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+    }
+    & > .score {
+      color: #001f8e;
+      font-size: 20px;
+      height: 53px;
+      background-color: #fff;
+      width: 100%;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+    }
+  }
+`;
+
+const ComponentTitle = styled.h2`
+  align-self: flex-start;
 `;
 
 const Main = () => {
@@ -96,12 +137,12 @@ const Main = () => {
         <h1>Logo</h1>
       </header>
       <MainContent>
-        <StyledLink to="/option">
+        <UnstyledLink to="/option">
           <AppointmentWrapper>
             <span>약속을 정해보세요</span>
             <span> &gt; </span>
           </AppointmentWrapper>
-        </StyledLink>
+        </UnstyledLink>
         <WeatherMain
           locationName={weatherInfo.location}
           weatherCode={weatherInfo.weatherCode}
@@ -111,24 +152,15 @@ const Main = () => {
         <WeatherScore>
           오늘의 날씨 점수는 <strong>{weatherInfo.todayScore}</strong>점 입니다
         </WeatherScore>
-        <WeatherScoreContainer>
-          <ComponentTitle>이번주 날씨점수</ComponentTitle>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {weatherInfo.weekScoreData?.map((data, idx) => (
-              <div
-                key={idx}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <div>{data.date}</div>
-                <div>{data.score}</div>
-              </div>
-            ))}
-          </div>
-        </WeatherScoreContainer>
+        <ComponentTitle>이번주의 날씨점수</ComponentTitle>
+        <WeatherScoreListContainer>
+          {weatherInfo.weekScoreData?.map((data, idx) => (
+            <div key={idx} className="mini-calendar">
+              <div className="date">{data.date}</div>
+              <div className="score">{data.score}</div>
+            </div>
+          ))}
+        </WeatherScoreListContainer>
       </MainContent>
     </MainWrapper>
   );
