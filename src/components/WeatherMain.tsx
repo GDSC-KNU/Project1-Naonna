@@ -10,6 +10,7 @@ const ComponentMain = styled.div`
   padding: 20px;
   border: 1.5px solid #a5a6f6;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
 `;
 
 const RightAlign = styled.div`
@@ -34,7 +35,7 @@ const WeatherMain = ({
       <StrongSpan>{locationName}</StrongSpan>
       <div style={{ width: 250, height: 250 }}>
         <img
-          src={`weather-svg/${weatherCode}.svg`}
+          src={`image/weather-svg/${weatherCode}.svg`}
           alt="weather Icon"
           style={{ width: '100%', height: '100%' }}
         />
