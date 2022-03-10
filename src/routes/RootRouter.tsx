@@ -1,5 +1,5 @@
 import Main from 'pages/Main';
-import SetOption from 'pages/SetOption';
+import SetOption from 'pages/SetOptionCal';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 

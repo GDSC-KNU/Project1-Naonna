@@ -1,29 +1,111 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+require('typeface-ibm-plex-sans');
 
-const Wrapper = styled.div`
-    width: 400px;
-    height: 200px;
-    align-items: center;
-    border-radius: 35px;
-    padding: 20px;
-    border: 1.5px solid #a5a6f6;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);   
-`;
-
-const CalendarHead = styled.div`
-`;
 const Head = styled.div`
-`;
-const Title = styled.span`
+    position: absolute;
+    width: 142px;
+    height: 32px;
+    left: calc(50% - 142px/2);
+    top: 18px;
 `;
 const CalendarBody = styled.div`
+    position: absolute;
+    width: 90%;
+    height: 200px;
+    left: 30px;
+    top: 92px;
 `;
 const Row = styled.div`
-    display: flex;
-    flexDirection: row;
+    position: absolute;
+    width: 90%;
+    height: 16px;
+    left: 32px;
+    top: 60px;
 `;
+const Week = styled.div`
+    float:left;
+
+`;
+const Day = styled.div`
+    width : 40px;
+    height : 16px;
+    top: 60px;
+    bottom: 240px;
+    display: flex;
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+`;
+const DayButton = styled.button`
+    width : 40px;
+    height : 32px;
+    display: flex;
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border:none;
+    background-color:transparent;
+    &:grayed{
+        background-color: #000000;
+    }
+    &:selected{
+
+    }
+`;
+const Month = styled.button`
+    position: absolute;
+    height: 24px;
+    width: 118px;
+    left : 36px;
+    text-align: center;
+    border:none;
+    background-color:transparent;
+    top: calc(50% - 20px/2);
+    font-family: AppleSDGothicNeoB00;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.12px;
+`
+const Left = styled.button`
+    position: absolute;
+    border:none;
+    background-color:transparent;
+    width: 28px;
+    height: 28px;
+    left: 4px;
+    top: calc(50% - 28px/2);
+    font-weight: bold;
+    font-color : #001F8E;
+`
+const Right = styled.button`
+    position: absolute;
+    border:none;
+    background-color:transparent;
+    width: 28px;
+    height: 28px;
+    right: 4px;
+    top: calc(50% - 28px/2);
+    font-weight: bold;
+    font-color : #001F8E;
+`
 const Calendar=()=>{
     const [date, setDate] = useState<moment.Moment>(()=>moment());
 
@@ -54,44 +136,39 @@ const Calendar=()=>{
                     const isGrayed = current.format('MM') !== today.format('MM') ? 'grayed' : '';
 
                     return(
-                        <div className = {`box ${isSelected} ${isGrayed}`} key = {i} onClick= {()=> handleDayClick(current)}>
-                            <button>{current.format('D')}</button>  
-                        </div>
+                        <Week key = {i} onClick= {()=> handleDayClick(current)}>
+                            <DayButton className = {`${isSelected}${isGrayed}`} onClick= {()=> handleDayClick(current)}>{current.format('D')}</DayButton>  
+                        </Week>
                     );
                     })}    
-                </div>,
+                </div>
             );
         }
         return calendar;
     }
 
     return (
-        <Wrapper>
-            <CalendarHead>
-                <Head>
-                    <Title>{date.format('MMMM YYYY')}</Title>
-                    <div className = "util-button">
-                        <button onClick={()=>jumpToMonth(0)}>
-                            <i className = 'fas fa-angle-left'></i>
-                        </button>
-                        <button onClick={returnToday}>{date.format('MM')}월</button>
-                        <button onClick={()=>jumpToMonth(1)}>
-                            <i className = "fas fa-angle-right"></i>    
-                        </button>
-                    </div>
-                </Head>
-            </CalendarHead>
+        <>
+            <Head>
+                <Left onClick={()=>jumpToMonth(0)}>
+                    &lt;
+                </Left>
+                <Month onClick={returnToday}>{date.format('YYYY')}.{date.format('MM')}</Month>
+                <Right onClick={()=>jumpToMonth(1)}>
+                    &gt;
+                </Right>
+            </Head>
+            <Row>
+                {['SUN','MON','TUE','WED','THU','FRI','SAT'].map((el) => (
+                    <Week key = {el}>
+                        <Day>{el}</Day>
+                    </Week>
+                ))}
+            </Row>
             <CalendarBody>
-                <Row>
-                    {['일','월','화','수','목','금','토'].map((el) => (
-                        <div className = "box" key = {el}>
-                            <span className = "text">{el}</span>
-                        </div>
-                    ))}
-                </Row>
                 {generate()}
             </CalendarBody>
-        </Wrapper>
+        </>
     );
 }
 export default Calendar;
