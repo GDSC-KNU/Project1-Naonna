@@ -14,7 +14,18 @@ export const getWeatherInfo: () => weatherType = () => {
       { date: '3/11', score: 99 },
       { date: '3/12', score: 10 },
       { date: '3/13', score: 20 },
+      { date: '3/13', score: 20 },
+      { date: '3/13', score: 20 },
+      { date: '3/13', score: 20 },
     ],
     criteriaTime: '2022.03.03',
   };
+};
+
+export const getDatum = (arg: string) => {
+  const ret: string[] = [];
+  for (let i = 0; i < 10; ++i) {
+    ret.push(arg + i);
+  }
+  return ret;
 };

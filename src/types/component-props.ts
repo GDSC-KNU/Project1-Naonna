@@ -4,3 +4,10 @@ export type WeatherMainProps = {
   temperature: number;
   criteriaTime: string;
 };
+
+export type ItemSelectorProps = {
+  title: string;
+  items: string[];
+  selected: string;
+  setSelected: (newItem: string) => void;
+};
