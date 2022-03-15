@@ -26,7 +26,6 @@ const Row = styled.div`
 `;
 const Week = styled.div`
     float:left;
-
 `;
 const Day = styled.div`
     width : 40px;
@@ -45,9 +44,10 @@ const Day = styled.div`
     text-transform: uppercase;
 `;
 const DayButton = styled.button`
-    width : 40px;
+    width : 32px;
     height : 32px;
     display: flex;
+    margin-right : 8px;
     font-family: IBM Plex Sans;
     font-style: normal;
     font-weight: bold;
@@ -59,18 +59,25 @@ const DayButton = styled.button`
     text-transform: uppercase;
     border:none;
     background-color:transparent;
-    &:grayed{
-        background-color: #000000;
+    border-radius: 50%;
+    &:hover{
+        cursor : pointer;
+    }
+    &:active{
+        cursor : pointer;
+        background: #CCD2E8;
     }
     &:selected{
-
+    }
+    &:grayed{
+        font-color :#DDDDDD;
     }
 `;
 const Month = styled.button`
     position: absolute;
     height: 24px;
     width: 118px;
-    left : 36px;
+    left : 40px;
     text-align: center;
     border:none;
     background-color:transparent;
@@ -94,6 +101,9 @@ const Left = styled.button`
     top: calc(50% - 28px/2);
     font-weight: bold;
     font-color : #001F8E;
+    &:hover{
+        cursor : pointer;
+    }
 `
 const Right = styled.button`
     position: absolute;
@@ -105,13 +115,19 @@ const Right = styled.button`
     top: calc(50% - 28px/2);
     font-weight: bold;
     font-color : #001F8E;
+    &:hover{
+        cursor : pointer;
+    }
 `
 const Calendar=()=>{
     const [date, setDate] = useState<moment.Moment>(()=>moment());
-
+    const [color, setColor] = useState<string>("black");
     const handleDayClick = (current: moment.Moment) => setDate(current);
     const returnToday = ()=> setDate(moment());
     const jumpToMonth = (num:number) => (num ? setDate(date.clone().add(30,'day')) : setDate(date.clone().subtract(30,'day')));
+    const changeColor = () => {
+        setColor(color === "black" ? "#CCD2E8" : "black")
+    }
 
     const generate=()=>{
         const today = date;
@@ -131,13 +147,12 @@ const Calendar=()=>{
                         .week(week)
                         .startOf('week')
                         .add(n+i, 'day');
-                    
                     const isSelected = today.format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
                     const isGrayed = current.format('MM') !== today.format('MM') ? 'grayed' : '';
 
                     return(
-                        <Week key = {i} onClick= {()=> handleDayClick(current)}>
-                            <DayButton className = {`${isSelected}${isGrayed}`} onClick= {()=> handleDayClick(current)}>{current.format('D')}</DayButton>  
+                        <Week className = {`box ${isSelected} ${isGrayed}`} key = {i} onClick= {()=> handleDayClick(current)}>
+                            <DayButton style = {{color : color}} onClick = {()=>changeColor()}>{current.format('D')}</DayButton> 
                         </Week>
                     );
                     })}    
@@ -153,7 +168,7 @@ const Calendar=()=>{
                 <Left onClick={()=>jumpToMonth(0)}>
                     &lt;
                 </Left>
-                <Month onClick={returnToday}>{date.format('YYYY')}.{date.format('MM')}</Month>
+                <Month onClick={returnToday}>{date.format('YYYY')}.{date.format('M')}</Month>
                 <Right onClick={()=>jumpToMonth(1)}>
                     &gt;
                 </Right>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import Calendar from 'components/Calendar'
 import styled from 'styled-components';
 
@@ -58,28 +58,29 @@ const Back = styled.button`
 const Step = styled.div`
   display: flex;
   position: absolute;
-  width: 390px;
-  height: 30px;
+  width: 100%;
+  height: 40px;
   left: 0px;
   top: 128px;
   background: #FFFFFF;
+  border-bottom: 2px solid #DDDDDD;
 `;
 const DayStep = styled.button`
   position: static;
   width: 90px;
-  height: 25px;
+  height: 105%;
   left: 25px;
   top: 0px;
   font-family: 'AppleSDGothicNeoB00';
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 25px;
+  line-height: 100%;
   /* identical to box height */
   display: flex;
   align-items: center;
   text-align: center;
-  color: #001F8E;
+  color: #DDDDDD;
   /* Inside auto layout */
   flex: none;
   order: 0;
@@ -87,19 +88,19 @@ const DayStep = styled.button`
   margin: 0px 20px;
   border:none;
   background-color:transparent;
+  border-bottom : 2px solid;
 `;
-const PosStep = styled.button`
+const PosStep =styled.button`
   position: static;
   width: 90px;
-  height: 25px;
+  height: 105%;
   left: 145px;
   top: 0px;
-
   font-family: 'AppleSDGothicNeoB00';
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 25px;
+  line-height: 100%;
   /* identical to box height */
   display: flex;
   align-items: center;
@@ -112,19 +113,19 @@ const PosStep = styled.button`
   margin: 0px 20px;
   border:none;
   background-color:transparent;
+  border-bottom : 2px solid;
 `;
 const CategoryStep = styled.button`
   position: static;
   width: 115px;
-  height: 25px;
+  height: 105%;
   left: 265px;
   top: 0px;
-
   font-family: 'AppleSDGothicNeoB00';
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 25px;
+  line-height: 100%;
   /* identical to box height */
 
   display: flex;
@@ -137,21 +138,25 @@ const CategoryStep = styled.button`
   flex: none;
   order: 2;
   flex-grow: 0;
-  margin: 0px 20px;
+  margin: 0px 15px;
   border:none;
   background-color:transparent;
-`;
-const Line = styled.div`
-  position: absolute;
-  left: 0%;
-  right: 0%;
-  top: 116.67%;
-  bottom: -16.67%;
-
-  border: 1px solid #DDDDDD;
+  border-bottom : 2px solid;
 `;
 
 const StepHeader = () => {
+  const [case1, setCase1] = useState<string>('#DDDDDD');
+  const [case2, setCase2] = useState<string>('#DDDDDD');
+  const [case3, setCase3] = useState<string>('#DDDDDD');
+  const goCase1 = () => {
+    setCase1(case1 === "#DDDDDD" ? '#001F8E' : "#DDDDDD");
+  }
+  const goCase2 = () => {
+    setCase2(case2 === "#DDDDDD" ? '#001F8E' : "#DDDDDD");
+  }
+  const goCase3 = () => {
+    setCase3(case3 === "#DDDDDD" ? '#001F8E' : "#DDDDDD");
+  }
     return (
       <Header>
         <Title>
@@ -159,10 +164,9 @@ const StepHeader = () => {
           <Name>약속 정하기</Name>
         </Title>
         <Step>
-          <DayStep>날짜 선택</DayStep>
-          <PosStep>위치 선택</PosStep>
-          <CategoryStep>카테고리 선택</CategoryStep>
-          <Line/>
+          <DayStep style = {{color : case1}} onClick = {()=>goCase1()}>날짜 선택</DayStep>
+          <PosStep style = {{color : case2}} onClick = {()=>goCase2()}>위치 선택</PosStep>
+          <CategoryStep style = {{color : case3}} onClick = {()=>goCase3()}>카테고리 선택</CategoryStep>
         </Step>
       </Header>
     )
