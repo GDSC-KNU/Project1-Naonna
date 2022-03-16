@@ -180,10 +180,12 @@ const Calendar=()=>{
                 if(closest){
                     if(days.includes(targetDay)){
                         setDays(days.filter(day => day != targetDay));
+                        closest.style.background = "transparent";
                     }
                     else{
                         const day : string = targetDay;
                         setDays(days.concat(day));
+                        closest.style.background = "#CCD2E8";
                     }
                 }
             }}>
