@@ -11,3 +11,7 @@ export type ItemSelectorProps = {
   selected: string;
   setSelected: (newItem: string) => void;
 };
+
+export type subScreenProps = {
+  setNowActive: React.Dispatch<React.SetStateAction<number>>;
+};

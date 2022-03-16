@@ -1,29 +1,15 @@
 import { getDatum } from 'api/mockApi';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { subScreenProps } from 'types/component-props';
 import ItemSelector from './ItemSelector';
+import {
+  TopTitle,
+  Divider,
+  BottomButton,
+  ComponentContainer,
+} from './styles/common';
 
-const LocationSelectContainer = styled.div`
-  background-color: #e5e5e5;
-`;
-const TopTitle = styled.div`
-  box-sizing: border-box;
-  height: 50px;
-  padding: 15px;
-  margin: auto;
-  margin-top: 33px;
-  margin-bottom: 25px;
-  background-color: #fff;
-  border-radius: 10px;
-  width: calc(100% - 30px);
-  font-size: 16px;
-`;
-
-const Divider = styled.div`
-  height: 17px;
-`;
-
-const LocationSelect = () => {
+const LocationSelect = ({ setNowActive }: subScreenProps) => {
   const [cityData, setCityData] = useState<string[]>([]);
   const [townData, setTownData] = useState<string[]>([]);
   const [villageData, setVillageData] = useState<string[]>([]);
@@ -34,7 +20,6 @@ const LocationSelect = () => {
   const getCityData = () => {
     const data = getDatum('시/도');
     setCityData(data);
-
     setSelectedTown('');
     setSelectedVilage('');
     setTownData([]);
@@ -65,21 +50,32 @@ const LocationSelect = () => {
     if (selectedTown) getVillageData();
   }, [selectedTown]);
 
+  console.log(selectedCity, selectedTown, selectedVillage);
+
   return (
-    <LocationSelectContainer>
-      <TopTitle>📍 일정이 있는 지역을 선택하세요</TopTitle>
+    <ComponentContainer>
+      <TopTitle style={{ marginBottom: '25px' }}>
+        📍 일정이 있는 지역을 선택하세요
+      </TopTitle>
       <ItemSelector
         title="시/도"
         items={cityData}
         selected={selectedCity}
-        setSelected={setSelectedCity}
+        setSelected={selected => {
+          setSelectedCity(selected);
+          setSelectedTown('');
+          setSelectedVilage('');
+        }}
       />
       <Divider />
       <ItemSelector
         title="군/구"
         items={townData}
         selected={selectedTown}
-        setSelected={setSelectedTown}
+        setSelected={selected => {
+          setSelectedTown(selected);
+          setSelectedVilage('');
+        }}
       />
       <Divider />
       <ItemSelector
@@ -88,7 +84,13 @@ const LocationSelect = () => {
         selected={selectedVillage}
         setSelected={setSelectedVilage}
       />
-    </LocationSelectContainer>
+      <BottomButton
+        disabled={!(selectedCity && selectedTown && selectedVillage)}
+        onClick={() => setNowActive(3)}
+      >
+        선택 완료
+      </BottomButton>
+    </ComponentContainer>
   );
 };
 
