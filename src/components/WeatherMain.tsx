@@ -8,6 +8,7 @@ const ComponentMain = styled.div`
   align-items: center;
   border-radius: 35px;
   padding: 20px;
+  font-family: AppleSDGothicNeoB00;
   border: 1.5px solid #a5a6f6;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
@@ -16,11 +17,13 @@ const RightAlign = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  font-family: AppleSDGothicNeoB00;
 `;
 
 const StrongSpan = styled.span`
   font-weight: 600;
   font-size: 24px;
+  font-family: AppleSDGothicNeoB00;
 `;
 
 const WeatherMain = ({

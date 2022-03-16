@@ -27,6 +27,11 @@ const MainWrapper = styled.div`
   padding: 30px;
   display: flex;
   flex-direction: column;
+<<<<<<< Updated upstream
+=======
+  background-color: #e5e5e5;
+  font-family: AppleSDGothicNeoB00;
+>>>>>>> Stashed changes
 `;
 
 const AppointmentWrapper = styled.div`
@@ -37,6 +42,7 @@ const AppointmentWrapper = styled.div`
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 15px;
   font-size: 20px;
+<<<<<<< Updated upstream
   font-weight: bold;
   color: rgba(0, 0, 0, 0.5);
 `;
@@ -44,6 +50,12 @@ const AppointmentWrapper = styled.div`
 const WeatherScoreContainer = styled.div`
   border: 3px solid #9394d0;
   border-radius: 15px;
+=======
+  color: white;
+  background-color: #001f8e;
+  margin-bottom: 20px;
+  font-family: AppleSDGothicNeoB00;
+>>>>>>> Stashed changes
 `;
 
 const WeatherScore = styled.div`
@@ -53,7 +65,12 @@ const WeatherScore = styled.div`
   align-items: center;
   height: 70px;
   border-radius: 15px;
+<<<<<<< Updated upstream
   font-size: 18px;
+=======
+  font-family: AppleSDGothicNeoB00;
+  font-size: 13pt;
+>>>>>>> Stashed changes
   & strong {
     color: #1814af;
   }
@@ -65,6 +82,7 @@ const MainContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  font-family: AppleSDGothicNeoB00;
   width: 100%;
   & > div {
     width: 90%;
@@ -76,7 +94,60 @@ const ComponentTitle = styled.div`
   font-weight: 600;
   font-size: 18px;
   display: flex;
+<<<<<<< Updated upstream
   justify-content: center;
+=======
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  font-family: AppleSDGothicNeoB00;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  & > .mini-calendar {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    height: 87px;
+    background-color : #000000;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    & > .date {
+      background-color: #dbdbdb;
+      height: 34px;
+      width: 100%;
+      font-size: 16px;
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+    }
+    & > .score {
+      color: #001f8e;
+      font-size: 20px;
+      height: 53px;
+      background-color: #fff;
+      width: 100%;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+    }
+  }
+`;
+
+const ComponentTitle = styled.h2`
+font-family: AppleSDGothicNeoB00;
+  align-self: flex-start;
+>>>>>>> Stashed changes
 `;
 
 const Main = () => {
