@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { getWeatherInfo } from 'api/mockApi';
 import { weatherType } from 'types/apiTypes';
 
-const StyledLink = styled(Link)`
+const UnstyledLink = styled(Link)`
   text-decoration: none;
   width: 100%;
   &:focus,
@@ -22,56 +22,43 @@ const MainWrapper = styled.div`
   @media screen and (min-width: 768px) {
     width: 375px;
     height: 820px;
-    border: 1px solid black;
+    border: 5px solid black;
+    border-radius: 5px;
   }
   padding: 30px;
   display: flex;
   flex-direction: column;
-<<<<<<< Updated upstream
-=======
   background-color: #e5e5e5;
   font-family: AppleSDGothicNeoB00;
->>>>>>> Stashed changes
 `;
 
 const AppointmentWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
   padding: 15px;
   width: calc(100% - 50px);
   border: 2.5px solid rgba(93, 95, 239, 0.5);
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
+  border-radius: 999px;
   font-size: 20px;
-<<<<<<< Updated upstream
-  font-weight: bold;
-  color: rgba(0, 0, 0, 0.5);
-`;
-
-const WeatherScoreContainer = styled.div`
-  border: 3px solid #9394d0;
-  border-radius: 15px;
-=======
   color: white;
   background-color: #001f8e;
   margin-bottom: 20px;
   font-family: AppleSDGothicNeoB00;
->>>>>>> Stashed changes
 `;
 
 const WeatherScore = styled.div`
-  background-color: #f5f5f5;
+  margin-top: 15px;
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 70px;
   border-radius: 15px;
-<<<<<<< Updated upstream
-  font-size: 18px;
-=======
   font-family: AppleSDGothicNeoB00;
   font-size: 13pt;
->>>>>>> Stashed changes
   & strong {
+    font-size: 20pt;
     color: #1814af;
   }
 `;
@@ -89,14 +76,8 @@ const MainContent = styled.div`
   }
 `;
 
-const ComponentTitle = styled.div`
-  color: rgba(0, 0, 0, 0.6);
-  font-weight: 600;
-  font-size: 18px;
+const WeatherScoreListContainer = styled.div`
   display: flex;
-<<<<<<< Updated upstream
-  justify-content: center;
-=======
   justify-content: space-between;
   align-items: center;
   height: 100px;
@@ -115,7 +96,6 @@ const ComponentTitle = styled.div`
     flex-shrink: 0;
     border-radius: 14px;
     height: 87px;
-    background-color : #000000;
     &:not(:last-child) {
       margin-right: 10px;
     }
@@ -145,9 +125,7 @@ const ComponentTitle = styled.div`
 `;
 
 const ComponentTitle = styled.h2`
-font-family: AppleSDGothicNeoB00;
   align-self: flex-start;
->>>>>>> Stashed changes
 `;
 
 const Main = () => {
@@ -163,9 +141,12 @@ const Main = () => {
         <h1>Logo</h1>
       </header>
       <MainContent>
-        <StyledLink to="/option">
-          <AppointmentWrapper>약속을 정해보세요</AppointmentWrapper>
-        </StyledLink>
+        <UnstyledLink to="/option">
+          <AppointmentWrapper>
+            <span>약속을 정해보세요</span>
+            <span> &gt; </span>
+          </AppointmentWrapper>
+        </UnstyledLink>
         <WeatherMain
           locationName={weatherInfo.location}
           weatherCode={weatherInfo.weatherCode}
@@ -175,24 +156,15 @@ const Main = () => {
         <WeatherScore>
           오늘의 날씨 점수는 <strong>{weatherInfo.todayScore}</strong>점 입니다
         </WeatherScore>
-        <WeatherScoreContainer>
-          <ComponentTitle>이번주 날씨점수</ComponentTitle>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {weatherInfo.weekScoreData?.map((data, idx) => (
-              <div
-                key={idx}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <div>{data.date}</div>
-                <div>{data.score}</div>
-              </div>
-            ))}
-          </div>
-        </WeatherScoreContainer>
+        <ComponentTitle>이번주의 날씨점수</ComponentTitle>
+        <WeatherScoreListContainer>
+          {weatherInfo.weekScoreData?.map((data, idx) => (
+            <div key={idx} className="mini-calendar">
+              <div className="date">{data.date}</div>
+              <div className="score">{data.score}</div>
+            </div>
+          ))}
+        </WeatherScoreListContainer>
       </MainContent>
     </MainWrapper>
   );
