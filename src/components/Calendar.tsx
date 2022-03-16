@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 require('typeface-ibm-plex-sans');
@@ -60,17 +60,15 @@ const DayButton = styled.button`
     border:none;
     background-color:transparent;
     border-radius: 50%;
+    &.grayed {
+        color :#DDDDDD;
+    }
     &:hover{
         cursor : pointer;
     }
     &:active{
         cursor : pointer;
         background: #CCD2E8;
-    }
-    &:selected{
-    }
-    &:grayed{
-        font-color :#DDDDDD;
     }
 `;
 const Month = styled.button`
@@ -100,7 +98,7 @@ const Left = styled.button`
     left: 4px;
     top: calc(50% - 28px/2);
     font-weight: bold;
-    font-color : #001F8E;
+    color : #001F8E;
     &:hover{
         cursor : pointer;
     }
@@ -121,21 +119,15 @@ const Right = styled.button`
 `
 const Calendar=()=>{
     const [date, setDate] = useState<moment.Moment>(()=>moment());
-    const [color, setColor] = useState<string>("black");
-    const handleDayClick = (current: moment.Moment) => setDate(current);
     const returnToday = ()=> setDate(moment());
     const jumpToMonth = (num:number) => (num ? setDate(date.clone().add(30,'day')) : setDate(date.clone().subtract(30,'day')));
-    const changeColor = () => {
-        setColor(color === "black" ? "#CCD2E8" : "black")
-    }
+    const [days, setDays] = useState<String[]>([]);
 
     const generate=()=>{
         const today = date;
         const startWeek = today.clone().startOf('month').week();
         const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
-        
         const calendar = [];
-
         for(let week = startWeek; week<=endWeek; week++){
             calendar.push(
                 <div className = "row" key = {week}>
@@ -147,15 +139,15 @@ const Calendar=()=>{
                         .week(week)
                         .startOf('week')
                         .add(n+i, 'day');
-                    const isSelected = today.format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
                     const isGrayed = current.format('MM') !== today.format('MM') ? 'grayed' : '';
 
                     return(
-                        <Week className = {`box ${isSelected} ${isGrayed}`} key = {i} onClick= {()=> handleDayClick(current)}>
-                            <DayButton style = {{color : color}} onClick = {()=>changeColor()}>{current.format('D')}</DayButton> 
+                        <Week key = {i}>
+                            {/* <DayButton style = {{color : color}} onClick = {()=>changeColor()}>{current.format('D')}</DayButton>  */}
+                            <DayButton className = {`box ${isGrayed}`} disabled = {isGrayed == 'grayed'}>{current.format('D')}</DayButton> 
                         </Week>
                     );
-                    })}    
+                    })}     
                 </div>
             );
         }
@@ -180,7 +172,21 @@ const Calendar=()=>{
                     </Week>
                 ))}
             </Row>
-            <CalendarBody>
+            <CalendarBody onClick={e=>{
+                const target = e.target as HTMLElement;
+                const closest = target.closest('button');
+                const targetDay = date.format("YYYY M ") + closest?.textContent;
+                console.log(targetDay);
+                if(closest){
+                    if(days.includes(targetDay)){
+                        setDays(days.filter(day => day != targetDay));
+                    }
+                    else{
+                        const day : string = targetDay;
+                        setDays(days.concat(day));
+                    }
+                }
+            }}>
                 {generate()}
             </CalendarBody>
         </>
