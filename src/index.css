@@ -10,3 +10,12 @@
   box-sizing: border-box;
   font-family: 'AppleSDGothicNeoB00';
 }
+
+@font-face {
+  font-family: 'AppleSDGothicNeoB00';
+  src: url('../public/font/AppleSDGothicNeoB.ttf');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoM00';
+  src: url('../public/font/AppleSDGothicNeoM.ttf');
+}
