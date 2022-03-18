@@ -144,7 +144,10 @@ const NextText = styled.div`
   flex-grow: 0;
   margin: 0px 10px;
 `;
-const SetOption = () => {
+const SetOptionOne = () => {
+  const clickNext = ()=>{
+    window.location.href = '/result';
+  }
   return (
   <Wrapper>
     <StepHeader/>
@@ -158,10 +161,10 @@ const SetOption = () => {
         <Ellipse/>
         <SelectText>선택됨</SelectText>
     </SelectDes>
-    <Next>
+    <Next onClick ={()=>clickNext()}>
       <NextText>선택 완료</NextText>
     </Next>
   </Wrapper>  
   )
 };
-export default SetOption;
+export default SetOptionOne;

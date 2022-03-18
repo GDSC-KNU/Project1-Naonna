@@ -1,7 +1,6 @@
 import React, {useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import Arrow from "../icon/Arrow";
 require('typeface-ibm-plex-sans');
 
 const Head = styled.div`
@@ -65,12 +64,17 @@ const DayButton = styled.button`
     &.grayed {
         color :#DDDDDD;
     }
-    &:hover{
-        cursor : pointer;
+    &.selectedFirst{
+        background: rgba(255, 214, 0, 0.2);
+    }
+    &.selectedSecond{
+        background: rgba(185, 185, 185, 0.2);
+    }
+    &.selectedThird{
+        background: rgba(123, 52, 0, 0.2);
     }
     &:active{
         cursor : pointer;
-        background: #CCD2E8;
     }
 `;
 const Month = styled.button`
@@ -90,41 +94,12 @@ const Month = styled.button`
     display: flex;
     align-items: center;
     letter-spacing: 0.12px;
-`
-const Left = styled.button`
-    position: absolute;
-    border:none;
-    background-color:transparent;
-    transform: scaleX(-1);
-    width: 28px;
-    height: 28px;
-    left: 4px;
-    top: calc(50% - 28px/2);
-    font-weight: bold;
-    color : #001F8E;
-    &:hover{
-        cursor : pointer;
-    }
-`
-const Right = styled.button`
-    position: absolute;
-    border:none;
-    background-color:transparent;
-    width: 28px;
-    height: 28px;
-    right: 4px;
-    top: calc(50% - 28px/2);
-    font-weight: bold;
-    font-color : #001F8E;
-    &:hover{
-        cursor : pointer;
-    }
 `;
 const Today = styled.div`
     position: absolute;
     width: 27px;
     height: 0px;
-    margin-left : 5px;
+    margin-left : 6px;
     font-family: 'AppleSDGothicNeoB00';
     font-style: normal;
     font-weight: 400;
@@ -143,15 +118,15 @@ const Today = styled.div`
 const Calendar=()=>{
     const [date, setDate] = useState<moment.Moment>(()=>moment());
     const returnToday = ()=> setDate(moment());
-    const jumpToMonth = (num:number) => (num ? setDate(date.clone().add(30,'day')) : setDate(date.clone().subtract(30,'day')));
-    const [days, setDays] = useState<String[]>([]);
+    const dayArray : string[] = ["2022 3 27", "2022 3 24", "2022 3 20"];
 
     const generate=()=>{
         const today = date;
-        const startWeek = today.clone().startOf('month').week();
-        const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
+        const nextMonth = date.clone().add(30,'day').week();
+        const startWeek = today.week();
+        // const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
         const calendar = [];
-        for(let week = startWeek; week<=endWeek; week++){
+        for(let week = startWeek; week<=nextMonth; week++){
             calendar.push(
                 <div className = "row" key = {week}>
                     {Array(7)
@@ -162,11 +137,15 @@ const Calendar=()=>{
                         .week(week)
                         .startOf('week')
                         .add(n+i, 'day');
+                    const isSelectedFirst = dayArray[0] === current.format('YYYY M D') ? 'selectedFirst' : '';
+                    const isSelectedSecond = dayArray[1] === current.format('YYYY M D') ? 'selectedSecond' : '';
+                    const isSelectedThird = dayArray[2] === current.format('YYYY M D') ? 'selectedThird' : '';
+                    const isBefored = current.clone().subtract(-1,'day').isBefore(today) ? 'grayed' : '';
+                    const isOvered = current.isAfter(today.clone().add(30,'day')) ? 'grayed':'';
                     const isSelected = today.format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
-                    const isGrayed = current.format('MM') !== today.format('MM') ? 'grayed' : '';
                     return(
                         <Week key = {i}>
-                            <DayButton className = {`box ${isGrayed}`} disabled = {isGrayed == 'grayed'}>{current.format('D')}</DayButton>
+                            <DayButton className = {`box ${isBefored}${isOvered}${isSelectedFirst}${isSelectedSecond}${isSelectedThird}`} disabled = {isBefored == 'grayed' || isOvered == 'grayed'}>{current.format('D')}</DayButton> 
                             <Today className = {`text ${isSelected}`}>오늘</Today>
                         </Week>
                     );
@@ -180,13 +159,7 @@ const Calendar=()=>{
     return (
         <>
             <Head>
-                <Left onClick={()=>jumpToMonth(0)}>
-                   <Arrow />
-                </Left>
-                <Month onClick={returnToday}>{date.format('YYYY')}.{date.format('M')}</Month>
-                <Right onClick={()=>jumpToMonth(1)}>
-                    <Arrow />
-                </Right>
+                <Month onClick={returnToday}>{date.format('YY')}.{date.format('M')}~{date.clone().add(30,'day').format('M')}</Month>
             </Head>
             <Row>
                 {['SUN','MON','TUE','WED','THU','FRI','SAT'].map((el) => (
@@ -195,24 +168,7 @@ const Calendar=()=>{
                     </Week>
                 ))}
             </Row>
-            <CalendarBody onClick={e=>{
-                const target = e.target as HTMLElement;
-                const closest = target.closest('button');
-                const targetDay = date.format("YYYY M ") + closest?.textContent;
-                console.log(targetDay);
-                if(closest){
-                    if(days.includes(targetDay)){
-                        setDays(days.filter(day => day != targetDay));
-                        closest.style.background = "transparent";
-                    }
-                    else{
-                        const day : string = targetDay;
-                        setDays(days.concat(day));
-                        closest.style.background = "#CCD2E8";
-                    } 
-                }
-                console.log(days)
-            }}>
+            <CalendarBody>
                 {generate()}
             </CalendarBody>
         </>
