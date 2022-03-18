@@ -29,6 +29,7 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #e5e5e5;
+  font-family: AppleSDGothicNeoB00;
 `;
 
 const AppointmentWrapper = styled.div`
@@ -40,10 +41,10 @@ const AppointmentWrapper = styled.div`
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 999px;
   font-size: 20px;
-  font-weight: bold;
   color: white;
   background-color: #001f8e;
   margin-bottom: 20px;
+  font-family: AppleSDGothicNeoB00;
 `;
 
 const WeatherScore = styled.div`
@@ -54,6 +55,7 @@ const WeatherScore = styled.div`
   align-items: center;
   height: 70px;
   border-radius: 15px;
+  font-family: AppleSDGothicNeoB00;
   font-size: 13pt;
   & strong {
     font-size: 20pt;
@@ -67,6 +69,7 @@ const MainContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  font-family: AppleSDGothicNeoB00;
   width: 100%;
   & > div {
     width: 90%;
@@ -80,6 +83,7 @@ const WeatherScoreListContainer = styled.div`
   height: 100px;
   flex-wrap: nowrap;
   overflow-x: auto;
+  font-family: AppleSDGothicNeoB00;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
