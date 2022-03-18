@@ -19,12 +19,8 @@ const UnstyledLink = styled(Link)`
 `;
 
 const MainWrapper = styled.div`
-  @media screen and (min-width: 768px) {
-    width: 375px;
-    height: 820px;
-    border: 5px solid black;
-    border-radius: 5px;
-  }
+  width: 390px;
+  height: 844px;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -141,7 +137,7 @@ const Main = () => {
         <h1>Logo</h1>
       </header>
       <MainContent>
-        <UnstyledLink to="/option">
+        <UnstyledLink to="/option/1">
           <AppointmentWrapper>
             <span>약속을 정해보세요</span>
             <span> &gt; </span>

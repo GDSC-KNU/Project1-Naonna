@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ComponentContainer = styled.div`
-  background-color: #e5e5e5;
+  background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,7 +32,6 @@ export const BottomButton = styled.button`
   background-color: #001f8e;
   color: #fff;
   font-size: 18px;
-  font-weight: bold;
   margin: 45px 0px;
   border: none;
   &:disabled {

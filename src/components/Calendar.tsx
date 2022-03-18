@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import Arrow from "../icon/Arrow";
+import Arrow from '../icon/Arrow';
+import { CalendarProps } from 'types/component-props';
 require('typeface-ibm-plex-sans');
 
 const Head = styled.div`
@@ -45,179 +46,203 @@ const Day = styled.div`
   text-transform: uppercase;
 `;
 const DayButton = styled.button`
-    width : 32px;
-    height : 32px;
-    display: flex;
-    margin-right : 8px;
-    margin-bottom : 1.5px;
-    font-family: IBM Plex Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 12px;
-    line-height: 16px;
-    align-items: center;
-    text-align: center;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    border:none;
-    background-color:transparent;
-    border-radius: 50%;
-    &.grayed {
-        color :#DDDDDD;
-    }
-    &:hover{
-        cursor : pointer;
-    }
-    &:active{
-        cursor : pointer;
-        background: #CCD2E8;
-    }
+  width: 32px;
+  height: 32px;
+  display: flex;
+  margin-right: 8px;
+  margin-bottom: 1.5px;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: none;
+  background-color: transparent;
+  border-radius: 50%;
+  &:disabled {
+    color: #dddddd;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    cursor: pointer;
+    background: #ccd2e8;
+  }
+  &.selected {
+    background-color: #ccd2e8;
+  }
 `;
 const Month = styled.button`
-    position: absolute;
-    height: 24px;
-    width: 118px;
-    left : 42px;
-    text-align: center;
-    border:none;
-    background-color:transparent;
-    top: calc(50% - 25px/2);
-    font-family: AppleSDGothicNeoB00;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 24px;
-    display: flex;
-    align-items: center;
-    letter-spacing: 0.12px;
-`
+  position: absolute;
+  height: 24px;
+  width: 118px;
+  left: 42px;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+  top: calc(50% - 25px / 2);
+  font-family: AppleSDGothicNeoB00;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.12px;
+`;
 const Left = styled.button`
-    position: absolute;
-    border:none;
-    background-color:transparent;
-    transform: scaleX(-1);
-    width: 28px;
-    height: 28px;
-    left: 4px;
-    top: calc(50% - 28px/2);
-    font-weight: bold;
-    color : #001F8E;
-    &:hover{
-        cursor : pointer;
-    }
-`
+  position: absolute;
+  border: none;
+  background-color: transparent;
+  transform: scaleX(-1);
+  width: 28px;
+  height: 28px;
+  left: 4px;
+  top: calc(50% - 28px / 2);
+  font-weight: bold;
+  color: #001f8e;
+  &:hover {
+    cursor: pointer;
+  }
+`;
 const Right = styled.button`
-    position: absolute;
-    border:none;
-    background-color:transparent;
-    width: 28px;
-    height: 28px;
-    right: 4px;
-    top: calc(50% - 28px/2);
-    font-weight: bold;
-    font-color : #001F8E;
-    &:hover{
-        cursor : pointer;
-    }
+  position: absolute;
+  border: none;
+  background-color: transparent;
+  width: 28px;
+  height: 28px;
+  right: 4px;
+  top: calc(50% - 28px / 2);
+  font-weight: bold;
+  color: #001f8e;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const Today = styled.div`
-    position: absolute;
-    width: 27px;
-    height: 0px;
-    margin-left : 5px;
-    font-family: 'AppleSDGothicNeoB00';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 8px;
-    line-height: 22px;
-    /* or 275% */
-    display: flex;
-    align-items: center;
-    text-align: center;
-    letter-spacing: 0.22px;
-    color: transparent;
-    &.selected{
-        color: #001F8E;
-    }
+  position: absolute;
+  width: 27px;
+  height: 0px;
+  margin-left: 5px;
+  font-family: 'AppleSDGothicNeoB00';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 8px;
+  line-height: 22px;
+  /* or 275% */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.22px;
+  &.today {
+    color: #001f8e;
+  }
 `;
-const Calendar=()=>{
-    const [date, setDate] = useState<moment.Moment>(()=>moment());
-    const returnToday = ()=> setDate(moment());
-    const jumpToMonth = (num:number) => (num ? setDate(date.clone().add(30,'day')) : setDate(date.clone().subtract(30,'day')));
-    const [days, setDays] = useState<String[]>([]);
+const Calendar = ({ dateList: days, setDateList: setDays }: CalendarProps) => {
+  const [date, setDate] = useState<moment.Moment>(() => moment());
+  const returnToday = () => setDate(moment());
+  const jumpToMonth = (num: number) =>
+    num
+      ? setDate(date.clone().add(30, 'day'))
+      : setDate(date.clone().subtract(30, 'day'));
 
-    const generate=()=>{
-        const today = date;
-        const startWeek = today.clone().startOf('month').week();
-        const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
-        const calendar = [];
-        for(let week = startWeek; week<=endWeek; week++){
-            calendar.push(
-                <div className = "row" key = {week}>
-                    {Array(7)
-                    .fill(0)
-                    .map((n,i)=>{
-                        const current = today
-                        .clone()
-                        .week(week)
-                        .startOf('week')
-                        .add(n+i, 'day');
-                    const isSelected = today.format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
-                    const isGrayed = current.format('MM') !== today.format('MM') ? 'grayed' : '';
-                    return(
-                        <Week key = {i}>
-                            <DayButton className = {`box ${isGrayed}`} disabled = {isGrayed == 'grayed'}>{current.format('D')}</DayButton>
-                            <Today className = {`text ${isSelected}`}>오늘</Today>
-                        </Week>
-                    );
-                    })}     
-                </div>
-            );
-        }
-        return calendar;
+  const generate = () => {
+    const today = date;
+    const startWeek = today.clone().startOf('month').week();
+    const endWeek =
+      today.clone().endOf('month').week() === 1
+        ? 53
+        : today.clone().endOf('month').week();
+    const calendar = [];
+    for (let week = startWeek; week <= endWeek; week++) {
+      calendar.push(
+        <div className="row" key={week}>
+          {Array(7)
+            .fill(0)
+            .map((n, i) => {
+              const current = today
+                .clone()
+                .week(week)
+                .startOf('week')
+                .add(n + i, 'day');
+              const isToday =
+                today.format('YYYYMMDD') === current.format('YYYYMMDD')
+                  ? 'today'
+                  : '';
+              const isGrayed = current.format('MM') !== today.format('MM');
+              return (
+                <Week key={i}>
+                  <DayButton disabled={isGrayed}>
+                    {current.format('D')}
+                  </DayButton>
+                  {isToday && <Today className={`text ${isToday}`}>오늘</Today>}
+                </Week>
+              );
+            })}
+        </div>,
+      );
     }
     return calendar;
   };
 
-    return (
-        <>
-            <Head>
-                <Left onClick={()=>jumpToMonth(0)}>
-                   <Arrow />
-                </Left>
-                <Month onClick={returnToday}>{date.format('YYYY')}.{date.format('M')}</Month>
-                <Right onClick={()=>jumpToMonth(1)}>
-                    <Arrow />
-                </Right>
-            </Head>
-            <Row>
-                {['SUN','MON','TUE','WED','THU','FRI','SAT'].map((el) => (
-                    <Week key = {el}>
-                        <Day>{el}</Day>
-                    </Week>
-                ))}
-            </Row>
-            <CalendarBody onClick={e=>{
-                const target = e.target as HTMLElement;
-                const closest = target.closest('button');
-                const targetDay = date.format("YYYY M ") + closest?.textContent;
-                console.log(targetDay);
-                if(closest){
-                    if(days.includes(targetDay)){
-                        setDays(days.filter(day => day != targetDay));
-                        closest.style.background = "transparent";
-                    }
-                    else{
-                        const day : string = targetDay;
-                        setDays(days.concat(day));
-                        closest.style.background = "#CCD2E8";
-                    } 
-                }
-                console.log(days)
-            }}>
-                {generate()}
-            </CalendarBody>
-        </>
-    );
-}
+  const calendar = useMemo<JSX.Element[]>(() => generate(), [date]);
+
+  useEffect(() => {
+    console.log(days);
+  }, [days]);
+
+  useEffect(() => console.log('rerendered!!'));
+
+  return (
+    <>
+      <Head>
+        <Left onClick={() => jumpToMonth(0)}>
+          <Arrow />
+        </Left>
+        <Month onClick={returnToday}>
+          {date.format('YYYY')}.{date.format('M')}
+        </Month>
+        <Right onClick={() => jumpToMonth(1)}>
+          <Arrow />
+        </Right>
+      </Head>
+      <Row>
+        {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(el => (
+          <Week key={el}>
+            <Day>{el}</Day>
+          </Week>
+        ))}
+      </Row>
+      <CalendarBody
+        onClick={e => {
+          const target = e.target as HTMLElement;
+          const closest = target.closest('button');
+          if (!closest) return;
+          const targetDay = new Date(
+            date.format('YYYY/M/') + closest.textContent,
+          );
+          console.log(targetDay);
+          if (closest) {
+            if (days.some(day => day.getTime() === targetDay.getTime())) {
+              setDays(days =>
+                days.filter(day => day.getTime() !== targetDay.getTime()),
+              );
+            } else {
+              setDays(days => [...days, targetDay]);
+            }
+            closest.classList.toggle('selected');
+            console.log(closest);
+          }
+        }}
+      >
+        {calendar}
+      </CalendarBody>
+    </>
+  );
+};
 export default Calendar;

@@ -2,6 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+const Header = styled.div`
+  width: 100%;
+  background-color: #fff;
+`;
+
 const TopHeader = styled.div`
   position: relative;
   display: flex;
@@ -16,6 +21,7 @@ const TopHeader = styled.div`
     justify-self: center;
     margin: 0;
     font-size: 16px;
+    font-weight: 400;
   }
 `;
 
@@ -24,7 +30,7 @@ const Menus = styled.div`
   justify-content: space-between;
   padding: 0 20px;
   & > div {
-    width: 110px;
+    width: 100px;
     height: 25px;
     display: flex;
     justify-content: center;
@@ -32,16 +38,16 @@ const Menus = styled.div`
     font-size: 18px;
     color: #dddddd;
     padding-bottom: 10px;
-    &[data-active='true'] {
+    &.active {
       border-bottom: 3px solid #001f8e;
       color: #001f8e;
     }
   }
 `;
 
-const OptionHeader = ({ nowActive }: { nowActive: number }) => {
+const OptionHeader = () => {
   return (
-    <div style={{ width: '100%' }}>
+    <Header>
       <TopHeader>
         <Link to="/">
           <img src="/image/ui-svg/toLeft.svg" alt="toLeft" />
@@ -49,11 +55,19 @@ const OptionHeader = ({ nowActive }: { nowActive: number }) => {
         <h3>약속 정하기</h3>
       </TopHeader>
       <Menus>
-        <div data-active={nowActive === 1}>날짜 선택</div>
-        <div data-active={nowActive === 2}>위치 선택</div>
-        <div data-active={nowActive === 3}>카테고리 선택</div>
+        <Link to="./1">
+          <div className={window.location.href.endsWith('/1') ? 'active' : ''}>
+            날짜 선택
+          </div>
+        </Link>
+        <div className={window.location.href.endsWith('/2') ? 'active' : ''}>
+          위치 선택
+        </div>
+        <div className={window.location.href.endsWith('/3') ? 'active' : ''}>
+          카테고리 선택
+        </div>
       </Menus>
-    </div>
+    </Header>
   );
 };
 

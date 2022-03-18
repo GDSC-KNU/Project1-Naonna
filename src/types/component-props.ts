@@ -15,3 +15,19 @@ export type ItemSelectorProps = {
 export type subScreenProps = {
   setNowActive: React.Dispatch<React.SetStateAction<number>>;
 };
+
+export type HeaderProps = {
+  dateList: Date[];
+};
+
+export type CalendarProps = {
+  dateList: Date[];
+  setDateList: React.Dispatch<React.SetStateAction<Date[]>>;
+  rankDateList?: Date[];
+  dateOnClick: React.MouseEventHandler<HTMLDivElement>;
+};
+
+export type StepOneProps = {
+  dateList: Date[];
+  setDateList: React.Dispatch<React.SetStateAction<Date[]>>;
+};

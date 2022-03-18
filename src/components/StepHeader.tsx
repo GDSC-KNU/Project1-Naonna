@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
-import Arrow from "../icon/Arrow";
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { HeaderProps } from 'types/component-props';
 
 const Header = styled.div`
-  position: absolute;
   width: 390px;
   height: 163px;
   left: 0px;
   top: 0px;
-  background: #FFFFFF;
+  background: #ffffff;
 `;
 const Title = styled.div`
   display: flex;
@@ -48,15 +48,14 @@ const Back = styled(Link)`
   height: 24px;
   left: 1px;
   top: 7px;
-  transform: scaleX(-1);
   /* Inside auto layout */
   flex: none;
   order: 0;
   flex-grow: 0;
   margin: 0px 0px;
-  border:none;
-  background-color:transparent;
-  `;
+  border: none;
+  background-color: transparent;
+`;
 const Step = styled.div`
   display: flex;
   position: absolute;
@@ -64,8 +63,8 @@ const Step = styled.div`
   height: 40px;
   left: 0px;
   top: 128px;
-  background: #FFFFFF;
-  border-bottom: 2px solid #DDDDDD;
+  background: #ffffff;
+  border-bottom: 2px solid #dddddd;
 `;
 const DayStep = styled.button`
   position: static;
@@ -82,17 +81,20 @@ const DayStep = styled.button`
   display: flex;
   align-items: center;
   text-align: center;
-  color: #DDDDDD;
+  color: #dddddd;
   /* Inside auto layout */
   flex: none;
   order: 0;
   flex-grow: 0;
   margin: 0px 20px;
-  border:none;
-  background-color:transparent;
-  border-bottom : 2px solid;
+  border: none;
+  background-color: transparent;
+  border-bottom: 2px solid;
+  &.active {
+    color: #001f8e;
+  }
 `;
-const PosStep =styled.button`
+const PosStep = styled.button`
   position: static;
   width: 90px;
   height: 105%;
@@ -107,15 +109,18 @@ const PosStep =styled.button`
   display: flex;
   align-items: center;
   text-align: center;
-  color: #DDDDDD;
+  color: #dddddd;
   /* Inside auto layout */
   flex: none;
   order: 1;
   flex-grow: 0;
   margin: 0px 20px;
-  border:none;
-  background-color:transparent;
-  border-bottom : 2px solid;
+  border: none;
+  background-color: transparent;
+  border-bottom: 2px solid;
+  &.active {
+    color: #001f8e;
+  }
 `;
 const CategoryStep = styled.button`
   position: static;
@@ -134,42 +139,61 @@ const CategoryStep = styled.button`
   align-items: center;
   text-align: center;
 
-  color: #DDDDDD;
+  color: #dddddd;
 
   /* Inside auto layout */
   flex: none;
   order: 2;
   flex-grow: 0;
   margin: 0px 15px;
-  border:none;
-  background-color:transparent;
-  border-bottom : 2px solid;
+  border: none;
+  background-color: transparent;
+  border-bottom: 2px solid;
+  &.active {
+    color: #001f8e;
+  }
 `;
-const StepHeader = () => {
-  const [case1, setCase1] = useState<string>('#DDDDDD');
-  const [case2, setCase2] = useState<string>('#DDDDDD');
-  const [case3, setCase3] = useState<string>('#DDDDDD');
+const StepHeader = ({ dateList }: HeaderProps) => {
+  const navigate = useNavigate();
   const goCase1 = () => {
-    setCase1(case1 === "#DDDDDD" ? '#001F8E' : "#DDDDDD");
-  }
-  const goCase2 = () => {
-    setCase2(case2 === "#DDDDDD" ? '#001F8E' : "#DDDDDD");
-  }
-  const goCase3 = () => {
-    setCase3(case3 === "#DDDDDD" ? '#001F8E' : "#DDDDDD");
-  }
-    return (
-      <Header>
-        <Title>
-          <Back to = "/"><Arrow/></Back>
-          <Name>약속 정하기</Name>
-        </Title>
-        <Step>
-          <DayStep style = {{color : case1}} onClick = {()=>goCase1()}>날짜 선택</DayStep>
-          <PosStep style = {{color : case2}} onClick = {()=>goCase2()}>위치 선택</PosStep>
-          <CategoryStep style = {{color : case3}} onClick = {()=>goCase3()}>카테고리 선택</CategoryStep>
-        </Step>
-      </Header>
-    )
+    navigate('./1');
   };
-  export default StepHeader;
+  const goCase2 = () => {
+    navigate('./2');
+  };
+  const goCase3 = () => {
+    navigate('./3');
+  };
+  return (
+    <Header>
+      <Title>
+        <Back to="/">
+          <img src="/image/ui-svg/toLeft.svg" alt="toLeft" />
+        </Back>
+        <Name>약속 정하기</Name>
+      </Title>
+      <Step>
+        <DayStep
+          className={window.location.href.endsWith('/1') ? 'active' : ''}
+          onClick={() => goCase1()}
+        >
+          날짜 선택
+        </DayStep>
+        <PosStep
+          className={window.location.href.endsWith('/2') ? 'active' : ''}
+          disabled={dateList.length === 0}
+          onClick={() => goCase2()}
+        >
+          위치 선택
+        </PosStep>
+        <CategoryStep
+          className={window.location.href.endsWith('/3') ? 'active' : ''}
+          onClick={() => goCase3()}
+        >
+          카테고리 선택
+        </CategoryStep>
+      </Step>
+    </Header>
+  );
+};
+export default StepHeader;
