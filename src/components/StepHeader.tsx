@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-// import Calendar from 'components/Calendar'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Arrow from "../icon/Arrow";
 
 const Header = styled.div`
   position: absolute;
@@ -41,12 +42,13 @@ const Name = styled.div`
   flex-grow: 0;
   margin: 0px 98px;
 `;
-const Back = styled.button`
+const Back = styled(Link)`
   position: absolute;
   width: 24px;
   height: 24px;
-  left: 7px;
+  left: 1px;
   top: 7px;
+  transform: scaleX(-1);
   /* Inside auto layout */
   flex: none;
   order: 0;
@@ -143,7 +145,6 @@ const CategoryStep = styled.button`
   background-color:transparent;
   border-bottom : 2px solid;
 `;
-
 const StepHeader = () => {
   const [case1, setCase1] = useState<string>('#DDDDDD');
   const [case2, setCase2] = useState<string>('#DDDDDD');
@@ -160,7 +161,7 @@ const StepHeader = () => {
     return (
       <Header>
         <Title>
-          <Back>&lt;</Back>
+          <Back to = "/"><Arrow/></Back>
           <Name>약속 정하기</Name>
         </Title>
         <Step>

@@ -13,3 +13,7 @@
   font-family: "AppleSDGothicNeoM00";
   src: url("../public/font/AppleSDGothicNeoM.ttf");
 }
+@font-face{
+  font-family : "IBM Plex Sans";
+  src: url("../public/font/IBMPlexSans-Medium.ttf");
+}
