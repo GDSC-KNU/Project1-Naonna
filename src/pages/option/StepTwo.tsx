@@ -6,6 +6,9 @@ import {
   ComponentContainer,
   TopTitle,
 } from 'components/styles/common';
+import { StepTwoProps, weatherType, windType } from 'types/component-props';
+import { getWeatherData } from 'api/mockApi';
+import { useNavigate } from 'react-router-dom';
 
 const HorizontalItemsContainer = styled.div`
   border-radius: 10px;
@@ -36,7 +39,8 @@ const HorizontalItemsContainer = styled.div`
       padding: 10px 25px;
       white-space: nowrap;
       &.selected,
-      &:hover {
+      &:hover,
+      &.active {
         border: 2px solid #001f8e;
         color: #001f8e;
       }
@@ -44,7 +48,13 @@ const HorizontalItemsContainer = styled.div`
   }
 `;
 
-const StepTwo = () => {
+const StepTwo = ({ weather, wind, setWeather, setWind }: StepTwoProps) => {
+  const navigate = useNavigate();
+  const updateWeatherPreference = (code: number) => {
+    const { weather, wind } = getWeatherData(code);
+    setWeather(weather as weatherType);
+    setWind(wind as windType);
+  };
   return (
     <ComponentContainer>
       <TopTitle>
@@ -61,11 +71,21 @@ const StepTwo = () => {
       <HorizontalItemsContainer style={{ marginTop: 30 }}>
         <div className="title">카테고리</div>
         <div className="content">
-          <div className="item">여행</div>
-          <div className="item">간단한 운동</div>
-          <div className="item">골프</div>
-          <div className="item">무언가</div>
-          <div className="item">또다른 무언가</div>
+          <div className="item" onClick={() => updateWeatherPreference(1)}>
+            여행
+          </div>
+          <div className="item" onClick={() => updateWeatherPreference(2)}>
+            간단한 운동
+          </div>
+          <div className="item" onClick={() => updateWeatherPreference(3)}>
+            골프
+          </div>
+          <div className="item" onClick={() => updateWeatherPreference(1)}>
+            무언가
+          </div>
+          <div className="item" onClick={() => updateWeatherPreference(2)}>
+            또다른 무언가
+          </div>
         </div>
       </HorizontalItemsContainer>
       <div style={{ height: '20px' }}></div>
@@ -74,11 +94,36 @@ const StepTwo = () => {
       >
         <div className="title">날씨</div>
         <div className="content">
-          <div className="item">맑음</div>
-          <div className="item">조금 흐림</div>
-          <div className="item">흐림</div>
-          <div className="item">눈</div>
-          <div className="item">비</div>
+          <div
+            className={`item ${weather === 'clear' ? 'active' : ''}`}
+            onClick={e => setWeather('clear')}
+          >
+            맑음
+          </div>
+          <div
+            className={`item ${weather === 'bitCloudy' ? 'active' : ''}`}
+            onClick={e => setWeather('bitCloudy')}
+          >
+            조금 흐림
+          </div>
+          <div
+            className={`item ${weather === 'cloudy' ? 'active' : ''}`}
+            onClick={e => setWeather('cloudy')}
+          >
+            흐림
+          </div>
+          <div
+            className={`item ${weather === 'snow' ? 'active' : ''}`}
+            onClick={e => setWeather('snow')}
+          >
+            눈
+          </div>
+          <div
+            className={`item ${weather === 'rain' ? 'active' : ''}`}
+            onClick={e => setWeather('rain')}
+          >
+            비
+          </div>
         </div>
       </HorizontalItemsContainer>
       <HorizontalItemsContainer
@@ -86,14 +131,34 @@ const StepTwo = () => {
       >
         <div className="title">바람</div>
         <div className="content">
-          <div className="item">맑음</div>
-          <div className="item">조금</div>
-          <div className="item">강함</div>
-          <div className="item">매우 강함</div>
+          <div
+            className={`item ${wind === 0 ? 'active' : ''}`}
+            onClick={e => setWind(0)}
+          >
+            맑음
+          </div>
+          <div
+            className={`item ${wind === 1 ? 'active' : ''}`}
+            onClick={e => setWind(1)}
+          >
+            조금
+          </div>
+          <div
+            className={`item ${wind === 2 ? 'active' : ''}`}
+            onClick={e => setWind(2)}
+          >
+            강함
+          </div>
+          <div
+            className={`item ${wind === 3 ? 'active' : ''}`}
+            onClick={e => setWind(3)}
+          >
+            매우 강함
+          </div>
         </div>
       </HorizontalItemsContainer>
 
-      <BottomButton>선택 완료</BottomButton>
+      <BottomButton onClick={() => navigate('../3')}>선택 완료</BottomButton>
     </ComponentContainer>
   );
 };

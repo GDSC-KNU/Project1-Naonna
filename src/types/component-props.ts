@@ -31,3 +31,13 @@ export type StepOneProps = {
   dateList: Date[];
   setDateList: React.Dispatch<React.SetStateAction<Date[]>>;
 };
+
+export type weatherType = 'clear' | 'bitCloudy' | 'cloudy' | 'snow' | 'rain';
+export type windType = 0 | 1 | 2 | 3;
+
+export type StepTwoProps = {
+  weather: weatherType;
+  setWeather: React.Dispatch<React.SetStateAction<weatherType>>;
+  wind: windType;
+  setWind: React.Dispatch<React.SetStateAction<windType>>;
+};

@@ -29,3 +29,16 @@ export const getDatum = (arg: string) => {
   }
   return ret;
 };
+
+export const getWeatherData = (code: number) => {
+  switch (code) {
+    case 1:
+      return { weather: 'clear', wind: 0 };
+    case 2:
+      return { weather: 'bitCloudy', wind: 0 };
+    case 3:
+      return { weather: 'cloudy', wind: 1 };
+    default:
+      return { weather: 'clear', wind: 0 };
+  }
+};
