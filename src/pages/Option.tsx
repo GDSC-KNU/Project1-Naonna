@@ -5,8 +5,8 @@ import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { weatherType, windType } from 'types/component-props';
 import StepOne from './option/StepOne';
-import StepThree from './option/StepThree';
 import StepTwo from './option/StepTwo';
+import StepThree from './option/StepThree';
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,11 +18,26 @@ const Wrapper = styled.div`
 
 const Option = () => {
   const [dateList, setDateList] = useState<Date[]>([]);
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [selectedTown, setSelectedTown] = useState<string>('');
+  const [selectedVillage, setSelectedVilage] = useState<string>('');
   const [weather, setWeather] = useState<weatherType>('clear');
   const [wind, setWind] = useState<windType>(0);
+
+  const sendToServer = async () => {
+    console.log({
+      dateList,
+      selectedCity,
+      selectedTown,
+      selectedVillage,
+      weather,
+      wind,
+    });
+    new Promise(resolve => setTimeout(resolve, 1000));
+  };
   return (
     <Wrapper>
-      <StepHeader dateList={dateList} />
+      <StepHeader dateList={dateList} selectedVillage={selectedVillage} />
       <Routes>
         <Route
           path="/1"
@@ -32,14 +47,27 @@ const Option = () => {
           path="/2"
           element={
             <StepTwo
+              selectedCity={selectedCity}
+              setSelectedCity={setSelectedCity}
+              selectedTown={selectedTown}
+              setSelectedTown={setSelectedTown}
+              selectedVillage={selectedVillage}
+              setSelectedVilage={setSelectedVilage}
+            />
+          }
+        />
+        <Route
+          path="/3"
+          element={
+            <StepThree
               weather={weather}
               setWeather={setWeather}
               wind={wind}
               setWind={setWind}
+              onBtnClick={sendToServer}
             />
           }
         />
-        <Route path="/3" element={<StepThree />} />
       </Routes>
     </Wrapper>
   );

@@ -153,7 +153,7 @@ const CategoryStep = styled.button`
     color: #001f8e;
   }
 `;
-const StepHeader = ({ dateList }: HeaderProps) => {
+const StepHeader = ({ dateList, selectedVillage }: HeaderProps) => {
   const navigate = useNavigate();
   const goCase1 = () => {
     navigate('./1');
@@ -188,6 +188,7 @@ const StepHeader = ({ dateList }: HeaderProps) => {
         </PosStep>
         <CategoryStep
           className={window.location.href.endsWith('/3') ? 'active' : ''}
+          disabled={!selectedVillage}
           onClick={() => goCase3()}
         >
           카테고리 선택

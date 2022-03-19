@@ -12,12 +12,9 @@ export type ItemSelectorProps = {
   setSelected: (newItem: string) => void;
 };
 
-export type subScreenProps = {
-  setNowActive: React.Dispatch<React.SetStateAction<number>>;
-};
-
 export type HeaderProps = {
   dateList: Date[];
+  selectedVillage: string;
 };
 
 export type CalendarProps = {
@@ -32,12 +29,22 @@ export type StepOneProps = {
   setDateList: React.Dispatch<React.SetStateAction<Date[]>>;
 };
 
+export type StepTwoProps = {
+  selectedCity: string;
+  setSelectedCity: React.Dispatch<React.SetStateAction<string>>;
+  selectedTown: string;
+  setSelectedTown: React.Dispatch<React.SetStateAction<string>>;
+  selectedVillage: string;
+  setSelectedVilage: React.Dispatch<React.SetStateAction<string>>;
+};
+
 export type weatherType = 'clear' | 'bitCloudy' | 'cloudy' | 'snow' | 'rain';
 export type windType = 0 | 1 | 2 | 3;
 
-export type StepTwoProps = {
+export type StepThreeProps = {
   weather: weatherType;
   setWeather: React.Dispatch<React.SetStateAction<weatherType>>;
   wind: windType;
   setWind: React.Dispatch<React.SetStateAction<windType>>;
+  onBtnClick: () => Promise<void>;
 };

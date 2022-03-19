@@ -10,19 +10,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
-// const DescriptionBox = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: flex-start;
-//   position: absolute;
-//   width: 351px;
-//   height: 51px;
-//   left: 20px;
-//   top: 207px;
-//   align-items: center;
-//   background: rgba(255, 255, 255, 0.5);
-//   border-radius: 10px;
-// `;
 const Description = styled.div`
   position: static;
   width: 300px;
