@@ -17,6 +17,9 @@ const CalendarBody = styled.div`
   height: 200px;
   left: 30px;
   top: 92px;
+  .row {
+    display: flex;
+  }
 `;
 const Row = styled.div`
   position: absolute;
@@ -45,20 +48,18 @@ const Day = styled.div`
   text-transform: uppercase;
 `;
 const DayButton = styled.button`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 32px;
   height: 32px;
-  display: flex;
   margin-right: 8px;
   margin-bottom: 1.5px;
   font-family: IBM Plex Sans;
-  font-style: normal;
   font-weight: bold;
   font-size: 12px;
   line-height: 16px;
-  align-items: center;
-  text-align: center;
   letter-spacing: 1.5px;
-  text-transform: uppercase;
   border: none;
   background-color: transparent;
   border-radius: 50%;
@@ -68,13 +69,13 @@ const DayButton = styled.button`
   &.grayed {
     color: #dddddd;
   }
-  &.selectedFirst {
+  &.first {
     background: rgba(255, 214, 0, 0.2);
   }
-  &.selectedSecond {
+  &.second {
     background: rgba(185, 185, 185, 0.2);
   }
-  &.selectedThird {
+  &.third {
     background: rgba(123, 52, 0, 0.2);
   }
   &:active {
@@ -100,32 +101,20 @@ const Month = styled.button`
   letter-spacing: 0.12px;
 `;
 const Today = styled.div`
-  position: absolute;
   width: 27px;
-  height: 0px;
   margin-left: 6px;
   font-family: 'AppleSDGothicNeoB00';
   font-style: normal;
   font-weight: 400;
   font-size: 8px;
-  line-height: 22px;
-  /* or 275% */
   display: flex;
   align-items: center;
   text-align: center;
   letter-spacing: 0.22px;
-  color: transparent;
-  &.selected {
-    color: #001f8e;
-  }
+  color: #001f8e;
 `;
 
-const Calendar = ({
-  dateList,
-  setDateList,
-  rankDateList,
-  dateOnClick,
-}: CalendarProps) => {
+const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
   const [date, setDate] = useState<moment.Moment>(() => moment());
   const returnToday = () => setDate(moment());
 
@@ -140,23 +129,19 @@ const Calendar = ({
           {Array(7)
             .fill(0)
             .map((_, i) => {
+              let selected = '';
               const current = today
                 .clone()
                 .week(week)
                 .startOf('week')
                 .add(i, 'day');
-              const isSelectedFirst =
-                rankDateList && rankDateList[0] === current.toDate()
-                  ? 'selectedFirst'
-                  : '';
-              const isSelectedSecond =
-                rankDateList && rankDateList[1] === current.toDate()
-                  ? 'selectedSecond'
-                  : '';
-              const isSelectedThird =
-                rankDateList && rankDateList[2] === current.toDate()
-                  ? 'selectedThird'
-                  : '';
+              rankDateList &&
+                rankDateList.forEach((date, idx) => {
+                  const list = ['first', 'second', 'third'];
+                  if (date.getTime() === current.toDate().getTime()) {
+                    selected = list[idx];
+                  }
+                });
               const isBefored = current
                 .clone()
                 .subtract(-1, 'day')
@@ -171,19 +156,20 @@ const Calendar = ({
                   ? 'selected'
                   : '';
               return (
-                <Week key={i}>
-                  <DayButton
-                    className={`box ${isBefored}${isOvered}${isSelectedFirst}${isSelectedSecond}${isSelectedThird} ${
-                      dateList.some(
-                        date => date.getDate() + '' == current.format('D'),
-                      ) && 'selected'
-                    }`}
-                    disabled={isBefored == 'grayed' || isOvered == 'grayed'}
-                  >
-                    {current.format('D')}
-                  </DayButton>
-                  {isSelected && <Today className={isSelected}>오늘</Today>}
-                </Week>
+                <DayButton
+                  key={i}
+                  className={`${isBefored}${isOvered}${selected} ${
+                    dateList?.some(
+                      date => date.getDate() + '' == current.format('D'),
+                    )
+                      ? 'selected'
+                      : ''
+                  }`}
+                  disabled={isBefored == 'grayed' || isOvered == 'grayed'}
+                >
+                  <span>{current.format('D')}</span>
+                  {isSelected && <Today>오늘</Today>}
+                </DayButton>
               );
             })}
         </div>,

@@ -18,8 +18,7 @@ export type HeaderProps = {
 };
 
 export type CalendarProps = {
-  dateList: Date[];
-  setDateList: React.Dispatch<React.SetStateAction<Date[]>>;
+  dateList?: Date[];
   rankDateList?: Date[];
   dateOnClick: React.MouseEventHandler<HTMLDivElement>;
 };

@@ -3,7 +3,7 @@ import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { getWeatherInfo } from 'api/mockApi';
-import { weatherType } from 'types/apiTypes';
+import { MainScreenweatherType } from 'types/apiTypes';
 
 const UnstyledLink = styled(Link)`
   text-decoration: none;
@@ -125,8 +125,8 @@ const ComponentTitle = styled.h2`
 `;
 
 const Main = () => {
-  const [weatherInfo, setWeatherInfo] = useState<weatherType>(
-    {} as weatherType,
+  const [weatherInfo, setWeatherInfo] = useState<MainScreenweatherType>(
+    {} as MainScreenweatherType,
   );
   useEffect(() => {
     setWeatherInfo(getWeatherInfo());

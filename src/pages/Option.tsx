@@ -1,12 +1,13 @@
 // import OptionHeader from 'components/OptionHeader';
 import StepHeader from 'components/StepHeader';
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { weatherType, windType } from 'types/component-props';
 import StepOne from './option/StepOne';
 import StepTwo from './option/StepTwo';
 import StepThree from './option/StepThree';
+import { getRecommendedDate } from 'api/mockApi';
 
 const Wrapper = styled.div`
   position: relative;
@@ -17,6 +18,7 @@ const Wrapper = styled.div`
 `;
 
 const Option = () => {
+  const navigate = useNavigate();
   const [dateList, setDateList] = useState<Date[]>([]);
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [selectedTown, setSelectedTown] = useState<string>('');
@@ -25,7 +27,7 @@ const Option = () => {
   const [wind, setWind] = useState<windType>(0);
 
   const sendToServer = async () => {
-    console.log({
+    const recommendedDate = await getRecommendedDate({
       dateList,
       selectedCity,
       selectedTown,
@@ -33,7 +35,7 @@ const Option = () => {
       weather,
       wind,
     });
-    new Promise(resolve => setTimeout(resolve, 1000));
+    navigate('/result', { state: recommendedDate });
   };
   return (
     <Wrapper>

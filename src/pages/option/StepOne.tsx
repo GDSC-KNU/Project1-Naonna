@@ -123,11 +123,7 @@ const StepOne = ({ dateList, setDateList }: StepOneProps) => {
         <Description>📅 가능한 날짜를 선택하세요.(다중선택 가능)</Description>
       </TopTitle>
       <CalendarPos>
-        <Calendar
-          dateList={dateList}
-          setDateList={setDateList}
-          dateOnClick={dateOnClick}
-        />
+        <Calendar dateList={dateList} dateOnClick={dateOnClick} />
       </CalendarPos>
       <SelectDes>
         <Ellipse />

@@ -1,6 +1,10 @@
-import { weatherType } from 'types/apiTypes';
+import {
+  MainScreenweatherType,
+  recommendRequestType,
+  recommendResponseType,
+} from 'types/apiTypes';
 
-export const getWeatherInfo: () => weatherType = () => {
+export const getWeatherInfo: () => MainScreenweatherType = () => {
   return {
     location: '대구 북구',
     temperature: 17,
@@ -41,4 +45,17 @@ export const getWeatherData = (code: number) => {
     default:
       return { weather: 'clear', wind: 0 };
   }
+};
+
+export const getRecommendedDate = async (
+  requestData: recommendRequestType,
+): Promise<recommendResponseType> => {
+  new Promise(resolve => setTimeout(resolve, 1000));
+  return {
+    recommendedDateList: [
+      new Date(2022, 2, 20),
+      new Date(2022, 2, 22),
+      new Date(2022, 2, 21),
+    ],
+  };
 };

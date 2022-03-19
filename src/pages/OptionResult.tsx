@@ -1,6 +1,8 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-// import Calendar from 'components/resultCalendar';
+import { recommendResponseType } from 'types/apiTypes';
+import Calendar from 'components/resultCalendar';
 import Warn from '../icon/Warning';
 // import Down from "../icon/Down";
 
@@ -158,104 +160,6 @@ const ButtonThird = styled.button`
     border: 2px solid #001f8e;
   }
 `;
-// const SelectText = styled.div`
-// position: absolute;
-// width: 130px;
-// height: 22px;
-// left: calc(50% - 116px/2 - 98px);
-// top: calc(50% - 22px/2 + 166.97px);
-
-// font-family: 'AppleSDGothicNeoB00';
-// font-style: normal;
-// font-weight: 400;
-// font-size: 20px;
-// line-height: 22px;
-// /* identical to box height, or 110% */
-
-// display: flex;
-// align-items: center;
-// letter-spacing: 0.22px;
-
-// color: #000000;
-// `;
-// const SelectFrame = styled.div`
-//     display: flex;
-//     flex-direction: row;
-//     align-items: flex-start;
-//     padding: 0px;
-//     position: absolute;
-//     width: 170px;
-//     height: 40px;
-//     left: calc(50% - 170px/2 - 71px);
-//     top: calc(50% - 40px/2 + 221.97px);
-// `;
-// const SelectMonthButton = styled.button`
-//     display: flex;
-//     flex-direction: row;
-//     align-items: center;
-//     padding: 13px;
-
-//     position: static;
-//     width: 81px;
-//     left: calc(50% - 81px/2);
-//     top: 0%;
-//     bottom: 0%;
-
-//     background: #FFFFFF;
-//     border: 2px solid #B9B9B9;
-//     box-sizing: border-box;
-//     border-radius: 20px;
-
-//     * Inside auto layout */
-
-//     flex: none;
-//     order: 0;
-//     flex-grow: 1;
-//     margin: 0px 0px;
-// `;
-// const SelectDayButton = styled.button`
-// display: flex;
-// flex-direction: row;
-// align-items: center;
-// padding: 13px;
-
-// position: static;
-// width: 81px;
-// left: calc(50% - 81px/2 + 44.5px);
-// top: 0%;
-// bottom: 0%;
-
-// background: #FFFFFF;
-// border: 2px solid #B9B9B9;
-// box-sizing: border-box;
-// border-radius: 20px;
-
-// /* Inside auto layout */
-
-// flex: none;
-// order: 1;
-// flex-grow: 0;
-// margin: 0px 8px;
-// `;
-// const SelectButtonText = styled.div`
-//     position: static;
-//     width: 29px;
-//     height: 14px;
-//     left: 13px;
-//     top: 13px;
-//     font-family: 'AppleSDGothicNeoB00';
-//     font-style: normal;
-//     font-weight: 400;
-//     font-size: 14px;
-//     line-height: 20px;
-//     display: flex;
-//     align-items: center;
-//     color: #B9B9B9;
-//     flex: none;
-//     order: 0;
-//     align-self: stretch;
-//     flex-grow: 1;
-// `;
 const ButtonText = styled.div`
   position: static;
   width: 75px;
@@ -338,65 +242,58 @@ const FooterText = styled.div`
     color: #ffffff;
   }
 `;
-// const DownPos = styled.div`
-// position: static;
-// width: 16px;
-// height: 16px;
-// left: 52px;
-// top: 12px;
-// /* Inside auto layout */
-// flex: none;
-// order: 1;
-// flex-grow: 0;
-// `;
 const OptionResult = () => {
-  const dayArray: string[] = ['3월 27일', '3월 24일', '3월 20일'];
+  const location = useLocation();
+  const state = location.state as recommendResponseType;
+  const { recommendedDateList } = state;
+  console.log('state', state, recommendedDateList);
+
   const goAgain = () => {
     window.location.href = '/option';
   };
+  const dateStringConvert = (date: Date) =>
+    `${date.getMonth() + 1}월 ${date.getDate()}일`;
   return (
-    <>
-      <Wrapper>
-        <CalendarPos>{/* <Calendar /> */}</CalendarPos>
-        <Info>
-          <Warn />
-          <InfoText>
-            달력의 날짜를 클릭하면 그 날의 날씨 정보를 알 수 있습니다.
-          </InfoText>
-        </Info>
-        <CommandDay>추천 날짜 선택</CommandDay>
-        <ButtonFrame>
-          <ButtonFirst>
-            <ButtonText>🥇 {dayArray[0]}</ButtonText>
-          </ButtonFirst>
-          <ButtonSecond>
-            <ButtonText>🥈 {dayArray[1]}</ButtonText>
-          </ButtonSecond>
-          <ButtonThird>
-            <ButtonText>🥉 {dayArray[2]}</ButtonText>
-          </ButtonThird>
-        </ButtonFrame>
-        {/* <SelectText>날짜 직접 입력</SelectText>
-        <SelectFrame>
-            <SelectMonthButton>
-                <SelectButtonText>3월</SelectButtonText>
-                <DownPos><Down/></DownPos>
-            </SelectMonthButton>
-            <SelectDayButton>
-                <SelectButtonText>18일</SelectButtonText>
-                <DownPos><Down/></DownPos>
-            </SelectDayButton>
-        </SelectFrame> */}
-        <Footer>
-          <FooterButton onClick={() => goAgain()}>
-            <FooterText>다시 추천 받기</FooterText>
-          </FooterButton>
-          <FooterButton>
-            <FooterText>약속 잡기 완료</FooterText>
-          </FooterButton>
-        </Footer>
-      </Wrapper>
-    </>
+    <Wrapper>
+      <CalendarPos>
+        <Calendar
+          rankDateList={recommendedDateList}
+          dateOnClick={e => console.log(e)}
+        />
+      </CalendarPos>
+      <Info>
+        <Warn />
+        <InfoText>
+          달력의 날짜를 클릭하면 그 날의 날씨 정보를 알 수 있습니다.
+        </InfoText>
+      </Info>
+      <CommandDay>추천 날짜 선택</CommandDay>
+      <ButtonFrame>
+        <ButtonFirst>
+          <ButtonText>
+            🥇 {dateStringConvert(recommendedDateList[0])}
+          </ButtonText>
+        </ButtonFirst>
+        <ButtonSecond>
+          <ButtonText>
+            🥈 {dateStringConvert(recommendedDateList[1])}
+          </ButtonText>
+        </ButtonSecond>
+        <ButtonThird>
+          <ButtonText>
+            🥉 {dateStringConvert(recommendedDateList[2])}
+          </ButtonText>
+        </ButtonThird>
+      </ButtonFrame>
+      <Footer>
+        <FooterButton onClick={() => goAgain()}>
+          <FooterText>다시 추천 받기</FooterText>
+        </FooterButton>
+        <FooterButton>
+          <FooterText>약속 잡기 완료</FooterText>
+        </FooterButton>
+      </Footer>
+    </Wrapper>
   );
 };
 
