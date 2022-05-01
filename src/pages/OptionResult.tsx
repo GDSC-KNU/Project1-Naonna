@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { recommendResponseType } from 'types/apiTypes';
 import Calendar from 'components/resultCalendar';
@@ -244,21 +244,44 @@ const FooterText = styled.div`
 `;
 const OptionResult = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state as recommendResponseType;
-  const { recommendedDateList } = state;
+  const {
+    recommendedDateList,
+    // location: { longitude, latitude },
+  } = state;
   console.log('state', state, recommendedDateList);
 
   const goAgain = () => {
-    window.location.href = '/option';
+    window.location.href = '/option/1';
   };
   const dateStringConvert = (date: Date) =>
     `${date.getMonth() + 1}월 ${date.getDate()}일`;
+
+  const dateOnClick: React.MouseEventHandler<HTMLDivElement> = e => {
+    const { target } = e;
+    const closest = (target as HTMLDivElement).closest('button');
+    if (!closest || closest.disabled) return;
+    console.log(closest);
+    const month = +closest.dataset.month! - 1;
+    const day = +closest.innerText;
+    navigate('./detail', {
+      state: {
+        date: new Date(new Date().getFullYear(), month, day),
+        location: '대구 북구', // 나중에 getocoding으로 처리해야함
+        weatherCode: 'ss', // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
+        temperature: 20,
+        criteriaTime: '2020.01.01',
+        score: 20,
+      },
+    });
+  };
   return (
     <Wrapper>
       <CalendarPos>
         <Calendar
           rankDateList={recommendedDateList}
-          dateOnClick={e => console.log(e)}
+          dateOnClick={dateOnClick}
         />
       </CalendarPos>
       <Info>

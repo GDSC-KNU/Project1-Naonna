@@ -21,5 +21,9 @@ export type recommendRequestType = {
 };
 
 export type recommendResponseType = {
+  location: {
+    longitude: number;
+    latitude: number;
+  };
   recommendedDateList: Date[];
 };

@@ -47,3 +47,12 @@ export type StepThreeProps = {
   setWind: React.Dispatch<React.SetStateAction<windType>>;
   onBtnClick: () => Promise<void>;
 };
+
+export type ResultDetailProps = {
+  date: Date;
+  location: string;
+  weatherCode: string;
+  temperature: number;
+  criteriaTime: string;
+  score: number;
+};

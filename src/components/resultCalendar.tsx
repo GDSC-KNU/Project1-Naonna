@@ -66,9 +66,6 @@ const DayButton = styled.button`
   &.selected {
     background-color: #ccd2e8;
   }
-  &.grayed {
-    color: #dddddd;
-  }
   &.first {
     background: rgba(255, 214, 0, 0.2);
   }
@@ -77,6 +74,9 @@ const DayButton = styled.button`
   }
   &.third {
     background: rgba(123, 52, 0, 0.2);
+  }
+  &:disabled {
+    color: #dddddd;
   }
   &:active {
     cursor: pointer;
@@ -142,15 +142,9 @@ const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
                     selected = list[idx];
                   }
                 });
-              const isBefored = current
-                .clone()
-                .subtract(-1, 'day')
-                .isBefore(today)
-                ? 'grayed'
-                : '';
-              const isOvered = current.isAfter(today.clone().add(30, 'day'))
-                ? 'grayed'
-                : '';
+              const isInvalid =
+                current.clone().subtract(-1, 'day').isBefore(today) ||
+                current.isAfter(today.clone().add(30, 'day'));
               const isSelected =
                 today.format('YYYYMMDD') === current.format('YYYYMMDD')
                   ? 'selected'
@@ -158,14 +152,15 @@ const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
               return (
                 <DayButton
                   key={i}
-                  className={`${isBefored}${isOvered}${selected} ${
+                  className={`${selected} ${
                     dateList?.some(
                       date => date.getDate() + '' == current.format('D'),
                     )
                       ? 'selected'
                       : ''
                   }`}
-                  disabled={isBefored == 'grayed' || isOvered == 'grayed'}
+                  disabled={isInvalid}
+                  data-month={current.month() + 1}
                 >
                   <span>{current.format('D')}</span>
                   {isSelected && <Today>오늘</Today>}
