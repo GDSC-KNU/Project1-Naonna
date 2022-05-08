@@ -5,15 +5,12 @@ import { CalendarProps } from 'types/component-props';
 require('typeface-ibm-plex-sans');
 
 const Head = styled.div`
-  position: absolute;
-  width: 142px;
   height: 32px;
-  left: calc(50% - 142px / 2);
-  top: 18px;
+  width: 100%;
+  align-self: center;
 `;
 const CalendarBody = styled.div`
-  position: absolute;
-  width: 90%;
+  width: 100%;
   height: 200px;
   left: 30px;
   top: 92px;
@@ -22,8 +19,7 @@ const CalendarBody = styled.div`
   }
 `;
 const Row = styled.div`
-  position: absolute;
-  width: 90%;
+  width: 100%;
   height: 16px;
   left: 32px;
   top: 60px;
@@ -37,7 +33,7 @@ const Day = styled.div`
   top: 60px;
   bottom: 240px;
   display: flex;
-  font-family: IBM Plex Sans;
+  font-family: 'IBM Plex Sans';
   font-style: normal;
   font-weight: bold;
   font-size: 12px;
@@ -83,9 +79,8 @@ const DayButton = styled.button`
   }
 `;
 const Month = styled.button`
-  position: absolute;
   height: 24px;
-  width: 118px;
+  width: 100%;
   left: 42px;
   text-align: center;
   border: none;
@@ -98,6 +93,7 @@ const Month = styled.button`
   line-height: 24px;
   display: flex;
   align-items: center;
+  justify-content: center;
   letter-spacing: 0.12px;
 `;
 const Today = styled.div`
@@ -114,7 +110,12 @@ const Today = styled.div`
   color: #001f8e;
 `;
 
-const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
+const Calendar = ({
+  dateList,
+  rankDateList,
+  dateOnClick,
+  style,
+}: CalendarProps) => {
   const [date, setDate] = useState<moment.Moment>(() => moment());
   const returnToday = () => setDate(moment());
 
@@ -176,7 +177,7 @@ const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
   const calendar = useMemo<JSX.Element[]>(() => generate(), [date]);
 
   return (
-    <>
+    <div style={{ ...style, display: 'flex', flexDirection: 'column' }}>
       <Head>
         <Month onClick={returnToday}>
           {date.format('YY')}.{date.format('M')}~
@@ -191,7 +192,7 @@ const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
         ))}
       </Row>
       <CalendarBody onClick={dateOnClick}>{calendar}</CalendarBody>
-    </>
+    </div>
   );
 };
 export default Calendar;
