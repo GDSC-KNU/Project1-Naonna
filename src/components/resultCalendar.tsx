@@ -5,15 +5,12 @@ import { CalendarProps } from 'types/component-props';
 require('typeface-ibm-plex-sans');
 
 const Head = styled.div`
-  position: absolute;
-  width: 142px;
   height: 32px;
-  left: calc(50% - 142px / 2);
-  top: 18px;
+  width: 100%;
+  align-self: center;
 `;
 const CalendarBody = styled.div`
-  position: absolute;
-  width: 90%;
+  width: 100%;
   height: 200px;
   left: 30px;
   top: 92px;
@@ -22,8 +19,7 @@ const CalendarBody = styled.div`
   }
 `;
 const Row = styled.div`
-  position: absolute;
-  width: 90%;
+  width: 100%;
   height: 16px;
   left: 32px;
   top: 60px;
@@ -37,7 +33,7 @@ const Day = styled.div`
   top: 60px;
   bottom: 240px;
   display: flex;
-  font-family: IBM Plex Sans;
+  font-family: 'IBM Plex Sans';
   font-style: normal;
   font-weight: bold;
   font-size: 12px;
@@ -66,9 +62,6 @@ const DayButton = styled.button`
   &.selected {
     background-color: #ccd2e8;
   }
-  &.grayed {
-    color: #dddddd;
-  }
   &.first {
     background: rgba(255, 214, 0, 0.2);
   }
@@ -78,14 +71,16 @@ const DayButton = styled.button`
   &.third {
     background: rgba(123, 52, 0, 0.2);
   }
+  &:disabled {
+    color: #dddddd;
+  }
   &:active {
     cursor: pointer;
   }
 `;
 const Month = styled.button`
-  position: absolute;
   height: 24px;
-  width: 118px;
+  width: 100%;
   left: 42px;
   text-align: center;
   border: none;
@@ -98,6 +93,7 @@ const Month = styled.button`
   line-height: 24px;
   display: flex;
   align-items: center;
+  justify-content: center;
   letter-spacing: 0.12px;
 `;
 const Today = styled.div`
@@ -114,7 +110,12 @@ const Today = styled.div`
   color: #001f8e;
 `;
 
-const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
+const Calendar = ({
+  dateList,
+  rankDateList,
+  dateOnClick,
+  style,
+}: CalendarProps) => {
   const [date, setDate] = useState<moment.Moment>(() => moment());
   const returnToday = () => setDate(moment());
 
@@ -142,15 +143,9 @@ const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
                     selected = list[idx];
                   }
                 });
-              const isBefored = current
-                .clone()
-                .subtract(-1, 'day')
-                .isBefore(today)
-                ? 'grayed'
-                : '';
-              const isOvered = current.isAfter(today.clone().add(30, 'day'))
-                ? 'grayed'
-                : '';
+              const isInvalid =
+                current.clone().subtract(-1, 'day').isBefore(today) ||
+                current.isAfter(today.clone().add(30, 'day'));
               const isSelected =
                 today.format('YYYYMMDD') === current.format('YYYYMMDD')
                   ? 'selected'
@@ -158,14 +153,15 @@ const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
               return (
                 <DayButton
                   key={i}
-                  className={`${isBefored}${isOvered}${selected} ${
+                  className={`${selected} ${
                     dateList?.some(
                       date => date.getDate() + '' == current.format('D'),
                     )
                       ? 'selected'
                       : ''
                   }`}
-                  disabled={isBefored == 'grayed' || isOvered == 'grayed'}
+                  disabled={isInvalid}
+                  data-month={current.month() + 1}
                 >
                   <span>{current.format('D')}</span>
                   {isSelected && <Today>오늘</Today>}
@@ -181,7 +177,7 @@ const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
   const calendar = useMemo<JSX.Element[]>(() => generate(), [date]);
 
   return (
-    <>
+    <div style={{ ...style, display: 'flex', flexDirection: 'column' }}>
       <Head>
         <Month onClick={returnToday}>
           {date.format('YY')}.{date.format('M')}~
@@ -196,7 +192,7 @@ const Calendar = ({ dateList, rankDateList, dateOnClick }: CalendarProps) => {
         ))}
       </Row>
       <CalendarBody onClick={dateOnClick}>{calendar}</CalendarBody>
-    </>
+    </div>
   );
 };
 export default Calendar;

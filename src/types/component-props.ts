@@ -18,6 +18,7 @@ export type HeaderProps = {
 };
 
 export type CalendarProps = {
+  style?: React.CSSProperties;
   dateList?: Date[];
   rankDateList?: Date[];
   dateOnClick: React.MouseEventHandler<HTMLDivElement>;
@@ -46,4 +47,13 @@ export type StepThreeProps = {
   wind: windType;
   setWind: React.Dispatch<React.SetStateAction<windType>>;
   onBtnClick: () => Promise<void>;
+};
+
+export type ResultDetailProps = {
+  date: Date;
+  location: string;
+  weatherCode: string;
+  temperature: number;
+  criteriaTime: string;
+  score: number;
 };

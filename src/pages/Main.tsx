@@ -4,44 +4,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { getWeatherInfo } from 'api/mockApi';
 import { MainScreenweatherType } from 'types/apiTypes';
-
-const UnstyledLink = styled(Link)`
-  text-decoration: none;
-  width: 100%;
-  &:focus,
-  &:hover,
-  &:visited,
-  &:link,
-  &:active {
-    text-decoration: none;
-    color: inherit;
-  }
-`;
-
-const MainWrapper = styled.div`
-  width: 390px;
-  height: 844px;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  background-color: #e5e5e5;
-  font-family: AppleSDGothicNeoB00;
-`;
-
-const AppointmentWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  width: calc(100% - 50px);
-  border: 2.5px solid rgba(93, 95, 239, 0.5);
-  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 999px;
-  font-size: 20px;
-  color: white;
-  background-color: #001f8e;
-  margin-bottom: 20px;
-  font-family: AppleSDGothicNeoB00;
-`;
+import Stack from 'components/Stack';
+import Pill from 'components/Pill';
 
 const WeatherScore = styled.div`
   margin-top: 15px;
@@ -56,19 +20,6 @@ const WeatherScore = styled.div`
   & strong {
     font-size: 20pt;
     color: #1814af;
-  }
-`;
-
-const MainContent = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  font-family: AppleSDGothicNeoB00;
-  width: 100%;
-  & > div {
-    width: 90%;
   }
 `;
 
@@ -120,10 +71,6 @@ const WeatherScoreListContainer = styled.div`
   }
 `;
 
-const ComponentTitle = styled.h2`
-  align-self: flex-start;
-`;
-
 const Main = () => {
   const [weatherInfo, setWeatherInfo] = useState<MainScreenweatherType>(
     {} as MainScreenweatherType,
@@ -132,17 +79,38 @@ const Main = () => {
     setWeatherInfo(getWeatherInfo());
   }, []);
   return (
-    <MainWrapper>
+    <Stack
+      style={{
+        width: 390,
+        height: 844,
+        padding: 30,
+        backgroundColor: '#e5e5e5',
+        fontFamily: 'AppleSDGothicNeoB00',
+      }}
+    >
       <header>
         <h1>Logo</h1>
       </header>
-      <MainContent>
-        <UnstyledLink to="/option/1">
-          <AppointmentWrapper>
+      <Stack>
+        <Link to="/option/1">
+          <Pill
+            style={{
+              position: 'relative',
+              padding: 15,
+              width: '100%',
+              border: '2.5px solid rgba(93, 95, 239, 0.5)',
+              boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
+              fontSize: '20px',
+              color: 'white',
+              backgroundColor: '#001f8e',
+              marginBottom: '20px',
+              fontFamily: 'AppleSDGothicNeoB00',
+            }}
+          >
             <span>약속을 정해보세요</span>
-            <span> &gt; </span>
-          </AppointmentWrapper>
-        </UnstyledLink>
+            <span style={{ position: 'absolute', right: '25px' }}>&gt;</span>
+          </Pill>
+        </Link>
         <WeatherMain
           locationName={weatherInfo.location}
           weatherCode={weatherInfo.weatherCode}
@@ -152,7 +120,7 @@ const Main = () => {
         <WeatherScore>
           오늘의 날씨 점수는 <strong>{weatherInfo.todayScore}</strong>점 입니다
         </WeatherScore>
-        <ComponentTitle>이번주의 날씨점수</ComponentTitle>
+        <h2>이번주의 날씨점수</h2>
         <WeatherScoreListContainer>
           {weatherInfo.weekScoreData?.map((data, idx) => (
             <div key={idx} className="mini-calendar">
@@ -161,8 +129,8 @@ const Main = () => {
             </div>
           ))}
         </WeatherScoreListContainer>
-      </MainContent>
-    </MainWrapper>
+      </Stack>
+    </Stack>
   );
 };
 
