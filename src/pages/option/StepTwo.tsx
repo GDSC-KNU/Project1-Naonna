@@ -57,7 +57,7 @@ const LocationSelect = ({
 
   return (
     <ComponentContainer>
-      <TopTitle style={{ marginBottom: '25px' }}>
+      <TopTitle style={{ marginBottom: '25px', width:300,textAlign:'center'}}>
         📍 일정이 있는 지역을 선택하세요
       </TopTitle>
       <ItemSelector

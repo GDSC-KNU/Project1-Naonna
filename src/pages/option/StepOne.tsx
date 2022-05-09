@@ -16,8 +16,8 @@ const Description = styled.div`
   height: 21px;
   left: 15px;
   top: 15px;
-  font-family: 'AppleSDGothicNeoM00';
-  font-style: normal;
+  font-family: 'AppleSDGothicNeoB00';
+  font-style: bold;
   font-weight: 400;
   font-size: 16px;
   line-height: 21px;
@@ -29,7 +29,6 @@ const Description = styled.div`
   flex: none;
   order: 0;
   flex-grow: 0;
-  margin: 0px 10px;
 `;
 const CalendarPos = styled.div`
   margin-top: 44px;
@@ -120,7 +119,7 @@ const StepOne = ({ dateList, setDateList }: StepOneProps) => {
   return (
     <ComponentContainer>
       <TopTitle>
-        <Description>📅 가능한 날짜를 선택하세요.(다중선택 가능)</Description>
+        <Description>📅 가능한 날짜를 선택하세요.<span style={{fontSize:14}}>(다중선택 가능)</span></Description>
       </TopTitle>
       <CalendarPos>
         <Calendar dateList={dateList} dateOnClick={dateOnClick} />

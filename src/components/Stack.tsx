@@ -22,7 +22,6 @@ const Stack = ({
       className={className}
       style={{
         ...style,
-        padding: '0 24px',
         display: 'flex',
         flexDirection: row ? 'row' : 'column',
       }}

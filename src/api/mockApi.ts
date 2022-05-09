@@ -57,9 +57,9 @@ export const getRecommendedDate = async (
       latitude: 128.3542,
     },
     recommendedDateList: [
-      new Date(2022, 2, 20),
-      new Date(2022, 2, 22),
-      new Date(2022, 2, 21),
+      new Date(2022, 4, 26),
+      new Date(2022, 4, 10),
+      new Date(2022, 4, 13),
     ],
   };
 };

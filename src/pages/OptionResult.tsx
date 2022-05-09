@@ -8,6 +8,22 @@ import Stack from 'components/Stack';
 import Pill from 'components/Pill';
 // import Down from "../icon/Down";
 
+const CalendarPos = styled.div`
+  margin-top: 44px;
+  margin-bottom: 20px;
+  margin-left:19px;
+  position: relative;
+  width: 351px;
+  height: 316px;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const InfoText = styled.div`
   position: static;
   width: 234px;
@@ -48,7 +64,7 @@ const PillBtn = styled(Pill)`
   flex: none;
   order: 0;
   flex-grow: 0;
-  margin: 0px 10px;
+  margin: 0px 7px;
   &:active {
     border: 2px solid #001f8e;
   }
@@ -170,20 +186,36 @@ const OptionResult = () => {
     });
   };
   return (
-    <Stack className="stacks">
-      <Calendar
-        rankDateList={recommendedDateList}
-        dateOnClick={dateOnClick}
-        style={{ alignSelf: 'center' }}
-      />
-      <Stack row>
+    <Stack className="stacks" 
+      style={{
+        position: 'relative',
+        width: 390,
+        height: 784.06,
+        background: '#FAFAFA',
+        borderRadius: 30,
+    }}>
+      <CalendarPos>
+        <Calendar
+          rankDateList={recommendedDateList}
+          dateOnClick={dateOnClick}
+          style={{ alignSelf: 'center' }}
+        />
+      </CalendarPos>
+      <Stack row style={{marginLeft:25}}>
         <Warn />
         <InfoText>
           달력의 날짜를 클릭하면 그 날의 날씨 정보를 알 수 있습니다.
         </InfoText>
       </Stack>
-      <span>추천 날짜 선택</span>
-      <Stack row>
+      <span 
+        style={{
+          marginLeft:25,
+          marginTop:25,
+          marginBottom:25,
+          fontSize:22
+        }}>
+        추천 날짜 선택</span>
+      <Stack row style={{marginLeft:20}}>
         <PillBtn style={{ backgroundColor: '#FFF7CC' }}>
           <ButtonText>
             🥇 {dateStringConvert(recommendedDateList[0])}
