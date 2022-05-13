@@ -9,7 +9,7 @@ const ComponentMain = styled.div`
   border-radius: 35px;
   padding: 20px;
   font-family: AppleSDGothicNeoB00;
-  border: 1.5px solid #a5a6f6;
+  border: transparent;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: #fff;
 `;
@@ -35,7 +35,7 @@ const WeatherMain = ({
 }: WeatherMainProps) => {
   return (
     <ComponentMain>
-      <StrongSpan>{locationName}</StrongSpan>
+      <StrongSpan style={{color:'#001f8e'}}>{locationName}</StrongSpan>
       <div style={{ width: 250, height: 250 }}>
         <img
           src={`image/weather-svg/${weatherCode}.svg`}
@@ -43,7 +43,7 @@ const WeatherMain = ({
           style={{ width: '100%', height: '100%' }}
         />
       </div>
-      <StrongSpan>{temperature}°C</StrongSpan>
+      <StrongSpan style={{color:'#001f8e'}}>{temperature}°C</StrongSpan>
       <RightAlign>
         <span>{criteriaTime} 기준</span>
       </RightAlign>

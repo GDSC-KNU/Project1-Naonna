@@ -14,6 +14,7 @@ const WeatherScore = styled.div`
   justify-content: center;
   align-items: center;
   height: 70px;
+  margin-bottom:20px;
   border-radius: 15px;
   font-family: AppleSDGothicNeoB00;
   font-size: 13pt;
@@ -28,6 +29,7 @@ const WeatherScoreListContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 100px;
+  margin-top:15px;
   flex-wrap: nowrap;
   overflow-x: auto;
   font-family: AppleSDGothicNeoB00;
@@ -84,7 +86,8 @@ const Main = () => {
         width: 390,
         height: 844,
         padding: 30,
-        backgroundColor: '#e5e5e5',
+        backgroundColor: '#f5f5f5',
+        borderRadius:30,
         fontFamily: 'AppleSDGothicNeoB00',
       }}
     >
@@ -98,8 +101,7 @@ const Main = () => {
               position: 'relative',
               padding: 15,
               width: '100%',
-              border: '2.5px solid rgba(93, 95, 239, 0.5)',
-              boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
+              border: 'transparent',
               fontSize: '20px',
               color: 'white',
               backgroundColor: '#001f8e',
@@ -107,7 +109,7 @@ const Main = () => {
               fontFamily: 'AppleSDGothicNeoB00',
             }}
           >
-            <span>약속을 정해보세요</span>
+            <span style={{fontSize:16,marginLeft:10}}>약속을 정해보세요</span>
             <span style={{ position: 'absolute', right: '25px' }}>&gt;</span>
           </Pill>
         </Link>
@@ -118,9 +120,14 @@ const Main = () => {
           criteriaTime={weatherInfo.criteriaTime}
         />
         <WeatherScore>
-          오늘의 날씨 점수는 <strong>{weatherInfo.todayScore}</strong>점 입니다
+          오늘의 날씨 점수는 <strong style={{fontSize:20,marginLeft:5}}>{weatherInfo.todayScore}</strong>점 입니다
         </WeatherScore>
-        <h2>이번주의 날씨점수</h2>
+        <span 
+          style={{
+              fontSize:20,
+              fontFamily:'AppleSDGothicNeoB00',
+            }}
+            >이번 주의 날씨점수</span>
         <WeatherScoreListContainer>
           {weatherInfo.weekScoreData?.map((data, idx) => (
             <div key={idx} className="mini-calendar">

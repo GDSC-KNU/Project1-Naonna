@@ -8,6 +8,7 @@ import {
 } from 'components/styles/common';
 import { StepThreeProps, weatherType, windType } from 'types/component-props';
 import { getWeatherData } from 'api/mockApi';
+import Warn from '../../icon/Warning';
 
 const HorizontalItemsContainer = styled.div`
   border-radius: 10px;
@@ -64,15 +65,15 @@ const StepThree = ({
       <TopTitle>
         ⚙️ 약속의 종류에 따라
         <br />
-        선호하는 날씨를 <strong>선택, 커스텀</strong> 할 수 있습니다.
+        선호하는 날씨를 <strong style={{color:'#001f8e'}}>선택, 커스텀</strong> 할 수 있습니다.
       </TopTitle>
-      <AdditionalExplain style={{ alignSelf: 'flex-start' }}>
+      <AdditionalExplain style={{ alignSelf: 'flex-start',marginLeft:20,marginTop:10}}>
         <div className="image-container">
-          <img src="/image/ui-svg/exclamination.svg" alt="exclamination" />
+          <Warn/>
         </div>
         <span>선택한 옵션에 따라 날씨별 점수가 다르게 산정됩니다.</span>
       </AdditionalExplain>
-      <HorizontalItemsContainer style={{ marginTop: 30 }}>
+      <HorizontalItemsContainer style={{ marginTop: 20 }}>
         <div className="title">카테고리</div>
         <div className="content">
           <div className="item" onClick={() => updateWeatherPreference(1)}>
