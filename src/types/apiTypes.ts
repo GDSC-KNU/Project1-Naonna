@@ -28,3 +28,15 @@ export type hourlyWeatherType = {
   weather : string;
   dt: string;
 };
+
+export type resultWeatherType = {
+  location:string;
+  dt:string;
+  temp_max : number;
+  temp_min : number;
+  uvi : number;
+  humidity : number;
+  rain : number;
+  wind_speed : number;
+  // 미세먼지
+};

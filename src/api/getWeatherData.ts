@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { hourlyWeatherType, MainScreenweatherType } from 'types/apiTypes';
+import { hourlyWeatherType, MainScreenweatherType, resultWeatherType } from 'types/apiTypes';
 
 export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = async(area:string) =>{
   const {data} = await axios.get<hourlyWeatherType[]>(
@@ -45,12 +45,11 @@ export const getCurrentWeather:(area:string)=>Promise<MainScreenweatherType> = a
     todayScore : 80,
     current_dt : data.current_dt.substring(5,13) + '시'
   }
-  console.log(current);
   return current;
 };
 
-export const getDailyWeather = async(area:String) =>{
-  const {data} = await axios(
+export const getDailyWeather:(area:string)=>Promise<resultWeatherType[]> = async(area:String) =>{
+  const {data} = await axios.get<resultWeatherType[]>(
       `http://35.165.68.251/weathers/daily/${area}`
     );
   return data;

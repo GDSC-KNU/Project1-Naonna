@@ -1,5 +1,4 @@
 import {
-  MainScreenweatherType,
   recommendRequestType,
   recommendResponseType,
 } from 'types/apiTypes';

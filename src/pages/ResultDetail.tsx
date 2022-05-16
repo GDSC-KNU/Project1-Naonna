@@ -67,11 +67,6 @@ const ResultDetail = () => {
           <WeatherBox></WeatherBox>
           <WeatherBox></WeatherBox>
         </Stack>
-        {/* <Stack row style ={{marginTop:20}}>
-          <WeatherBox></WeatherBox>
-          <WeatherBox></WeatherBox>
-          <WeatherBox></WeatherBox>
-        </Stack> */}
         <WeatherScore>
           오늘의 날씨 점수는 <strong>{score}</strong>점 입니다
         </WeatherScore>
