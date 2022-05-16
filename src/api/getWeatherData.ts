@@ -8,27 +8,32 @@ export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = as
   const weatherList: hourlyWeatherType[] = [];
   data.forEach((key)=>{
     let icon = '';
+    const hour = key.dt.substring(11,13);
       switch (key.weather){
         case 'Clear':
-          icon = '☀';
+          if(parseInt(hour)<=6 || parseInt(hour)>=19){
+            icon = '🌕';
+          }
+          else{
+            icon = '☀️';
+          }
           break;
         case 'Clouds':
-          icon = '☁';
+          icon = '☁️';
           break;
         case 'BitClouds':
           icon = '⛅';
           break;
         case 'Rain':
-          icon = '🌧';
+          icon = '🌧️';
           break;
         case 'Snow':
-          icon = '❄';
+          icon = '❄️';
           break;
         default:
-          icon = '☀';
+          icon = '☀️';
           break;
       }
-      const hour = key.dt.substring(11,13);
       weatherList.push({dt:hour+'시',weather:icon});
   });
   return weatherList;
@@ -40,11 +45,12 @@ export const getCurrentWeather:(area:string)=>Promise<MainScreenweatherType> = a
     );
   const current :MainScreenweatherType = {
     location:area,
-    current_temp:data.current_temp,
+    current_temp:parseInt(data.current_temp.toFixed()),
     weather_main : data.weather_main,
     todayScore : 80,
     current_dt : data.current_dt.substring(5,13) + '시'
   }
+  console.log(data);
   return current;
 };
 
