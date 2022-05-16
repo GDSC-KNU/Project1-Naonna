@@ -176,7 +176,7 @@ const OptionResult = () => {
       state: {
         date: new Date(new Date().getFullYear(), month, day),
         location: '대구 북구', // 나중에 getocoding으로 처리해야함
-        weatherCode: 'Clouds', // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
+        weatherCode: 'Clears', // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
         temperature: 20,
         criteriaTime: '2020.01.01',
         score: 20,
