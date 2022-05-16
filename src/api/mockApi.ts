@@ -3,17 +3,6 @@ import {
   recommendRequestType,
   recommendResponseType,
 } from 'types/apiTypes';
-export const getWeatherInfo: () => MainScreenweatherType = () => {
-  const area = '대구 북구'
-  return{ 
-    location: area,
-    temperature: 17,
-    weatherCode: 'wi-day-cloudy',
-    todayScore: 80,
-    weekScoreData: [{date:'3/10',weather :'☁'}],
-    criteriaTime: '2022.03.03',
-  };
-};
 
 export const getDatum = (arg: string) => {
   const ret: string[] = [];

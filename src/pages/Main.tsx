@@ -2,11 +2,11 @@ import React from 'react';
 import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { MainScreenweatherType } from 'types/apiTypes';
+import { hourlyWeatherType} from 'types/apiTypes';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
 import { useQuery } from 'react-query';
-import { hourlyData, currentData } from 'api/getWeatherData';;
+import { getHourlyWeather, getCurrentWeather} from 'api/getWeatherData';;
 
 
 const WeatherScore = styled.div`
@@ -75,68 +75,10 @@ const WeatherScoreListContainer = styled.div`
   }
 `;
 
-const currentWeather = (area:string)=>{
-  const {isLoading,error,data} = useQuery(["currentData", area],()=>currentData(area));
-  if (isLoading || error){
-    const temp : MainScreenweatherType = {
-      location : area,
-      temperature: 0,
-      weatherCode: 'Clear',
-      todayScore: 0,
-      weekScoreData: [],
-      criteriaTime: '0시',
-    }
-    return temp;
-  }
-  const current: MainScreenweatherType = {
-    location: area,
-    temperature: data.current_temp,
-    weatherCode: data.weather_main,
-    todayScore: 80,
-    weekScoreData: [],
-    criteriaTime: data.current_dt.substr(5,8) + '시',
-  }
-  return current;
-}
-
-const nowHourlyWeather = (area : String) =>{
-  const {isLoading,error,data} = useQuery(["hourlyData", area],()=>hourlyData(area));
-  const weatherList = [];
-  if (isLoading || error){
-    return [];
-  }
-  for(const key in data){
-    if(data.hasOwnProperty(key)){
-      let icon = '';
-      switch (data[key].weather){
-        case 'Clear':
-          icon = '☀';
-          break;
-        case 'Clouds':
-          icon = '☁';
-          break;
-        case 'BitClouds':
-          icon = '⛅';
-          break;
-        case 'Rain':
-          icon = '🌧';
-          break;
-        case 'Snow':
-          icon = '❄';
-          break;
-        default:
-          icon = '☀';
-          break;
-      }
-      const hour = data[key].dt.substr(11,2);
-      weatherList.push({date:hour+'시',weather:icon});
-    }
-  }
-  return weatherList;
-}
-
 const Main = () => {
-  const weatherInfo = currentWeather('대구 북구');
+  const area = '대구 북구';
+  const {isLoading:hourlyIsLoading,error:hourlyError,data:hourlyData} = useQuery(["hourlyData", area],()=>getHourlyWeather(area));
+  const {isLoading:currentIsLoading,error:currentError,data:currentData} = useQuery(["currentData", area],()=>getCurrentWeather(area));
   return (
     <Stack
       style={{
@@ -170,15 +112,22 @@ const Main = () => {
             <span style={{ position: 'absolute', right: '25px' }}>&gt;</span>
           </Pill>
         </Link>
+        {currentError && <span>error</span>}
+        {currentIsLoading ? <span>loading...</span>
+         : 
         <WeatherMain
-          locationName={weatherInfo.location}
-          weatherCode={weatherInfo.weatherCode}
-          temperature={weatherInfo.temperature}
-          criteriaTime={weatherInfo.criteriaTime}
-        />
+        locationName={currentData ? currentData.location : ""}
+        weatherCode={currentData ? currentData.weather_main : ""}
+        temperature={currentData ? currentData.current_temp : 0}
+        criteriaTime={currentData ? currentData.current_dt: ""}
+      />
+        }
+        {currentIsLoading ? <span>loading...</span>
+         : 
         <WeatherScore>
-          오늘의 날씨 점수는 <strong style={{fontSize:20,marginLeft:5}}>{weatherInfo.todayScore}</strong>점 입니다
+          오늘의 날씨 점수는 <strong style={{fontSize:20,marginLeft:5}}>{currentData?.todayScore}</strong>점 입니다
         </WeatherScore>
+        }
         <span 
           style={{
               fontSize:20,
@@ -186,9 +135,11 @@ const Main = () => {
             }}
             >시간대별 날씨</span>
         <WeatherScoreListContainer>
-          {nowHourlyWeather('대구 북구')?.map((data, idx) => (
+          {hourlyError && <span>error</span>}
+          {hourlyIsLoading ? <span>loading...</span>
+          : hourlyData?.map((data:hourlyWeatherType, idx:number) => (
             <div key={idx} className="mini-calendar">
-              <div className="date">{data.date}</div>
+              <div className="date">{data.dt}</div>
               <div className="score" style = {{fontSize:25}}>{data.weather}</div>
             </div>
           ))}

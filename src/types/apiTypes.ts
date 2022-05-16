@@ -1,14 +1,10 @@
 import { weatherType, windType } from './component-props';
 export type MainScreenweatherType = {
   location: string;
-  temperature: number;
-  weatherCode: string;
+  current_temp: number;
+  weather_main: string;
   todayScore: number;
-  weekScoreData: {
-    date: string;
-    weather: string;
-  }[];
-  criteriaTime: string;
+  current_dt: string;
 };
 
 export type recommendRequestType = {
@@ -26,4 +22,9 @@ export type recommendResponseType = {
     latitude: number;
   };
   recommendedDateList: Date[];
+};
+
+export type hourlyWeatherType = {
+  weather : string;
+  dt: string;
 };
