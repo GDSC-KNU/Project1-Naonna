@@ -65,8 +65,13 @@ const WeatherScoreListContainer = styled.div`
     }
     & > .score {
       color: #001f8e;
-      font-size: 20px;
-      height: 53px;
+      height: 40px;
+      background-color: #fff;
+      width: 100%;
+    }
+    & > .temp {
+      color: #000000;
+      height: 30px;
       background-color: #fff;
       width: 100%;
       border-bottom-left-radius: 14px;
@@ -141,6 +146,7 @@ const Main = () => {
             <div key={idx} className="mini-calendar">
               <div className="date">{data.dt}</div>
               <div className="score" style = {{fontSize:20}}>{data.weather}</div>
+              <div className="temp" style = {{fontSize:14}}>{currentData ? currentData.current_temp : 0}°C</div>
             </div>
           ))}
         </WeatherScoreListContainer>
