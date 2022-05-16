@@ -3,15 +3,13 @@ import { useLocation } from 'react-router-dom';
 import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
 import { ResultDetailProps } from 'types/component-props';
+import Stack from 'components/Stack';
 
 const MainWrapper = styled.div`
   width: 390px;
   height: 844px;
   padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #e5e5e5;
+  background-color: #f5f5f5;
   font-family: AppleSDGothicNeoB00;
 `;
 
@@ -26,9 +24,21 @@ const WeatherScore = styled.div`
   font-family: AppleSDGothicNeoB00;
   font-size: 13pt;
   & strong {
-    font-size: 20pt;
+    margin-left:5px;
+    font-size: 20px;
     color: #1814af;
   }
+`;
+
+const WeatherBox = styled.div`
+  position: relative;
+  margin-left : 5px;
+  margin-right : 5px;
+  width: 100px;
+  height: 100px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
 `;
 
 const ResultDetail = () => {
@@ -44,16 +54,23 @@ const ResultDetail = () => {
   console.log('date', date);
   return (
     <MainWrapper>
-      <h1>{`${date.getMonth() + 1}월 ${date.getDate()}일`}</h1>
-      <WeatherMain
-        locationName={requestedLocation}
-        weatherCode={weatherCode}
-        temperature={temperature}
-        criteriaTime={criteriaTime}
-      />
-      <WeatherScore>
-        오늘의 날씨 점수는 <strong>{score}</strong>점 입니다
-      </WeatherScore>
+      <Stack>
+        <span style={{fontSize : 25,textAlign:'center',marginTop:10,marginBottom:20}}>{`${date.getMonth() + 1}월 ${date.getDate()}일`}</span>
+        <WeatherMain
+          locationName={requestedLocation}
+          weatherCode={weatherCode}
+          temperature={temperature}
+          criteriaTime={criteriaTime}
+        />
+        <Stack row style ={{marginTop:20}}>
+          <WeatherBox></WeatherBox>
+          <WeatherBox></WeatherBox>
+          <WeatherBox></WeatherBox>
+        </Stack>
+        <WeatherScore>
+          오늘의 날씨 점수는 <strong>{score}</strong>점 입니다
+        </WeatherScore>
+      </Stack>
     </MainWrapper>
   );
 };

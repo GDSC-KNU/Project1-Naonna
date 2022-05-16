@@ -40,7 +40,7 @@ const WeatherMain = ({
         <img
           src={`image/weather-svg/${weatherCode}.svg`}
           alt="weather Icon"
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: '100%', height:'80%',marginTop:'10%' }}
         />
       </div>
       <StrongSpan style={{color:'#001f8e'}}>{temperature}°C</StrongSpan>

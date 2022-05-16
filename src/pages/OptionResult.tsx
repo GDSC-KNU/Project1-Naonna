@@ -161,9 +161,7 @@ const OptionResult = () => {
   } = state;
   console.log('state', state, recommendedDateList);
 
-  const goAgain = () => {
-    window.location.href = '/option/1';
-  };
+
   const dateStringConvert = (date: Date) =>
     `${date.getMonth() + 1}월 ${date.getDate()}일`;
 
@@ -178,7 +176,7 @@ const OptionResult = () => {
       state: {
         date: new Date(new Date().getFullYear(), month, day),
         location: '대구 북구', // 나중에 getocoding으로 처리해야함
-        weatherCode: 'ss', // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
+        weatherCode: 'Clouds', // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
         temperature: 20,
         criteriaTime: '2020.01.01',
         score: 20,
@@ -233,11 +231,11 @@ const OptionResult = () => {
         </PillBtn>
       </Stack>
       <Footer>
-        <FooterButton onClick={() => goAgain()}>
+        <FooterButton onClick={() => navigate('../option/1')}>
           <FooterText>다시 추천 받기</FooterText>
         </FooterButton>
         <FooterButton>
-          <FooterText>약속 잡기 완료</FooterText>
+          <FooterText onClick={()=>navigate('/')}>약속 잡기 완료</FooterText>
         </FooterButton>
       </Footer>
     </Stack>

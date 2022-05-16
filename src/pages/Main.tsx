@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { getWeatherInfo } from 'api/mockApi';
-import { MainScreenweatherType } from 'types/apiTypes';
+import { hourlyWeatherType} from 'types/apiTypes';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
+import { useQuery } from 'react-query';
+import { getHourlyWeather, getCurrentWeather} from 'api/getWeatherData';;
+
 
 const WeatherScore = styled.div`
   margin-top: 15px;
@@ -74,12 +76,9 @@ const WeatherScoreListContainer = styled.div`
 `;
 
 const Main = () => {
-  const [weatherInfo, setWeatherInfo] = useState<MainScreenweatherType>(
-    {} as MainScreenweatherType,
-  );
-  useEffect(() => {
-    setWeatherInfo(getWeatherInfo());
-  }, []);
+  const area = '대구 북구';
+  const {isLoading:hourlyIsLoading,error:hourlyError,data:hourlyData} = useQuery(["hourlyData", area],()=>getHourlyWeather(area));
+  const {isLoading:currentIsLoading,error:currentError,data:currentData} = useQuery(["currentData", area],()=>getCurrentWeather(area));
   return (
     <Stack
       style={{
@@ -113,26 +112,35 @@ const Main = () => {
             <span style={{ position: 'absolute', right: '25px' }}>&gt;</span>
           </Pill>
         </Link>
+        {currentError && <span>error</span>}
+        {currentIsLoading ? <span>loading...</span>
+         : 
         <WeatherMain
-          locationName={weatherInfo.location}
-          weatherCode={weatherInfo.weatherCode}
-          temperature={weatherInfo.temperature}
-          criteriaTime={weatherInfo.criteriaTime}
-        />
+        locationName={currentData ? currentData.location : ""}
+        weatherCode={currentData ? currentData.weather_main : ""}
+        temperature={currentData ? currentData.current_temp : 0}
+        criteriaTime={currentData ? currentData.current_dt: ""}
+      />
+        }
+        {currentIsLoading ? <span>loading...</span>
+         : 
         <WeatherScore>
-          오늘의 날씨 점수는 <strong style={{fontSize:20,marginLeft:5}}>{weatherInfo.todayScore}</strong>점 입니다
+          오늘의 날씨 점수는 <strong style={{fontSize:20,marginLeft:5}}>{currentData?.todayScore}</strong>점 입니다
         </WeatherScore>
+        }
         <span 
           style={{
               fontSize:20,
               fontFamily:'AppleSDGothicNeoB00',
             }}
-            >이번 주의 날씨점수</span>
+            >시간대별 날씨</span>
         <WeatherScoreListContainer>
-          {weatherInfo.weekScoreData?.map((data, idx) => (
+          {hourlyError && <span>error</span>}
+          {hourlyIsLoading ? <span>loading...</span>
+          : hourlyData?.map((data:hourlyWeatherType, idx:number) => (
             <div key={idx} className="mini-calendar">
-              <div className="date">{data.date}</div>
-              <div className="score">{data.score}</div>
+              <div className="date">{data.dt}</div>
+              <div className="score" style = {{fontSize:25}}>{data.weather}</div>
             </div>
           ))}
         </WeatherScoreListContainer>
