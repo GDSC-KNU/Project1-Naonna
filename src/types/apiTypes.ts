@@ -6,7 +6,7 @@ export type MainScreenweatherType = {
   todayScore: number;
   weekScoreData: {
     date: string;
-    score: number;
+    weather: string;
   }[];
   criteriaTime: string;
 };

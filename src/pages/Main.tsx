@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { getWeatherInfo } from 'api/mockApi';
 import { MainScreenweatherType } from 'types/apiTypes';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 
 const WeatherScore = styled.div`
   margin-top: 15px;
@@ -73,13 +74,89 @@ const WeatherScoreListContainer = styled.div`
   }
 `;
 
-const Main = () => {
-  const [weatherInfo, setWeatherInfo] = useState<MainScreenweatherType>(
-    {} as MainScreenweatherType,
+const hourlyData = async(area:String) =>{
+  const {data} = await axios(
+    `http://35.165.68.251/weathers/hourly/${area}`
   );
-  useEffect(() => {
-    setWeatherInfo(getWeatherInfo());
-  }, []);
+  return data;
+};
+
+const currentData = async(area:String) =>{
+  const {data} = await axios(
+    `http://35.165.68.251/weathers/current/${area}`
+  );
+  return data;
+};
+
+const currentWeather = (area:string)=>{
+  const {isLoading,error,data} = useQuery(["currentData", area],()=>currentData(area));
+  if (isLoading || error){
+    const temp : MainScreenweatherType = {
+      location : area,
+      temperature: 0,
+      weatherCode: 'Clear',
+      todayScore: 0,
+      weekScoreData: [],
+      criteriaTime: '0시',
+    }
+    return temp;
+  }
+  const current: MainScreenweatherType = {
+    location: area,
+    temperature: data.current_temp,
+    weatherCode: data.weather_main,
+    todayScore: 80,
+    weekScoreData: [],
+    criteriaTime: data.current_dt.substr(5,8) + '시',
+  }
+  return current;
+}
+
+const nowHourlyWeather = (area : String) =>{
+  const {isLoading,error,data} = useQuery(["hourlyData", area],()=>hourlyData(area));
+  const array = data;
+  const weatherList = [];
+  if (isLoading || error){
+    return [];
+  }
+  for(const key in array){
+    if(array.hasOwnProperty(key)){
+      let icon = '';
+      switch (array[key].weather){
+        case 'Clear':
+          icon = '☀';
+          break;
+        case 'Clouds':
+          icon = '☁';
+          break;
+        case 'BitClouds':
+          icon = '⛅';
+          break;
+        case 'Rain':
+          icon = '🌧';
+          break;
+        case 'Snow':
+          icon = '❄';
+          break;
+        default:
+          icon = '☀';
+          break;
+      }
+      const hour = array[key].dt.substr(11,2);
+      weatherList.push({date:hour+'시',weather:icon});
+    }
+  }
+  return weatherList;
+}
+
+const Main = () => {
+  // const [weatherInfo, setWeatherInfo] = useState<MainScreenweatherType>(
+  //   {} as MainScreenweatherType,
+  // );
+  // useEffect(() => {
+  //   setWeatherInfo(currentWeather('대구 북구'));
+  // }, []);
+  const weatherInfo = currentWeather('대구 북구');
   return (
     <Stack
       style={{
@@ -127,12 +204,12 @@ const Main = () => {
               fontSize:20,
               fontFamily:'AppleSDGothicNeoB00',
             }}
-            >이번 주의 날씨점수</span>
+            >시간대별 날씨</span>
         <WeatherScoreListContainer>
-          {weatherInfo.weekScoreData?.map((data, idx) => (
+          {nowHourlyWeather('대구 북구')?.map((data, idx) => (
             <div key={idx} className="mini-calendar">
               <div className="date">{data.date}</div>
-              <div className="score">{data.score}</div>
+              <div className="score" style = {{fontSize:25}}>{data.weather}</div>
             </div>
           ))}
         </WeatherScoreListContainer>
