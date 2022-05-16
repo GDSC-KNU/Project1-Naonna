@@ -6,8 +6,7 @@ import { MainScreenweatherType } from 'types/apiTypes';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
 import { useQuery } from 'react-query';
-import { hourlyData } from 'api/getHourlyWeather';
-import { currentData } from 'api/getCurrentWeather';
+import { hourlyData, currentData } from 'api/getWeatherData';;
 
 
 const WeatherScore = styled.div`
