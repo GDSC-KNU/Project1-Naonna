@@ -140,7 +140,7 @@ const Main = () => {
           : hourlyData?.map((data:hourlyWeatherType, idx:number) => (
             <div key={idx} className="mini-calendar">
               <div className="date">{data.dt}</div>
-              <div className="score" style = {{fontSize:25}}>{data.weather}</div>
+              <div className="score" style = {{fontSize:20}}>{data.weather}</div>
             </div>
           ))}
         </WeatherScoreListContainer>
