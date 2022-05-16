@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 import { MainScreenweatherType } from 'types/apiTypes';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
-import axios from 'axios';
 import { useQuery } from 'react-query';
+import { hourlyData } from 'api/getHourlyWeather';
+import { currentData } from 'api/getCurrentWeather';
+
 
 const WeatherScore = styled.div`
   margin-top: 15px;
@@ -74,20 +76,6 @@ const WeatherScoreListContainer = styled.div`
   }
 `;
 
-const hourlyData = async(area:String) =>{
-  const {data} = await axios(
-    `http://35.165.68.251/weathers/hourly/${area}`
-  );
-  return data;
-};
-
-const currentData = async(area:String) =>{
-  const {data} = await axios(
-    `http://35.165.68.251/weathers/current/${area}`
-  );
-  return data;
-};
-
 const currentWeather = (area:string)=>{
   const {isLoading,error,data} = useQuery(["currentData", area],()=>currentData(area));
   if (isLoading || error){
@@ -114,15 +102,14 @@ const currentWeather = (area:string)=>{
 
 const nowHourlyWeather = (area : String) =>{
   const {isLoading,error,data} = useQuery(["hourlyData", area],()=>hourlyData(area));
-  const array = data;
   const weatherList = [];
   if (isLoading || error){
     return [];
   }
-  for(const key in array){
-    if(array.hasOwnProperty(key)){
+  for(const key in data){
+    if(data.hasOwnProperty(key)){
       let icon = '';
-      switch (array[key].weather){
+      switch (data[key].weather){
         case 'Clear':
           icon = '☀';
           break;
@@ -142,7 +129,7 @@ const nowHourlyWeather = (area : String) =>{
           icon = '☀';
           break;
       }
-      const hour = array[key].dt.substr(11,2);
+      const hour = data[key].dt.substr(11,2);
       weatherList.push({date:hour+'시',weather:icon});
     }
   }
@@ -150,12 +137,6 @@ const nowHourlyWeather = (area : String) =>{
 }
 
 const Main = () => {
-  // const [weatherInfo, setWeatherInfo] = useState<MainScreenweatherType>(
-  //   {} as MainScreenweatherType,
-  // );
-  // useEffect(() => {
-  //   setWeatherInfo(currentWeather('대구 북구'));
-  // }, []);
   const weatherInfo = currentWeather('대구 북구');
   return (
     <Stack
