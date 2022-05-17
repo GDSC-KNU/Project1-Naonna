@@ -26,6 +26,7 @@ export type recommendResponseType = {
 
 export type hourlyWeatherType = {
   weather : string;
+  weather_description : string,
   dt: string;
 };
 
