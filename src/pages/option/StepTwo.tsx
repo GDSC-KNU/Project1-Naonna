@@ -1,7 +1,6 @@
-import { getDatum } from 'api/mockApi';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StepTwoProps } from 'types/component-props';
+import { useOptionStore } from 'store/store';
 import ItemSelector from '../../components/ItemSelector';
 import {
   TopTitle,
@@ -10,54 +9,21 @@ import {
   ComponentContainer,
 } from '../../components/styles/common';
 
-const LocationSelect = ({
-  selectedCity,
-  setSelectedCity,
-  selectedTown,
-  setSelectedTown,
-  selectedVillage,
-  setSelectedVilage,
-}: StepTwoProps) => {
+const LocationSelect = () => {
   const navigate = useNavigate();
-  const [cityData, setCityData] = useState<string[]>([]);
-  const [townData, setTownData] = useState<string[]>([]);
-  const [villageData, setVillageData] = useState<string[]>([]);
+  const selectedCity = useOptionStore(state => state.selectedCity);
+  const setSelectedCity = useOptionStore(state => state.setSelectedCity);
+  const selectedTown = useOptionStore(state => state.selectedTown);
+  const setSelectedTown = useOptionStore(state => state.setSelectedTown);
 
-  const getCityData = () => {
-    const data = getDatum('시/도');
-    setCityData(data);
-    setTownData([]);
-    setVillageData([]);
-  };
-
-  const getTownData = () => {
-    const data = getDatum(selectedCity);
-    setTownData(data);
-    setVillageData([]);
-  };
-
-  const getVillageData = () => {
-    const data = getDatum(selectedTown);
-    setVillageData(data);
-  };
-
-  useEffect(() => {
-    getCityData();
-  }, []);
-
-  useEffect(() => {
-    if (selectedCity) getTownData();
-  }, [selectedCity]);
-
-  useEffect(() => {
-    if (selectedTown) getVillageData();
-  }, [selectedTown]);
-
-  console.log(selectedCity, selectedTown, selectedVillage);
+  const cityData = ['서울시', '대구시']; // TODO : 실제 JSON 데이터로 대체하기
+  const townData = ['북구', '남구', '서구']; // TODO : 실제 JSON 데이터로 대체하기
 
   return (
     <ComponentContainer>
-      <TopTitle style={{ marginBottom: '25px', width:300,textAlign:'center'}}>
+      <TopTitle
+        style={{ marginBottom: '25px', width: 300, textAlign: 'center' }}
+      >
         📍 일정이 있는 지역을 선택하세요
       </TopTitle>
       <ItemSelector
@@ -67,7 +33,6 @@ const LocationSelect = ({
         setSelected={selected => {
           setSelectedCity(selected);
           setSelectedTown('');
-          setSelectedVilage('');
         }}
       />
       <Divider />
@@ -77,18 +42,10 @@ const LocationSelect = ({
         selected={selectedTown}
         setSelected={selected => {
           setSelectedTown(selected);
-          setSelectedVilage('');
         }}
       />
-      <Divider />
-      <ItemSelector
-        title="읍/면/동"
-        items={villageData}
-        selected={selectedVillage}
-        setSelected={setSelectedVilage}
-      />
       <BottomButton
-        disabled={!(selectedCity && selectedTown && selectedVillage)}
+        disabled={!(selectedCity && selectedTown)}
         onClick={() => navigate('../3')}
       >
         선택 완료

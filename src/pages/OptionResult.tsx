@@ -1,17 +1,16 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { recommendResponseType } from 'types/apiTypes';
 import Calendar from 'components/resultCalendar';
 import Warn from '../icon/Warning';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
-// import Down from "../icon/Down";
+import { useOptionStore } from 'store/store';
 
 const CalendarPos = styled.div`
   margin-top: 44px;
   margin-bottom: 20px;
-  margin-left:19px;
+  margin-left: 19px;
   position: relative;
   width: 351px;
   height: 316px;
@@ -152,16 +151,18 @@ const FooterText = styled.div`
   }
 `;
 const OptionResult = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const state = location.state as recommendResponseType;
-  const {
-    recommendedDateList,
-    // location: { longitude, latitude },
-  } = state;
-  console.log('state', state, recommendedDateList);
 
+  const dateList = useOptionStore(state => state.dateList);
+  const selectedCity = useOptionStore(state => state.selectedCity);
+  const selectedTown = useOptionStore(state => state.selectedTown);
 
+  console.log(dateList, selectedCity, selectedTown);
+  const recommendedDateList = [
+    new Date(2022, 4, 1),
+    new Date(2022, 4, 2),
+    new Date(2022, 4, 3),
+  ];
   const dateStringConvert = (date: Date) =>
     `${date.getMonth() + 1}월 ${date.getDate()}일`;
 
@@ -184,14 +185,16 @@ const OptionResult = () => {
     });
   };
   return (
-    <Stack className="stacks" 
+    <Stack
+      className="stacks"
       style={{
         position: 'relative',
         width: 390,
         height: 784.06,
         background: '#FAFAFA',
         borderRadius: 30,
-    }}>
+      }}
+    >
       <CalendarPos>
         <Calendar
           rankDateList={recommendedDateList}
@@ -199,21 +202,23 @@ const OptionResult = () => {
           style={{ alignSelf: 'center' }}
         />
       </CalendarPos>
-      <Stack row style={{marginLeft:25}}>
+      <Stack row style={{ marginLeft: 25 }}>
         <Warn />
         <InfoText>
           달력의 날짜를 클릭하면 그 날의 날씨 정보를 알 수 있습니다.
         </InfoText>
       </Stack>
-      <span 
+      <span
         style={{
-          marginLeft:25,
-          marginTop:25,
-          marginBottom:25,
-          fontSize:22
-        }}>
-        추천 날짜 선택</span>
-      <Stack row style={{marginLeft:20}}>
+          marginLeft: 25,
+          marginTop: 25,
+          marginBottom: 25,
+          fontSize: 22,
+        }}
+      >
+        추천 날짜 선택
+      </span>
+      <Stack row style={{ marginLeft: 20 }}>
         <PillBtn style={{ backgroundColor: '#FFF7CC' }}>
           <ButtonText>
             🥇 {dateStringConvert(recommendedDateList[0])}
@@ -235,7 +240,7 @@ const OptionResult = () => {
           <FooterText>다시 추천 받기</FooterText>
         </FooterButton>
         <FooterButton>
-          <FooterText onClick={()=>navigate('/')}>약속 잡기 완료</FooterText>
+          <FooterText onClick={() => navigate('/')}>약속 잡기 완료</FooterText>
         </FooterButton>
       </Footer>
     </Stack>

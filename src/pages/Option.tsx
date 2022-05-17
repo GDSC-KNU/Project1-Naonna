@@ -1,13 +1,12 @@
 // import OptionHeader from 'components/OptionHeader';
 import StepHeader from 'components/StepHeader';
-import React, { useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import { weatherType, windType } from 'types/component-props';
 import StepOne from './option/StepOne';
 import StepTwo from './option/StepTwo';
 import StepThree from './option/StepThree';
-import { getRecommendedDate } from 'api/mockApi';
+import { useOptionStore } from 'store/store';
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,58 +17,15 @@ const Wrapper = styled.div`
 `;
 
 const Option = () => {
-  const navigate = useNavigate();
-  const [dateList, setDateList] = useState<Date[]>([]);
-  const [selectedCity, setSelectedCity] = useState<string>('');
-  const [selectedTown, setSelectedTown] = useState<string>('');
-  const [selectedVillage, setSelectedVilage] = useState<string>('');
-  const [weather, setWeather] = useState<weatherType>('clear');
-  const [wind, setWind] = useState<windType>(0);
-
-  const sendToServer = async () => {
-    const recommendedDate = await getRecommendedDate({
-      dateList,
-      selectedCity,
-      selectedTown,
-      selectedVillage,
-      weather,
-      wind,
-    });
-    navigate('/result', { state: recommendedDate });
-  };
+  const dateList = useOptionStore(state => state.dateList);
+  const selectedTown = useOptionStore(state => state.selectedTown);
   return (
     <Wrapper>
-      <StepHeader dateList={dateList} selectedVillage={selectedVillage} />
+      <StepHeader dateList={dateList} selectedTown={selectedTown} />
       <Routes>
-        <Route
-          path="/1"
-          element={<StepOne dateList={dateList} setDateList={setDateList} />}
-        />
-        <Route
-          path="/2"
-          element={
-            <StepTwo
-              selectedCity={selectedCity}
-              setSelectedCity={setSelectedCity}
-              selectedTown={selectedTown}
-              setSelectedTown={setSelectedTown}
-              selectedVillage={selectedVillage}
-              setSelectedVilage={setSelectedVilage}
-            />
-          }
-        />
-        <Route
-          path="/3"
-          element={
-            <StepThree
-              weather={weather}
-              setWeather={setWeather}
-              wind={wind}
-              setWind={setWind}
-              onBtnClick={sendToServer}
-            />
-          }
-        />
+        <Route path="/1" element={<StepOne />} />
+        <Route path="/2" element={<StepTwo />} />
+        <Route path="/3" element={<StepThree />} />
       </Routes>
     </Wrapper>
   );

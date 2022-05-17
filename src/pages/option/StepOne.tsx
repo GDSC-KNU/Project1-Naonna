@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import Calendar from 'components/resultCalendar';
 import styled from 'styled-components';
-import { StepOneProps } from 'types/component-props';
 import {
   BottomButton,
   ComponentContainer,
@@ -9,6 +8,7 @@ import {
 } from 'components/styles/common';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import { useOptionStore } from 'store/store';
 
 const Description = styled.div`
   position: static;
@@ -90,8 +90,10 @@ const SelectText = styled.div`
   margin: 0px 9px;
 `;
 
-const StepOne = ({ dateList, setDateList }: StepOneProps) => {
+const StepOne = () => {
   const navigate = useNavigate();
+  const dateList = useOptionStore(state => state.dateList);
+  const setDateList = useOptionStore(state => state.setDateList);
   const dateOnClick = useCallback(
     e => {
       const date = moment();
@@ -102,11 +104,11 @@ const StepOne = ({ dateList, setDateList }: StepOneProps) => {
       console.log(dateList);
       if (closest) {
         if (dateList.some(day => day.getTime() === targetDay.getTime())) {
-          setDateList(days =>
-            days.filter(day => day.getTime() !== targetDay.getTime()),
+          setDateList(
+            dateList.filter(day => day.getTime() !== targetDay.getTime()),
           );
         } else {
-          setDateList(days => [...days, targetDay]);
+          setDateList(dateList.concat([targetDay]));
         }
         closest.classList.toggle('selected');
         console.log(closest);
@@ -119,7 +121,10 @@ const StepOne = ({ dateList, setDateList }: StepOneProps) => {
   return (
     <ComponentContainer>
       <TopTitle>
-        <Description>📅 가능한 날짜를 선택하세요.<span style={{fontSize:14}}>(다중선택 가능)</span></Description>
+        <Description>
+          📅 가능한 날짜를 선택하세요.
+          <span style={{ fontSize: 14 }}>(다중선택 가능)</span>
+        </Description>
       </TopTitle>
       <CalendarPos>
         <Calendar dateList={dateList} dateOnClick={dateOnClick} />

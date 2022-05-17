@@ -6,9 +6,9 @@ import {
   ComponentContainer,
   TopTitle,
 } from 'components/styles/common';
-import { StepThreeProps, weatherType, windType } from 'types/component-props';
-import { getWeatherData } from 'api/mockApi';
 import Warn from '../../icon/Warning';
+import { useOptionStore } from 'store/store';
+import { useNavigate } from 'react-router-dom';
 
 const HorizontalItemsContainer = styled.div`
   border-radius: 10px;
@@ -48,32 +48,30 @@ const HorizontalItemsContainer = styled.div`
   }
 `;
 
-const StepThree = ({
-  weather,
-  wind,
-  setWeather,
-  setWind,
-  onBtnClick,
-}: StepThreeProps) => {
-  const updateWeatherPreference = (code: number) => {
-    const { weather, wind } = getWeatherData(code);
-    setWeather(weather as weatherType);
-    setWind(wind as windType);
-  };
+const StepThree = () => {
+  const navigate = useNavigate();
+  const weather = useOptionStore(state => state.weather);
+  const setWeather = useOptionStore(state => state.setWeather);
+  const wind = useOptionStore(state => state.wind);
+  const setWind = useOptionStore(state => state.setWind);
   return (
     <ComponentContainer>
       <TopTitle>
         ⚙️ 약속의 종류에 따라
         <br />
-        선호하는 날씨를 <strong style={{color:'#001f8e'}}>선택, 커스텀</strong> 할 수 있습니다.
+        선호하는 날씨를{' '}
+        <strong style={{ color: '#001f8e' }}>선택, 커스텀</strong> 할 수
+        있습니다.
       </TopTitle>
-      <AdditionalExplain style={{ alignSelf: 'flex-start',marginLeft:20,marginTop:10}}>
+      <AdditionalExplain
+        style={{ alignSelf: 'flex-start', marginLeft: 20, marginTop: 10 }}
+      >
         <div className="image-container">
-          <Warn/>
+          <Warn />
         </div>
         <span>선택한 옵션에 따라 날씨별 점수가 다르게 산정됩니다.</span>
       </AdditionalExplain>
-      <HorizontalItemsContainer style={{ marginTop: 20 }}>
+      {/* <HorizontalItemsContainer style={{ marginTop: 20 }}>
         <div className="title">카테고리</div>
         <div className="content">
           <div className="item" onClick={() => updateWeatherPreference(1)}>
@@ -92,7 +90,7 @@ const StepThree = ({
             또다른 무언가
           </div>
         </div>
-      </HorizontalItemsContainer>
+      </HorizontalItemsContainer> */}
       <div style={{ height: '20px' }}></div>
       <HorizontalItemsContainer
         style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
@@ -163,7 +161,7 @@ const StepThree = ({
         </div>
       </HorizontalItemsContainer>
 
-      <BottomButton onClick={onBtnClick}>선택 완료</BottomButton>
+      <BottomButton onClick={() => navigate('/result')}>선택 완료</BottomButton>
     </ComponentContainer>
   );
 };
