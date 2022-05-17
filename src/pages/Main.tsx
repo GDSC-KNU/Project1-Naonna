@@ -6,7 +6,7 @@ import { hourlyWeatherType} from 'types/apiTypes';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
 import { useQuery } from 'react-query';
-import { getHourlyWeather, getCurrentWeather} from 'api/getWeatherData';;
+import { getHourlyWeather, getCurrentWeather, getLocation, getCurrentArea} from 'api/getWeatherData';;
 
 
 const WeatherScore = styled.div`
@@ -81,9 +81,14 @@ const WeatherScoreListContainer = styled.div`
 `;
 
 const Main = () => {
-  const area = '대구 북구';
-  const {isLoading:hourlyIsLoading,error:hourlyError,data:hourlyData} = useQuery(["hourlyData", area],()=>getHourlyWeather(area));
-  const {isLoading:currentIsLoading,error:currentError,data:currentData} = useQuery(["currentData", area],()=>getCurrentWeather(area));
+  const pos = getLocation();
+  const {isLoading : addressIsLoading, error:addressError, data:addressData} = useQuery(['addressData',pos],()=>getCurrentArea(pos));
+  let area = "대구 북구" // 위치 못찾았을때
+  if(!addressIsLoading && !addressError && typeof addressData !== 'undefined'){
+    area = addressData.address;
+  }
+  const {isLoading:hourlyIsLoading,error:hourlyError,data:hourlyData} = useQuery(["hourlyData",area],()=>getHourlyWeather(area),{enabled:!!addressData});
+  const {isLoading:currentIsLoading,error:currentError,data:currentData} = useQuery(["currentData", area],()=>getCurrentWeather(area),{enabled:!!addressData});
   return (
     <Stack
       style={{
@@ -146,7 +151,7 @@ const Main = () => {
             <div key={idx} className="mini-calendar">
               <div className="date">{data.dt}</div>
               <div className="score" style = {{fontSize:20}}>{data.weather}</div>
-              <div className="temp" style = {{fontSize:14}}>{currentData ? currentData.current_temp : 0}°C</div>
+              <div className="temp" style = {{fontSize:14}}>{parseInt(data.temp.toFixed())}°C</div>
             </div>
           ))}
         </WeatherScoreListContainer>

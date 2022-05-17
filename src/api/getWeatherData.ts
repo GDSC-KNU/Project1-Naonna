@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { hourlyWeatherType, locationType, MainScreenweatherType, resultWeatherType } from 'types/apiTypes';
+import { areaType, hourlyWeatherType, locationType, MainScreenweatherType, resultWeatherType } from 'types/apiTypes';
 
 export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = async(area:string) =>{
   const {data} = await axios.get<hourlyWeatherType[]>(
@@ -19,23 +19,7 @@ export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = as
           }
           break;
         case 'Clouds':
-          switch (key.weather_description){
-            case 'few clouds':
-              icon = '⛅';
-              break;
-            case 'scattered clouds':
-              icon = '⛅';
-              break;
-            case 'broken clouds':
-              icon = '☁️';
-              break;
-            case 'overcast clouds':
-              icon = '☁️';
-              break;
-            default:
-              icon = '☁️';
-              break;
-          }
+          icon = '☁️';
           break;
         case 'BitClouds':
           icon = '⛅';
@@ -50,7 +34,7 @@ export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = as
           icon = '☀️';
           break;
       }
-      weatherList.push({dt:hour+'시',weather:icon,weather_description:key.weather_description});
+      weatherList.push({dt:hour+'시',weather:icon,weather_description:key.weather_description,temp:key.temp});
   });
   return weatherList;
 };
@@ -99,9 +83,9 @@ export const getLocation : () => locationType = () =>{
   return data;
 }
 
-export const getCurrentArea : (lon : number,lat:number) => Promise<string> = async(lon : number,lat:number)=>{
-  const {data} = await axios.get<string>(
-    `http://35.165.68.251/weathers/current/${lon} ${lat}`
+export const getCurrentArea : (pos:locationType) => Promise<areaType> = async(pos:locationType)=>{
+  const {data} = await axios.get<areaType>(
+    `http://www.weather-api.tk/weathers/geo/${pos.latitude}/${pos.longitude}`
   );
   return data;
 }
