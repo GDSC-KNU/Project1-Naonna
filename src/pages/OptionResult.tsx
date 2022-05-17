@@ -6,8 +6,6 @@ import Warn from '../icon/Warning';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
 import { useOptionStore } from 'store/store';
-import { useQuery } from 'react-query';
-import { getDailyWeather } from 'api/getWeatherData';
 
 const CalendarPos = styled.div`
   margin-top: 44px;
@@ -154,14 +152,12 @@ const FooterText = styled.div`
 `;
 const OptionResult = () => {
   const navigate = useNavigate();
+
   const dateList = useOptionStore(state => state.dateList);
   const selectedCity = useOptionStore(state => state.selectedCity);
   const selectedTown = useOptionStore(state => state.selectedTown);
-  const area = selectedCity+' '+selectedTown;
-  console.log(dateList);
-  const {isLoading,error,data} = useQuery(["dailyData", area],()=>getDailyWeather(area));
-  const now = new Date();
-  const today = new Date(now.getFullYear(),now.getMonth()+1,now.getDate());
+
+  console.log(dateList, selectedCity, selectedTown);
   const recommendedDateList = [
     new Date(2022, 4, 1),
     new Date(2022, 4, 2),
@@ -174,23 +170,19 @@ const OptionResult = () => {
     const { target } = e;
     const closest = (target as HTMLDivElement).closest('button');
     if (!closest || closest.disabled) return;
-    const month = +closest.dataset.month!;
+    console.log(closest);
+    const month = +closest.dataset.month! - 1;
     const day = +closest.innerText;
-    const clickDate = new Date(new Date().getFullYear(), month, day);
-    const btDay = (clickDate.getTime()-today.getTime()) / (1000*60*60*24);
-    clickDate.setMonth(month-1);
-    if (!isLoading && !error && typeof data !== 'undefined'){
-      navigate('./detail', {
-        state: {
-          date: clickDate,
-          location: area,// 나중에 getocoding으로 처리해야함
-          weatherCode: data[btDay].weather_main, // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
-          temperature: (data[btDay].temp_max+data[btDay].temp_min) / 2,
-          criteriaTime: data[0].dt.substring(5,13) + '시',
-          score: 80,
-        },
-      });
-    }
+    navigate('./detail', {
+      state: {
+        date: new Date(new Date().getFullYear(), month, day),
+        location: '대구 북구', // 나중에 getocoding으로 처리해야함
+        weatherCode: 'Clears', // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
+        temperature: 20,
+        criteriaTime: '2020.01.01',
+        score: 20,
+      },
+    });
   };
   return (
     <Stack

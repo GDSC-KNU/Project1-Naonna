@@ -68,7 +68,7 @@ const ResultDetail = () => {
           <WeatherBox></WeatherBox>
         </Stack>
         <WeatherScore>
-          {`${date.getMonth() + 1}월 ${date.getDate()}일`}의 날씨 점수는 <strong>{score}</strong>점 입니다
+          오늘의 날씨 점수는 <strong>{score}</strong>점 입니다
         </WeatherScore>
       </Stack>
     </MainWrapper>
