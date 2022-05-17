@@ -1,18 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { recommendResponseType } from 'types/apiTypes';
 import Calendar from 'components/resultCalendar';
 import Warn from '../icon/Warning';
 import Stack from 'components/Stack';
 import Pill from 'components/Pill';
-import { useOptionStore } from 'store/store';
-import { useQuery } from 'react-query';
-import { getDailyWeather } from 'api/getWeatherData';
+// import Down from "../icon/Down";
 
 const CalendarPos = styled.div`
   margin-top: 44px;
   margin-bottom: 20px;
-  margin-left: 19px;
+  margin-left:19px;
   position: relative;
   width: 351px;
   height: 316px;
@@ -153,22 +152,16 @@ const FooterText = styled.div`
   }
 `;
 const OptionResult = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const dateList = useOptionStore(state => state.dateList);
-  const selectedCity = useOptionStore(state => state.selectedCity);
-  const selectedTown = useOptionStore(state => state.selectedTown);
-  const area = selectedCity+' '+selectedTown;
-  console.log(dateList);
-  const {isLoading,error,data} = useQuery(["dailyData", area],()=>getDailyWeather(area));
-  console.log(isLoading,error,data);
-  const now = new Date();
-  const today = new Date(now.getFullYear(),now.getMonth()+1,now.getDate());
-  console.log(today);
-  const recommendedDateList = [
-    new Date(2022, 4, 1),
-    new Date(2022, 4, 2),
-    new Date(2022, 4, 3),
-  ];
+  const state = location.state as recommendResponseType;
+  const {
+    recommendedDateList,
+    // location: { longitude, latitude },
+  } = state;
+  console.log('state', state, recommendedDateList);
+
+
   const dateStringConvert = (date: Date) =>
     `${date.getMonth() + 1}월 ${date.getDate()}일`;
 
@@ -176,36 +169,29 @@ const OptionResult = () => {
     const { target } = e;
     const closest = (target as HTMLDivElement).closest('button');
     if (!closest || closest.disabled) return;
-    const month = +closest.dataset.month!;
+    console.log(closest);
+    const month = +closest.dataset.month! - 1;
     const day = +closest.innerText;
-    const clickDate = new Date(new Date().getFullYear(), month, day);
-    const btDay = (clickDate.getTime()-today.getTime()) / (1000*60*60*24);
-    clickDate.setMonth(month-1);
-    console.log(btDay);
-    if (!isLoading && typeof data !== 'undefined'){
-      navigate('./detail', {
-        state: {
-          date: clickDate,
-          location: area,// 나중에 getocoding으로 처리해야함
-          weatherCode: data[btDay].weather_main, // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
-          temperature: (data[btDay].temp_max+data[btDay].temp_min) / 2,
-          criteriaTime: data[0].dt.substring(5,13) + '시',
-          score: 20,
-        },
-      });
-    }
+    navigate('./detail', {
+      state: {
+        date: new Date(new Date().getFullYear(), month, day),
+        location: '대구 북구', // 나중에 getocoding으로 처리해야함
+        weatherCode: 'Clears', // 날씨 관련 string인데 이건 어떻게 해야할지 모르겠음
+        temperature: 20,
+        criteriaTime: '2020.01.01',
+        score: 20,
+      },
+    });
   };
   return (
-    <Stack
-      className="stacks"
+    <Stack className="stacks" 
       style={{
         position: 'relative',
         width: 390,
         height: 784.06,
         background: '#FAFAFA',
         borderRadius: 30,
-      }}
-    >
+    }}>
       <CalendarPos>
         <Calendar
           rankDateList={recommendedDateList}
@@ -213,23 +199,21 @@ const OptionResult = () => {
           style={{ alignSelf: 'center' }}
         />
       </CalendarPos>
-      <Stack row style={{ marginLeft: 25 }}>
+      <Stack row style={{marginLeft:25}}>
         <Warn />
         <InfoText>
           달력의 날짜를 클릭하면 그 날의 날씨 정보를 알 수 있습니다.
         </InfoText>
       </Stack>
-      <span
+      <span 
         style={{
-          marginLeft: 25,
-          marginTop: 25,
-          marginBottom: 25,
-          fontSize: 22,
-        }}
-      >
-        추천 날짜 선택
-      </span>
-      <Stack row style={{ marginLeft: 20 }}>
+          marginLeft:25,
+          marginTop:25,
+          marginBottom:25,
+          fontSize:22
+        }}>
+        추천 날짜 선택</span>
+      <Stack row style={{marginLeft:20}}>
         <PillBtn style={{ backgroundColor: '#FFF7CC' }}>
           <ButtonText>
             🥇 {dateStringConvert(recommendedDateList[0])}
@@ -251,7 +235,7 @@ const OptionResult = () => {
           <FooterText>다시 추천 받기</FooterText>
         </FooterButton>
         <FooterButton>
-          <FooterText onClick={() => navigate('/')}>약속 잡기 완료</FooterText>
+          <FooterText onClick={()=>navigate('/')}>약속 잡기 완료</FooterText>
         </FooterButton>
       </Footer>
     </Stack>
