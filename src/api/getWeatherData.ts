@@ -19,23 +19,7 @@ export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = as
           }
           break;
         case 'Clouds':
-          switch (key.weather_description){
-            case 'few clouds':
-              icon = '⛅';
-              break;
-            case 'scattered clouds':
-              icon = '⛅';
-              break;
-            case 'broken clouds':
-              icon = '☁️';
-              break;
-            case 'overcast clouds':
-              icon = '☁️';
-              break;
-            default:
-              icon = '☁️';
-              break;
-          }
+          icon = '☁️';
           break;
         case 'BitClouds':
           icon = '⛅';
@@ -50,7 +34,7 @@ export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = as
           icon = '☀️';
           break;
       }
-      weatherList.push({dt:hour+'시',weather:icon,weather_description:key.weather_description});
+      weatherList.push({dt:hour+'시',weather:icon});
   });
   return weatherList;
 };
