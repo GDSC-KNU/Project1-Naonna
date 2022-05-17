@@ -18,9 +18,25 @@ export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = as
             icon = '☀️';
           }
           break;
-        case 'Clouds':
-          icon = '☁️';
-          break;
+          case 'Clouds':
+            switch (key.weather_description){
+              case 'few clouds':
+                icon = '⛅';
+                break;
+              case 'scattered clouds':
+                icon = '⛅';
+                break;
+              case 'broken clouds':
+                icon = '☁️';
+                break;
+              case 'overcast clouds':
+                icon = '☁️';
+                break;
+              default:
+                icon = '☁️';
+                break;
+            }
+            break;
         case 'BitClouds':
           icon = '⛅';
           break;
@@ -50,7 +66,6 @@ export const getCurrentWeather:(area:string)=>Promise<MainScreenweatherType> = a
     todayScore : 80,
     current_dt : data.current_dt.substring(5,13) + '시'
   }
-  console.log(data);
   return current;
 };
 
