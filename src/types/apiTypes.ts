@@ -31,6 +31,7 @@ export type hourlyWeatherType = {
 };
 
 export type resultWeatherType = {
+  weather_main : string;
   location:string;
   dt:string;
   temp_max : number;
