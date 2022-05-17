@@ -26,6 +26,7 @@ export type recommendResponseType = {
 
 export type hourlyWeatherType = {
   weather : string;
+  weather_description : string,
   dt: string;
 };
 
@@ -40,3 +41,8 @@ export type resultWeatherType = {
   wind_speed : number;
   // 미세먼지
 };
+
+export type locationType = {
+  longitude: number;
+  latitude: number;
+}
