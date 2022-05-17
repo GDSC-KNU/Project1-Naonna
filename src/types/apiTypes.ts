@@ -40,3 +40,8 @@ export type resultWeatherType = {
   wind_speed : number;
   // 미세먼지
 };
+
+export type locationType = {
+  longitude: number;
+  latitude: number;
+}

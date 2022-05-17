@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { hourlyWeatherType, MainScreenweatherType, resultWeatherType } from 'types/apiTypes';
+import { hourlyWeatherType, locationType, MainScreenweatherType, resultWeatherType } from 'types/apiTypes';
 
 export const getHourlyWeather : (area:string)=>Promise<hourlyWeatherType[]> = async(area:string) =>{
   const {data} = await axios.get<hourlyWeatherType[]>(
@@ -60,3 +60,32 @@ export const getDailyWeather:(area:string)=>Promise<resultWeatherType[]> = async
     );
   return data;
 };
+
+export const getLocation : () => locationType = () =>{
+  const data :locationType = {
+      longitude : 0,
+      latitude : 0
+  }
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition((position)=>{
+      data.longitude = position.coords.longitude;
+      data.latitude = position.coords.latitude;
+  },(error) => {
+      console.log(error);
+    },{
+      enableHighAccuracy: false,
+      maximumAge: 0,
+      timeout: Infinity
+    });
+  } else{
+    alert('GPS를 지원하지 않습니다');
+  }
+  return data;
+}
+
+export const getCurrentArea : (lon : number,lat:number) => Promise<string> = async(lon : number,lat:number)=>{
+  const {data} = await axios.get<string>(
+    `http://35.165.68.251/weathers/current/${lon} ${lat}`
+  );
+  return data;
+}
