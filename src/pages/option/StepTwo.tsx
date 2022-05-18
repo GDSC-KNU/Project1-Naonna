@@ -1,24 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useOptionStore } from 'store/store';
 import ItemSelector from '../../components/ItemSelector';
+import district from '../../district.json';
 import {
   TopTitle,
   Divider,
   BottomButton,
   ComponentContainer,
 } from '../../components/styles/common';
+import { nonMetropolitanCityType } from 'types/districtType';
 
 const LocationSelect = () => {
   const navigate = useNavigate();
-  const selectedCity = useOptionStore(state => state.selectedCity);
-  const setSelectedCity = useOptionStore(state => state.setSelectedCity);
-  const selectedTown = useOptionStore(state => state.selectedTown);
-  const setSelectedTown = useOptionStore(state => state.setSelectedTown);
+  const selectedArea = useOptionStore(state => state.selectedArea);
+  const setSelectedArea = useOptionStore(state => state.setSelectedArea);
+  const [firstArea, setFirstArea] = useState('');
+  const [secondArea, setSecondArea] = useState('');
+  const [thirdArea, setThirdArea] = useState('');
 
-  const cityData = ['서울시', '대구시']; // TODO : 실제 JSON 데이터로 대체하기
-  const townData = ['북구', '남구', '서구']; // TODO : 실제 JSON 데이터로 대체하기
+  const cityData = Object.keys(district);
+  const townData = firstArea
+    ? firstArea.endsWith('시')
+      ? (district[firstArea as keyof typeof district] as string[])
+      : Object.keys(district[firstArea as keyof typeof district])
+    : [];
 
+  useEffect(() => {
+    const setAreas = [setFirstArea, setSecondArea, setThirdArea];
+    selectedArea.split(' ').map((area, idx) => {
+      setAreas[idx](area);
+    });
+  }, []);
   return (
     <ComponentContainer>
       <TopTitle
@@ -29,24 +42,41 @@ const LocationSelect = () => {
       <ItemSelector
         title="시/도"
         items={cityData}
-        selected={selectedCity}
+        selected={firstArea}
         setSelected={selected => {
-          setSelectedCity(selected);
-          setSelectedTown('');
+          setFirstArea(selected);
+          setSecondArea('');
         }}
       />
       <Divider />
       <ItemSelector
-        title="군/구"
+        title={firstArea.endsWith('시') ? '구' : '시'}
         items={townData}
-        selected={selectedTown}
+        selected={secondArea}
         setSelected={selected => {
-          setSelectedTown(selected);
+          console.log(selected);
+          setSecondArea(' ' + selected);
+          setThirdArea('');
         }}
       />
+      {firstArea.endsWith('도') && (
+        <ItemSelector
+          title="구/군"
+          items={
+            district[firstArea as keyof nonMetropolitanCityType][
+              secondArea.trim()
+            ]
+          }
+          selected={thirdArea}
+          setSelected={selected => setThirdArea(' ' + selected)}
+        />
+      )}
       <BottomButton
-        disabled={!(selectedCity && selectedTown)}
-        onClick={() => navigate('../3')}
+        disabled={firstArea.endsWith('도') ? !thirdArea : !secondArea}
+        onClick={() => {
+          setSelectedArea(firstArea + secondArea + thirdArea);
+          navigate('../3');
+        }}
       >
         선택 완료
       </BottomButton>
