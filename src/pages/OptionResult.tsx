@@ -70,7 +70,7 @@ const PillBtn = styled(Pill)`
     border: 2px solid #001f8e;
   }
 `;
-const ButtonText = styled.div`
+const ButtonText = styled.span`
   position: static;
   width: 75px;
   height: 22px;
@@ -160,11 +160,9 @@ const OptionResult = () => {
   const selectedTown = useOptionStore(state => state.selectedTown);
   const area = selectedCity+' '+selectedTown;
   console.log(dateList);
-  const {isLoading,error,data} = useQuery(["dailyData", area],()=>getDailyWeather(area));
-  console.log(isLoading,error,data);
+  const {isLoading,data} = useQuery(["dailyData", area],()=>getDailyWeather(area));
   const now = new Date();
   const today = new Date(now.getFullYear(),now.getMonth()+1,now.getDate());
-  console.log(today);
   const recommendedDateList = [
     new Date(2022, 4, 21),
     new Date(2022, 4, 22),
@@ -182,6 +180,21 @@ const OptionResult = () => {
     const clickDate = new Date(new Date().getFullYear(), month, day);
     const btDay = (clickDate.getTime()-today.getTime()) / (1000*60*60*24);
     clickDate.setMonth(month-1);
+    if (!isLoading && typeof data !== 'undefined'){
+      data[btDay].location = area;
+      data[btDay].score = 80;
+      navigate('./detail', { state : data[btDay] });
+    }
+  };
+  const rankOnClick:React.MouseEventHandler<HTMLDivElement> = e =>{
+    const { target } = e;
+    const closest = (target as HTMLDivElement).closest('span');
+    if (!closest) return;
+    const index = parseInt(closest.title);
+    const month = recommendedDateList[index].getMonth();
+    recommendedDateList[index].setMonth(month+1);
+    const btDay = (recommendedDateList[index].getTime() - today.getTime()) / (1000*60*60*24);
+    recommendedDateList[index].setMonth(month);
     if (!isLoading && typeof data !== 'undefined'){
       data[btDay].location = area;
       data[btDay].score = 80;
@@ -219,18 +232,18 @@ const OptionResult = () => {
         }}>
         추천 날짜 선택</span>
       <Stack row style={{marginLeft:20}}>
-        <PillBtn style={{ backgroundColor: '#FFF7CC' }}>
-          <ButtonText>
+        <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#FFF7CC' }}>
+          <ButtonText title='0'>
             🥇 {dateStringConvert(recommendedDateList[0])}
           </ButtonText>
         </PillBtn>
-        <PillBtn style={{ backgroundColor: '#F1F1F1' }}>
-          <ButtonText>
+        <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#F1F1F1' }}>
+          <ButtonText title='1'>
             🥈 {dateStringConvert(recommendedDateList[1])}
           </ButtonText>
         </PillBtn>
-        <PillBtn style={{ backgroundColor: '#E5D6CC' }}>
-          <ButtonText>
+        <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#E5D6CC' }}>
+          <ButtonText title ='2'>
             🥉 {dateStringConvert(recommendedDateList[2])}
           </ButtonText>
         </PillBtn>
