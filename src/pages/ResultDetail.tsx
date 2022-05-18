@@ -2,8 +2,8 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
-import { ResultDetailProps } from 'types/component-props';
 import Stack from 'components/Stack';
+import { resultWeatherType } from 'types/apiTypes';
 
 const MainWrapper = styled.div`
   width: 390px;
@@ -44,28 +44,39 @@ const WeatherBox = styled.div`
 const ResultDetail = () => {
   const location = useLocation();
   const {
-    date,
+    dt : date,
     location: requestedLocation,
-    weatherCode,
-    temperature,
-    criteriaTime,
+    weather_main : weatherCode,
+    temp_max : tempMax,
+    temp_min : tempMin,
     score,
-  } = location.state as ResultDetailProps;
-  console.log('date', date);
+    uvi,
+    wind_speed : windSpeed,
+    humidity,
+  } = location.state as resultWeatherType;
+  const now = new Date();
+  let monthString = "";
+  if(now.getMonth() >= 9){
+    monthString = (now.getMonth()+1).toString();
+  }
+  else{
+    monthString = '0'+(now.getMonth()+1).toString();
+  }
+  const criteriaTime = monthString + '-' + now.getDate().toString() + ' ' + now.getHours().toString() + '시';
   return (
     <MainWrapper>
       <Stack>
-        <span style={{fontSize : 25,textAlign:'center',marginTop:10,marginBottom:20}}>{`${date.getMonth() + 1}월 ${date.getDate()}일`}</span>
+        <span style={{fontSize : 25,textAlign:'center',marginTop:10,marginBottom:20}}>{`${parseInt(date.substring(5,7))}월 ${parseInt(date.substring(8,10))}일`}</span>
         <WeatherMain
           locationName={requestedLocation}
           weatherCode={weatherCode}
-          temperature={temperature}
+          temperature={parseInt(((tempMax+tempMin)/2).toFixed())}
           criteriaTime={criteriaTime}
         />
         <Stack row style ={{marginTop:20}}>
-          <WeatherBox></WeatherBox>
-          <WeatherBox></WeatherBox>
-          <WeatherBox></WeatherBox>
+          <WeatherBox>{uvi}</WeatherBox>
+          <WeatherBox>{humidity}</WeatherBox>
+          <WeatherBox>{windSpeed}</WeatherBox>
         </Stack>
         <WeatherScore>
           오늘의 날씨 점수는 <strong>{score}</strong>점 입니다

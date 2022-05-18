@@ -26,12 +26,14 @@ export type recommendResponseType = {
 
 export type hourlyWeatherType = {
   weather : string;
+  temp : number;
   weather_description : string,
   dt: string;
 };
 
 export type resultWeatherType = {
   location:string;
+  weather_main : string;
   dt:string;
   temp_max : number;
   temp_min : number;
@@ -39,10 +41,15 @@ export type resultWeatherType = {
   humidity : number;
   rain : number;
   wind_speed : number;
+  score : number;
   // 미세먼지
 };
 
 export type locationType = {
   longitude: number;
   latitude: number;
+}
+
+export type areaType = {
+  address : string;
 }
