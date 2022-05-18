@@ -7,6 +7,7 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   cssProp?: CSSInterpolation;
+  onClick?:React.MouseEventHandler;
 }
 
 const Pill = ({
@@ -14,6 +15,7 @@ const Pill = ({
   style,
   children,
   cssProp,
+  onClick,
 }: PropsWithChildren<Props>) => (
   <div
     className={className}
@@ -24,6 +26,7 @@ const Pill = ({
     css={css`
       ${cssProp}
     `}
+    onClick={onClick}
   >
     {children}
   </div>
