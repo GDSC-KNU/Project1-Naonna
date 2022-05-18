@@ -64,7 +64,7 @@ export const getCurrentWeather:(area:string)=>Promise<MainScreenweatherType> = a
     current_temp:parseInt(data.current_temp.toFixed()),
     weather_main : data.weather_main,
     todayScore : 80,
-    current_dt : data.current_dt.substring(5,13) + '시'
+    current_dt : data.current_dt.substring(5,16)
   }
   return current;
 };
