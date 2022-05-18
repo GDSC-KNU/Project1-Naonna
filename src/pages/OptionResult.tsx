@@ -91,6 +91,9 @@ const ButtonText = styled.span`
   order: 1;
   flex-grow: 0;
   margin: 0px 9px;
+  &:hover{
+    cursor:pointer;
+  }
 `;
 const Footer = styled.div`
   display: flex;
@@ -150,6 +153,9 @@ const FooterText = styled.div`
   margin: 0px 10px;
   &:active {
     color: #ffffff;
+  }
+  &:hover{
+    cursor:pointer;
   }
 `;
 const OptionResult = () => {
