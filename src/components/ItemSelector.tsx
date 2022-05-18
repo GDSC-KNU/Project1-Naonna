@@ -8,6 +8,16 @@ const Container = styled.div`
   border-radius: 10px;
   padding: 20px;
   box-sizing: border-box;
+  max-height: 300px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: #aaa;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #000;
+  }
 `;
 const Title = styled.h1`
   font-size: 20px;
@@ -56,11 +66,11 @@ const ItemSelector = ({
     <Container>
       <Title>{title}</Title>
       <ItemContainer>
-        {items.length > 0 ? (
-          items.map((item, idx) => (
+        {items ? (
+          items?.map((item, idx) => (
             <Item
               key={idx}
-              data-selected={item === selected}
+              data-selected={item.trim() === selected.trim()}
               onClick={itemClickHandler}
             >
               {item}
