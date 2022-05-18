@@ -13,8 +13,8 @@ export type ItemSelectorProps = {
 };
 
 export type HeaderProps = {
-  dateList: Date[];
-  selectedTown: string;
+  isFirstStepCompleted: boolean;
+  isSecondStepCompleted: boolean;
 };
 
 export type CalendarProps = {
