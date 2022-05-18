@@ -4,6 +4,8 @@ import Stack from 'components/Stack';
 import Pill from 'components/Pill';
 import { WeatherScoreList } from 'components/WeatherScoreList';
 import { ErrorBoundary } from 'react-error-boundary';
+import { Error } from 'components/Error';
+import Loader from 'components/Loader/Loader';
 
 const Main = () => {
   return (
@@ -20,7 +22,7 @@ const Main = () => {
       <header>
         <h1>Logo</h1>
       </header>
-      <Stack>
+      <Stack style={{ height: '100%' }}>
         <Link to="/option/1">
           <Pill
             style={{
@@ -41,8 +43,8 @@ const Main = () => {
             <span style={{ position: 'absolute', right: '25px' }}>&gt;</span>
           </Pill>
         </Link>
-        <ErrorBoundary fallback={<span>Error</span>}>
-          <Suspense fallback={<span>loading</span>}>
+        <ErrorBoundary fallback={<Error text="위치 로딩에 실패하였습니다." />}>
+          <Suspense fallback={<Loader />}>
             <WeatherScoreList />
           </Suspense>
         </ErrorBoundary>
