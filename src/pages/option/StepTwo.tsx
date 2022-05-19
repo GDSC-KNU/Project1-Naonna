@@ -9,7 +9,7 @@ import {
   BottomButton,
   ComponentContainer,
 } from '../../components/styles/common';
-import { nonMetropolitanCityType } from 'types/districtType';
+import { NonMetropolitanCityType } from 'types/districtType';
 
 const LocationSelect = () => {
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ const LocationSelect = () => {
         <ItemSelector
           title="구/군"
           items={
-            district[firstArea as keyof nonMetropolitanCityType][
+            district[firstArea as keyof NonMetropolitanCityType][
               secondArea.trim()
             ]
           }

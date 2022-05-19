@@ -1,4 +1,4 @@
-export type nonMetropolitanCityType =
+export type NonMetropolitanCityType =
   | {
       수원시: string[];
       성남시: string[];
