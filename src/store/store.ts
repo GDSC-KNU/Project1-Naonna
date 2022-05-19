@@ -7,13 +7,9 @@ export const useOptionStore = create<OptionData>(set => ({
   setDateList: (dates: Date[]) => {
     set(state => ({ ...state, dateList: dates }));
   },
-  selectedCity: '',
-  setSelectedCity: (city: string) => {
-    set(state => ({ ...state, selectedCity: city }));
-  },
-  selectedTown: '',
-  setSelectedTown: (town: string) => {
-    set(state => ({ ...state, selectedTown: town }));
+  selectedArea: '',
+  setSelectedArea: (area: string) => {
+    set(state => ({ ...state, selectedArea: area }));
   },
   weather: 'clear',
   setWeather: (weather: weatherType) => {

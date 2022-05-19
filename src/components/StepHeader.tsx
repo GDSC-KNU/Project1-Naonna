@@ -153,7 +153,10 @@ const CategoryStep = styled.button`
     color: #001f8e;
   }
 `;
-const StepHeader = ({ dateList, selectedTown }: HeaderProps) => {
+const StepHeader = ({
+  isFirstStepCompleted,
+  isSecondStepCompleted,
+}: HeaderProps) => {
   const navigate = useNavigate();
   const goCase1 = () => {
     navigate('./1');
@@ -181,14 +184,14 @@ const StepHeader = ({ dateList, selectedTown }: HeaderProps) => {
         </DayStep>
         <PosStep
           className={window.location.href.endsWith('/2') ? 'active' : ''}
-          disabled={dateList.length === 0}
+          disabled={!isFirstStepCompleted}
           onClick={() => goCase2()}
         >
           위치 선택
         </PosStep>
         <CategoryStep
           className={window.location.href.endsWith('/3') ? 'active' : ''}
-          disabled={!selectedTown}
+          disabled={!isSecondStepCompleted}
           onClick={() => goCase3()}
         >
           카테고리 선택

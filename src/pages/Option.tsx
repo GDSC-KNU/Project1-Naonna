@@ -18,10 +18,14 @@ const Wrapper = styled.div`
 
 const Option = () => {
   const dateList = useOptionStore(state => state.dateList);
-  const selectedTown = useOptionStore(state => state.selectedTown);
+  const selectedArea = useOptionStore(state => state.selectedArea);
+  const isSelectedAreaValid = selectedArea.match(/(시|구|군|동|군)$/);
   return (
     <Wrapper>
-      <StepHeader dateList={dateList} selectedTown={selectedTown} />
+      <StepHeader
+        isFirstStepCompleted={!!dateList}
+        isSecondStepCompleted={!!isSelectedAreaValid}
+      />
       <Routes>
         <Route path="/1" element={<StepOne />} />
         <Route path="/2" element={<StepTwo />} />

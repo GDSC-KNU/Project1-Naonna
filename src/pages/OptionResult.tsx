@@ -12,7 +12,7 @@ import { getDailyWeather } from 'api/getWeatherData';
 const CalendarPos = styled.div`
   margin-top: 44px;
   margin-bottom: 20px;
-  margin-left:19px;
+  margin-left: 19px;
   position: relative;
   width: 351px;
   height: 316px;
@@ -91,8 +91,8 @@ const ButtonText = styled.span`
   order: 1;
   flex-grow: 0;
   margin: 0px 9px;
-  &:hover{
-    cursor:pointer;
+  &:hover {
+    cursor: pointer;
   }
 `;
 const Footer = styled.div`
@@ -154,21 +154,21 @@ const FooterText = styled.div`
   &:active {
     color: #ffffff;
   }
-  &:hover{
-    cursor:pointer;
+  &:hover {
+    cursor: pointer;
   }
 `;
 const OptionResult = () => {
   const navigate = useNavigate();
 
   const dateList = useOptionStore(state => state.dateList);
-  const selectedCity = useOptionStore(state => state.selectedCity);
-  const selectedTown = useOptionStore(state => state.selectedTown);
-  const area = selectedCity+' '+selectedTown;
+  const selectedArea = useOptionStore(state => state.selectedArea);
   console.log(dateList);
-  const {isLoading,data} = useQuery(["dailyData", area],()=>getDailyWeather(area));
+  const { isLoading, data } = useQuery(['dailyData', selectedArea], () =>
+    getDailyWeather(selectedArea),
+  );
   const now = new Date();
-  const today = new Date(now.getFullYear(),now.getMonth()+1,now.getDate());
+  const today = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
   const recommendedDateList = [
     new Date(2022, 4, 21),
     new Date(2022, 4, 22),
@@ -184,38 +184,43 @@ const OptionResult = () => {
     const month = +closest.dataset.month!;
     const day = +closest.innerText;
     const clickDate = new Date(new Date().getFullYear(), month, day);
-    const btDay = (clickDate.getTime()-today.getTime()) / (1000*60*60*24);
-    clickDate.setMonth(month-1);
-    if (!isLoading && typeof data !== 'undefined'){
-      data[btDay].location = area;
+    const btDay =
+      (clickDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+    clickDate.setMonth(month - 1);
+    if (!isLoading && typeof data !== 'undefined') {
+      data[btDay].location = selectedArea;
       data[btDay].score = 80;
-      navigate('./detail', { state : data[btDay] });
+      navigate('./detail', { state: data[btDay] });
     }
   };
-  const rankOnClick:React.MouseEventHandler<HTMLDivElement> = e =>{
+  const rankOnClick: React.MouseEventHandler<HTMLDivElement> = e => {
     const { target } = e;
     const closest = (target as HTMLDivElement).closest('span');
     if (!closest) return;
     const index = parseInt(closest.title);
     const month = recommendedDateList[index].getMonth();
-    recommendedDateList[index].setMonth(month+1);
-    const btDay = (recommendedDateList[index].getTime() - today.getTime()) / (1000*60*60*24);
+    recommendedDateList[index].setMonth(month + 1);
+    const btDay =
+      (recommendedDateList[index].getTime() - today.getTime()) /
+      (1000 * 60 * 60 * 24);
     recommendedDateList[index].setMonth(month);
-    if (!isLoading && typeof data !== 'undefined'){
-      data[btDay].location = area;
+    if (!isLoading && typeof data !== 'undefined') {
+      data[btDay].location = selectedArea;
       data[btDay].score = 80;
-      navigate('./detail', { state : data[btDay] });
+      navigate('./detail', { state: data[btDay] });
     }
   };
   return (
-    <Stack className="stacks" 
+    <Stack
+      className="stacks"
       style={{
         position: 'relative',
         width: 390,
         height: 784.06,
         background: '#FAFAFA',
         borderRadius: 30,
-    }}>
+      }}
+    >
       <CalendarPos>
         <Calendar
           rankDateList={recommendedDateList}
@@ -223,33 +228,35 @@ const OptionResult = () => {
           style={{ alignSelf: 'center' }}
         />
       </CalendarPos>
-      <Stack row style={{marginLeft:25}}>
+      <Stack row style={{ marginLeft: 25 }}>
         <Warn />
         <InfoText>
           달력의 날짜를 클릭하면 그 날의 날씨 정보를 알 수 있습니다.
         </InfoText>
       </Stack>
-      <span 
+      <span
         style={{
-          marginLeft:25,
-          marginTop:25,
-          marginBottom:25,
-          fontSize:22
-        }}>
-        추천 날짜 선택</span>
-      <Stack row style={{marginLeft:20}}>
+          marginLeft: 25,
+          marginTop: 25,
+          marginBottom: 25,
+          fontSize: 22,
+        }}
+      >
+        추천 날짜 선택
+      </span>
+      <Stack row style={{ marginLeft: 20 }}>
         <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#FFF7CC' }}>
-          <ButtonText title='0'>
+          <ButtonText title="0">
             🥇 {dateStringConvert(recommendedDateList[0])}
           </ButtonText>
         </PillBtn>
         <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#F1F1F1' }}>
-          <ButtonText title='1'>
+          <ButtonText title="1">
             🥈 {dateStringConvert(recommendedDateList[1])}
           </ButtonText>
         </PillBtn>
         <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#E5D6CC' }}>
-          <ButtonText title ='2'>
+          <ButtonText title="2">
             🥉 {dateStringConvert(recommendedDateList[2])}
           </ButtonText>
         </PillBtn>
@@ -259,7 +266,7 @@ const OptionResult = () => {
           <FooterText>다시 추천 받기</FooterText>
         </FooterButton>
         <FooterButton>
-          <FooterText onClick={()=>navigate('/')}>약속 잡기 완료</FooterText>
+          <FooterText onClick={() => navigate('/')}>약속 잡기 완료</FooterText>
         </FooterButton>
       </Footer>
     </Stack>
@@ -267,4 +274,3 @@ const OptionResult = () => {
 };
 
 export default OptionResult;
-
