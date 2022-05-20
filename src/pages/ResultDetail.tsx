@@ -9,14 +9,14 @@ import { getDustConcentration } from 'api/getWeatherData';
 
 const MainWrapper = styled.div`
   width: 390px;
-  height: 844px;
+  height: 800px;
   padding: 30px;
   background-color: #f5f5f5;
   font-family: AppleSDGothicNeoB00;
 `;
 
 const WeatherScore = styled.div`
-  margin-top: 15px;
+  margin-top: 20px;
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -33,14 +33,73 @@ const WeatherScore = styled.div`
 `;
 
 const WeatherBox = styled.div`
-  position: relative;
-  margin-left: 5px;
-  margin-right: 5px;
-  width: 100px;
-  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  padding: 5px;
+  gap: 10px;
+  margin-top: 10px;
+  width: 184px;
+  height: 39px;
+
   background: #ffffff;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
+`;
+
+const WeatherIcon = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  text-align: center;
+`;
+
+const TemperatureBox = styled.div`
+  display: flex;
+  float: left;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  gap: 10px;
+  margin-left: 20px;
+  margin-top: 10px;
+  width: 76px;
+  height: 136px;
+
+  background: #ffffff;
+  border-radius: 20px;
+`;
+
+const TemperatureBar = styled.div`
+  width: 7px;
+  height: 112px;
+  left: 277px;
+  top: 514px;
+  margin-right: 10px;
+  background: linear-gradient(180deg, #ff5a5a 0%, #24bdff 100%);
+  border-radius: 6px;
+`;
+
+const Temperature = styled.div`
+  position: static;
+  width: 22px;
+  height: 22px;
+  left: 288px;
+  top: 512px;
+
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 22px;
+  /* identical to box height, or 169% */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.22px;
+
+  color: #000000;
 `;
 
 const ResultDetail = () => {
@@ -64,9 +123,12 @@ const ResultDetail = () => {
   );
   targetDate.setHours(targetDate.getHours() + 12);
   const unixTime = parseInt((targetDate.getTime() / 1000).toFixed(0));
-  const { isLoading: dustIsLoading, data: dustData } = useQuery(
-    ['dustData', location, unixTime],
-    () => getDustConcentration(requestedLocation, unixTime),
+  const {
+    isLoading: dustIsLoading,
+    error: dustError,
+    data: dustData,
+  } = useQuery(['dustData', location, unixTime], () =>
+    getDustConcentration(requestedLocation, unixTime),
   );
   let monthString = '';
   if (now.getMonth() >= 9) {
@@ -100,22 +162,87 @@ const ResultDetail = () => {
           temperature={parseInt(((tempMax + tempMin) / 2).toFixed())}
           criteriaTime={criteriaTime}
         />
-        <Stack row style={{ marginTop: 20 }}>
-          <WeatherBox>
-            자외선
-            <br />
-            {uvi}
-          </WeatherBox>
-          <WeatherBox>
-            습도
-            <br />
-            {humidity}
-          </WeatherBox>
-          <WeatherBox>
-            미세먼지
-            <br />
-            {dustIsLoading ? 0 : dustData![0].pm}
-          </WeatherBox>
+        <Stack row style={{ marginTop: 10, marginLeft: 20 }}>
+          <Stack>
+            <WeatherBox>
+              <Stack row>
+                <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
+                  <div style={{ marginTop: 3 }}>🌞</div>
+                </WeatherIcon>
+                <div
+                  style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
+                >
+                  좋음
+                </div>
+                <WeatherIcon
+                  style={{
+                    position: 'relative',
+                    left: '11%',
+                    background: '#FFF7CC',
+                  }}
+                >
+                  <div style={{ marginTop: 5 }}>{parseInt(uvi.toFixed())}</div>
+                </WeatherIcon>
+              </Stack>
+            </WeatherBox>
+            <WeatherBox>
+              <Stack row>
+                <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
+                  <div style={{ marginTop: 3 }}>💧</div>
+                </WeatherIcon>
+                <div
+                  style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
+                >
+                  보통
+                </div>
+                <WeatherIcon
+                  style={{
+                    position: 'relative',
+                    left: '11%',
+                    background: '#FFCCCC',
+                  }}
+                >
+                  <div style={{ marginTop: 5 }}>{humidity}</div>
+                </WeatherIcon>
+              </Stack>
+            </WeatherBox>
+            <WeatherBox>
+              <Stack row>
+                <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
+                  <div style={{ marginTop: 3 }}>😷</div>
+                </WeatherIcon>
+                <div
+                  style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
+                >
+                  매우 좋음
+                </div>
+                <WeatherIcon
+                  style={{
+                    position: 'relative',
+                    left: '11%',
+                    background: '#CCFFE0',
+                  }}
+                >
+                  <div style={{ marginTop: 5 }}>
+                    {dustIsLoading || dustError || dustData!.length == 0
+                      ? 0
+                      : parseInt(dustData![0].pm.toFixed())}
+                  </div>
+                </WeatherIcon>
+              </Stack>
+            </WeatherBox>
+          </Stack>
+          <TemperatureBox>
+            <Stack row>
+              <TemperatureBar />
+              <Stack>
+                <Temperature>{parseInt(tempMax.toFixed())}°C</Temperature>
+                <Temperature style={{ marginTop: 70 }}>
+                  {parseInt(tempMin.toFixed())}°C
+                </Temperature>
+              </Stack>
+            </Stack>
+          </TemperatureBox>
         </Stack>
         <WeatherScore>
           오늘의 날씨 점수는 <strong>{score}</strong>점 입니다
