@@ -1,7 +1,4 @@
-import {
-  recommendRequestType,
-  recommendResponseType,
-} from 'types/apiTypes';
+import { RecommendRequestType, RecommendResponseType } from 'types/apiTypes';
 
 export const getDatum = (arg: string) => {
   const ret: string[] = [];
@@ -25,8 +22,8 @@ export const getWeatherData = (code: number) => {
 };
 
 export const getRecommendedDate = async (
-  requestData: recommendRequestType,
-): Promise<recommendResponseType> => {
+  requestData: RecommendRequestType,
+): Promise<RecommendResponseType> => {
   new Promise(resolve => setTimeout(resolve, 1000));
   return {
     location: {

@@ -3,7 +3,9 @@ import { useLocation } from 'react-router-dom';
 import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
 import Stack from 'components/Stack';
-import { resultWeatherType } from 'types/apiTypes';
+import { ResultWeatherType } from 'types/apiTypes';
+import { useQuery } from 'react-query';
+import { getDustConcentration } from 'api/getWeatherData';
 
 const MainWrapper = styled.div`
   width: 390px;
@@ -24,7 +26,7 @@ const WeatherScore = styled.div`
   font-family: AppleSDGothicNeoB00;
   font-size: 13pt;
   & strong {
-    margin-left:5px;
+    margin-left: 5px;
     font-size: 20px;
     color: #1814af;
   }
@@ -32,11 +34,11 @@ const WeatherScore = styled.div`
 
 const WeatherBox = styled.div`
   position: relative;
-  margin-left : 5px;
-  margin-right : 5px;
+  margin-left: 5px;
+  margin-right: 5px;
   width: 100px;
   height: 100px;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
 `;
@@ -44,39 +46,76 @@ const WeatherBox = styled.div`
 const ResultDetail = () => {
   const location = useLocation();
   const {
-    dt : date,
+    dt: date,
     location: requestedLocation,
-    weather_main : weatherCode,
-    temp_max : tempMax,
-    temp_min : tempMin,
+    weather_main: weatherCode,
+    temp_max: tempMax,
+    temp_min: tempMin,
     score,
     uvi,
-    wind_speed : windSpeed,
+    // wind_speed: windSpeed,
     humidity,
-  } = location.state as resultWeatherType;
+  } = location.state as ResultWeatherType;
   const now = new Date();
-  let monthString = "";
-  if(now.getMonth() >= 9){
-    monthString = (now.getMonth()+1).toString();
+  const targetDate = new Date(
+    parseInt(date.substring(0, 4)),
+    parseInt(date.substring(5, 7)) - 1,
+    parseInt(date.substring(8, 10)),
+  );
+  targetDate.setHours(targetDate.getHours() + 12);
+  const unixTime = parseInt((targetDate.getTime() / 1000).toFixed(0));
+  const { isLoading: dustIsLoading, data: dustData } = useQuery(
+    ['dustData', location, unixTime],
+    () => getDustConcentration(requestedLocation, unixTime),
+  );
+  let monthString = '';
+  if (now.getMonth() >= 9) {
+    monthString = (now.getMonth() + 1).toString();
+  } else {
+    monthString = '0' + (now.getMonth() + 1).toString();
   }
-  else{
-    monthString = '0'+(now.getMonth()+1).toString();
-  }
-  const criteriaTime = monthString + '-' + now.getDate().toString() + ' ' + now.getHours().toString() + '시';
+  const criteriaTime =
+    monthString +
+    '-' +
+    now.getDate().toString() +
+    ' ' +
+    now.getHours().toString() +
+    '시';
   return (
     <MainWrapper>
       <Stack>
-        <span style={{fontSize : 25,textAlign:'center',marginTop:10,marginBottom:20}}>{`${parseInt(date.substring(5,7))}월 ${parseInt(date.substring(8,10))}일`}</span>
+        <span
+          style={{
+            fontSize: 25,
+            textAlign: 'center',
+            marginTop: 10,
+            marginBottom: 20,
+          }}
+        >{`${parseInt(date.substring(5, 7))}월 ${parseInt(
+          date.substring(8, 10),
+        )}일`}</span>
         <WeatherMain
           locationName={requestedLocation}
           weatherCode={weatherCode}
-          temperature={parseInt(((tempMax+tempMin)/2).toFixed())}
+          temperature={parseInt(((tempMax + tempMin) / 2).toFixed())}
           criteriaTime={criteriaTime}
         />
-        <Stack row style ={{marginTop:20}}>
-          <WeatherBox>{uvi}</WeatherBox>
-          <WeatherBox>{humidity}</WeatherBox>
-          <WeatherBox>{windSpeed}</WeatherBox>
+        <Stack row style={{ marginTop: 20 }}>
+          <WeatherBox>
+            자외선
+            <br />
+            {uvi}
+          </WeatherBox>
+          <WeatherBox>
+            습도
+            <br />
+            {humidity}
+          </WeatherBox>
+          <WeatherBox>
+            미세먼지
+            <br />
+            {dustIsLoading ? 0 : dustData![0].pm}
+          </WeatherBox>
         </Stack>
         <WeatherScore>
           오늘의 날씨 점수는 <strong>{score}</strong>점 입니다

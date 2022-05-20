@@ -7,7 +7,7 @@ export type MainScreenweatherType = {
   current_dt: string;
 };
 
-export type recommendRequestType = {
+export type RecommendRequestType = {
   dateList: Date[];
   selectedCity: string;
   selectedTown: string;
@@ -16,7 +16,7 @@ export type recommendRequestType = {
   wind: windType;
 };
 
-export type recommendResponseType = {
+export type RecommendResponseType = {
   location: {
     longitude: number;
     latitude: number;
@@ -24,32 +24,42 @@ export type recommendResponseType = {
   recommendedDateList: Date[];
 };
 
-export type hourlyWeatherType = {
-  weather : string;
-  temp : number;
-  weather_description : string,
+export type HourlyWeatherType = {
+  weather: string;
+  temp: number;
+  weather_description: string;
   dt: string;
 };
 
-export type resultWeatherType = {
-  location:string;
-  weather_main : string;
-  dt:string;
-  temp_max : number;
-  temp_min : number;
-  uvi : number;
-  humidity : number;
-  rain : number;
-  wind_speed : number;
-  score : number;
-  // 미세먼지
+export type ResultWeatherType = {
+  location: string;
+  weather_main: string;
+  dt: string;
+  temp_max: number;
+  temp_min: number;
+  uvi: number;
+  humidity: number;
+  rain: number;
+  wind_speed: number;
+  score: number;
 };
 
-export type locationType = {
+export type LocationType = {
   longitude: number;
   latitude: number;
-}
+};
 
-export type areaType = {
-  address : string;
-}
+export type AreaType = {
+  address: string;
+};
+
+export type DustType = {
+  pm: number;
+  dt: string;
+};
+
+export type SendWeatherType = {
+  location: string;
+  weather: string;
+  wind: number;
+};
