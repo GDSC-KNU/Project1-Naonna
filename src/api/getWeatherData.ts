@@ -1,19 +1,20 @@
 import axios from 'axios';
 import {
-  areaType,
-  hourlyWeatherType,
-  locationType,
+  AreaType,
+  DustType,
+  HourlyWeatherType,
+  LocationType,
   MainScreenweatherType,
-  resultWeatherType,
+  ResultWeatherType,
 } from 'types/apiTypes';
 
 export const getHourlyWeather: (
   area: string,
-) => Promise<hourlyWeatherType[]> = async (area: string) => {
-  const { data } = await axios.get<hourlyWeatherType[]>(
+) => Promise<HourlyWeatherType[]> = async (area: string) => {
+  const { data } = await axios.get<HourlyWeatherType[]>(
     `${process.env.REACT_APP_API_BASE_URL}/weathers/hourly/${area}`,
   );
-  const weatherList: hourlyWeatherType[] = [];
+  const weatherList: HourlyWeatherType[] = [];
   data.forEach(key => {
     let icon = '';
     const hour = key.dt.substring(11, 13);
@@ -85,15 +86,25 @@ export const getCurrentWeather: (
 
 export const getDailyWeather: (
   area: string,
-) => Promise<resultWeatherType[]> = async (area: String) => {
-  const { data } = await axios.get<resultWeatherType[]>(
+) => Promise<ResultWeatherType[]> = async (area: String) => {
+  const { data } = await axios.get<ResultWeatherType[]>(
     `${process.env.REACT_APP_API_BASE_URL}/weathers/daily/${area}`,
   );
   return data;
 };
 
-export const getLocation: () => locationType = () => {
-  const data: locationType = {
+export const getDustConcentration: (
+  area: string,
+  time: number,
+) => Promise<DustType[]> = async (area: string, time: number) => {
+  const { data } = await axios.get<DustType[]>(
+    `${process.env.REACT_APP_API_BASE_URL}/weathers/dust/${area}/${time}/${time}`,
+  );
+  return data;
+};
+
+export const getLocation: () => LocationType = () => {
+  const data: LocationType = {
     longitude: 0,
     latitude: 0,
   };
@@ -118,10 +129,10 @@ export const getLocation: () => locationType = () => {
   return data;
 };
 
-export const getCurrentArea: (pos: locationType) => Promise<areaType> = async (
-  pos: locationType,
+export const getCurrentArea: (pos: LocationType) => Promise<AreaType> = async (
+  pos: LocationType,
 ) => {
-  const { data } = await axios.get<areaType>(
+  const { data } = await axios.get<AreaType>(
     `${process.env.REACT_APP_API_BASE_URL}/weathers/geo/${pos.latitude}/${pos.longitude}`,
   );
   return data;

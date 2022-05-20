@@ -7,7 +7,7 @@ import {
 } from 'api/getWeatherData';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { hourlyWeatherType } from 'types/apiTypes';
+import { HourlyWeatherType } from 'types/apiTypes';
 import WeatherMain from './WeatherMain';
 
 const WeatherScore = styled.div`
@@ -130,7 +130,7 @@ export const WeatherScoreList = () => {
         시간대별 날씨
       </span>
       <WeatherScoreListContainer>
-        {hourlyData?.map((data: hourlyWeatherType, idx: number) => (
+        {hourlyData?.map((data: HourlyWeatherType, idx: number) => (
           <div key={idx} className="mini-calendar">
             <div className="date">{data.dt}</div>
             <div className="score" style={{ fontSize: 20 }}>
