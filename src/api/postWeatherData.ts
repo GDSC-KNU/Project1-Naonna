@@ -11,9 +11,9 @@ export const postWeatherinfo: (
   wind: number,
 ) => {
   const sendWeatherData: SendWeatherType = {
-    location: location,
-    weather: weather,
-    wind: wind,
+    location,
+    weather,
+    wind,
   };
   try {
     const response = await axios.post('/', sendWeatherData);
