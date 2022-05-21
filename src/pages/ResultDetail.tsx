@@ -6,6 +6,11 @@ import Stack from 'components/Stack';
 import { ResultWeatherType } from 'types/apiTypes';
 import { useQuery } from 'react-query';
 import { getDustConcentration } from 'api/getWeatherData';
+import {
+  changeUVData,
+  changeDustData,
+  changeHumidityData,
+} from 'api/changeWeatherData';
 
 const MainWrapper = styled.div`
   width: 390px;
@@ -143,6 +148,16 @@ const ResultDetail = () => {
     ' ' +
     now.getHours().toString() +
     '시';
+  const uvIndex = changeUVData(uvi);
+  const humidIndex = changeHumidityData(humidity);
+  let dustIndex = '정보 없음';
+  if (
+    typeof dustData !== 'undefined' &&
+    !dustIsLoading &&
+    dustData.length !== 0
+  ) {
+    dustIndex = changeDustData(dustData![0].pm);
+  }
   return (
     <MainWrapper>
       <Stack>
@@ -172,7 +187,7 @@ const ResultDetail = () => {
                 <div
                   style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
                 >
-                  좋음
+                  {uvIndex}
                 </div>
                 <WeatherIcon
                   style={{
@@ -193,7 +208,7 @@ const ResultDetail = () => {
                 <div
                   style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
                 >
-                  보통
+                  {humidIndex}
                 </div>
                 <WeatherIcon
                   style={{
@@ -214,7 +229,7 @@ const ResultDetail = () => {
                 <div
                   style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
                 >
-                  매우 좋음
+                  {dustIndex}
                 </div>
                 <WeatherIcon
                   style={{
@@ -245,7 +260,10 @@ const ResultDetail = () => {
           </TemperatureBox>
         </Stack>
         <WeatherScore>
-          오늘의 날씨 점수는 <strong>{score}</strong>점 입니다
+          {`${parseInt(date.substring(5, 7))}월 ${parseInt(
+            date.substring(8, 10),
+          )}일`}
+          의 날씨 점수는 <strong>{score}</strong>점 입니다
         </WeatherScore>
       </Stack>
     </MainWrapper>
