@@ -166,6 +166,7 @@ const Calendar = ({
                         : ''
                     }`}
                     disabled={isInvalid}
+                    data-year={current.year()}
                     data-month={current.month() + 1}
                   >
                     <span>{current.format('D')}</span>

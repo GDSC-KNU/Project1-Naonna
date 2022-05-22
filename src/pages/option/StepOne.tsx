@@ -7,7 +7,6 @@ import {
   TopTitle,
 } from 'components/styles/common';
 import { useNavigate } from 'react-router-dom';
-import moment from 'moment';
 import { useOptionStore } from 'store/store';
 
 const Description = styled.div`
@@ -96,11 +95,16 @@ const StepOne = () => {
   const setDateList = useOptionStore(state => state.setDateList);
   const dateOnClick = useCallback(
     e => {
-      const date = moment();
       const target = e.target as HTMLElement;
       const closest = target.closest('button');
       if (!closest) return;
-      const targetDay = new Date(date.format('YYYY/M/') + closest.textContent);
+      const targetMonth = closest!.dataset.month;
+      const targetYear = closest!.dataset.year;
+      const targetDay = new Date(
+        parseInt(targetYear!),
+        parseInt(targetMonth!) - 1,
+        parseInt(closest.textContent!),
+      );
       console.log(dateList);
       if (closest) {
         if (dateList.some(day => day.getTime() === targetDay.getTime())) {

@@ -170,9 +170,9 @@ const OptionResult = () => {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
   const recommendedDateList = [
-    new Date(2022, 4, 21),
-    new Date(2022, 4, 22),
-    new Date(2022, 4, 23),
+    new Date(2022, 4, 26),
+    new Date(2022, 4, 25),
+    new Date(2022, 4, 27),
   ];
   const dateStringConvert = (date: Date) =>
     `${date.getMonth() + 1}월 ${date.getDate()}일`;

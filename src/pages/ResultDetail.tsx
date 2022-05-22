@@ -21,7 +21,7 @@ const MainWrapper = styled.div`
 `;
 
 const WeatherScore = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -170,7 +170,7 @@ const ResultDetail = () => {
           <img
             src={`/image/logo/NaonnaMain.png`}
             alt="weather Icon"
-            style={{ width: 95, height: 40, cursor: 'pointer' }}
+            style={{ width: 142.5, height: 60, cursor: 'pointer' }}
           />
         </Link>
         <span
@@ -258,7 +258,7 @@ const ResultDetail = () => {
                 >
                   <div>
                     {dustIsLoading || dustError || dustData!.length == 0
-                      ? 0
+                      ? 'x'
                       : parseInt(dustData![0].pm.toFixed())}
                   </div>
                 </WeatherIcon>
