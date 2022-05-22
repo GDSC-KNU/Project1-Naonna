@@ -56,7 +56,9 @@ const WeatherIcon = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 15px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TemperatureBox = styled.div`
@@ -182,7 +184,7 @@ const ResultDetail = () => {
             <WeatherBox>
               <Stack row>
                 <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
-                  <div style={{ marginTop: 3 }}>🌞</div>
+                  <div>🌞</div>
                 </WeatherIcon>
                 <div
                   style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
@@ -196,7 +198,7 @@ const ResultDetail = () => {
                     background: '#FFF7CC',
                   }}
                 >
-                  <div style={{ marginTop: 5 }}>{parseInt(uvi.toFixed())}</div>
+                  <div>{parseInt(uvi.toFixed())}</div>
                 </WeatherIcon>
               </Stack>
             </WeatherBox>
@@ -206,10 +208,10 @@ const ResultDetail = () => {
             <WeatherBox>
               <Stack row>
                 <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
-                  <div style={{ marginTop: 3 }}>💧</div>
+                  <div>💧</div>
                 </WeatherIcon>
                 <div
-                  style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
+                  style={{ marginTop: 4, width: '40%', textAlign: 'center' }}
                 >
                   {humidIndex}
                 </div>
@@ -220,7 +222,7 @@ const ResultDetail = () => {
                     background: '#FFCCCC',
                   }}
                 >
-                  <div style={{ marginTop: 5 }}>{humidity}</div>
+                  <div>{humidity}</div>
                 </WeatherIcon>
               </Stack>
             </WeatherBox>
@@ -230,7 +232,7 @@ const ResultDetail = () => {
             <WeatherBox>
               <Stack row>
                 <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
-                  <div style={{ marginTop: 3 }}>😷</div>
+                  <div>😷</div>
                 </WeatherIcon>
                 <div
                   style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
@@ -244,7 +246,7 @@ const ResultDetail = () => {
                     background: '#CCFFE0',
                   }}
                 >
-                  <div style={{ marginTop: 5 }}>
+                  <div>
                     {dustIsLoading || dustError || dustData!.length == 0
                       ? 0
                       : parseInt(dustData![0].pm.toFixed())}
