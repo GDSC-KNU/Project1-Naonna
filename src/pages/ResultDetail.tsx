@@ -70,7 +70,7 @@ const TemperatureBox = styled.div`
   margin-left: 20px;
   margin-top: 10px;
   width: 76px;
-  height: 136px;
+  height: 166px;
 
   background: #ffffff;
   border-radius: 20px;
@@ -78,7 +78,7 @@ const TemperatureBox = styled.div`
 
 const TemperatureBar = styled.div`
   width: 7px;
-  height: 112px;
+  height: 135px;
   left: 277px;
   top: 514px;
   margin-right: 10px;
@@ -200,6 +200,9 @@ const ResultDetail = () => {
                 </WeatherIcon>
               </Stack>
             </WeatherBox>
+            <div style={{ fontSize: 10, textAlign: 'right', marginRight: 10 }}>
+              자외선 기준(지수)
+            </div>
             <WeatherBox>
               <Stack row>
                 <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
@@ -221,6 +224,9 @@ const ResultDetail = () => {
                 </WeatherIcon>
               </Stack>
             </WeatherBox>
+            <div style={{ fontSize: 10, textAlign: 'right', marginRight: 10 }}>
+              습도 기준(%)
+            </div>
             <WeatherBox>
               <Stack row>
                 <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
@@ -246,13 +252,16 @@ const ResultDetail = () => {
                 </WeatherIcon>
               </Stack>
             </WeatherBox>
+            <div style={{ fontSize: 10, textAlign: 'right', marginRight: 10 }}>
+              미세먼지 기준(㎍/m³)
+            </div>
           </Stack>
           <TemperatureBox>
             <Stack row>
               <TemperatureBar />
               <Stack>
                 <Temperature>{parseInt(tempMax.toFixed())}°C</Temperature>
-                <Temperature style={{ marginTop: 70 }}>
+                <Temperature style={{ marginTop: 88 }}>
                   {parseInt(tempMin.toFixed())}°C
                 </Temperature>
               </Stack>
