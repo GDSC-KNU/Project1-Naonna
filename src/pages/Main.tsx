@@ -15,12 +15,17 @@ const Main = () => {
         height: 844,
         padding: 30,
         backgroundColor: '#f5f5f5',
-        borderRadius: 30,
         fontFamily: 'AppleSDGothicNeoB00',
       }}
     >
-      <header>
-        <h1>Logo</h1>
+      <header style={{ textAlign: 'center', marginBottom: 5 }}>
+        <Link to="/">
+          <img
+            src={`/image/logo/NaonnaMain.png`}
+            alt="weather Icon"
+            style={{ width: '50%', height: '100%' }}
+          />
+        </Link>
       </header>
       <Stack style={{ height: '100%' }}>
         <Link to="/option/1">

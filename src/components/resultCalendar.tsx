@@ -23,7 +23,7 @@ const Row = styled.div`
   height: 16px;
   left: 32px;
   top: 60px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 `;
 const Week = styled.div`
   float: left;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
 import Stack from 'components/Stack';
@@ -123,10 +123,13 @@ const ResultDetail = () => {
     humidity,
   } = location.state as ResultWeatherType;
   const now = new Date();
+  const year = date.substring(0, 4);
+  const month = date.substring(5, 7);
+  const day = date.substring(8, 10);
   const targetDate = new Date(
-    parseInt(date.substring(0, 4)),
-    parseInt(date.substring(5, 7)) - 1,
-    parseInt(date.substring(8, 10)),
+    parseInt(year),
+    parseInt(month) - 1,
+    parseInt(day),
   );
   targetDate.setHours(targetDate.getHours() + 12);
   const unixTime = parseInt((targetDate.getTime() / 1000).toFixed(0));
@@ -163,16 +166,23 @@ const ResultDetail = () => {
   return (
     <MainWrapper>
       <Stack>
+        <Link to="/">
+          <img
+            src={`/image/logo/NaonnaMain.png`}
+            alt="weather Icon"
+            style={{ width: 95, height: 40, cursor: 'pointer' }}
+          />
+        </Link>
         <span
           style={{
-            fontSize: 25,
-            textAlign: 'center',
-            marginTop: 10,
-            marginBottom: 20,
+            fontSize: 15,
+            textAlign: 'right',
+            marginBottom: 5,
+            marginRight: 20,
           }}
-        >{`${parseInt(date.substring(5, 7))}월 ${parseInt(
-          date.substring(8, 10),
-        )}일`}</span>
+        >
+          {year}.{month}.{day}
+        </span>
         <WeatherMain
           locationName={requestedLocation}
           weatherCode={weatherCode}
