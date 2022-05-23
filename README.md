@@ -1,46 +1,53 @@
-# Getting Started with Create React App
+# Project 1 - Naonna
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div style="display:flex;justify-content:center;"><img alt="나온나 로고"src="public/image/logo/NaonnaMain.png"/></div>
 
-## Available Scripts
+## 목차
 
-In the project directory, you can run:
+- [🧑‍🤝‍🧑 팀원 소개](#팀원-소개)
+- [🛠️기술 스택](#기술-스택)
+- [✨ 프로젝트 소개](#프로젝트-소개)
 
-### `npm start`
+### 팀원 소개
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### FrontEnd
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+| [<img src="https://github.com/kasterra.png" width="100px">](https://github.com/kasterra) | [<img src="https://github.com/JangYunSeong.png" width="100px">](https://github.com/JangYunSeong) |
+| :--------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: |
+|                          [이휘찬](https://github.com/kasterra)                           |                            [장윤성](https://github.com/JangYunSeong)                             |
 
-### `npm test`
+#### BackEnd
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| [<img src="https://github.com/lmw7414.png" width="100px">](https://github.com/lmw7414) | [<img src="https://github.com/olzlgur.png" width="100px">](https://github.com/olzlgur) |
+| :------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: |
+|                          [이민우](https://github.com/lmw7414)                          |                          [이지혁](https://github.com/olzlgur)                          |
 
-### `npm run build`
+#### Data
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| [<img src="https://github.com/ezzkimm.png" width="100px">](https://github.com/ezzkimm) |
+| :------------------------------------------------------------------------------------: |
+|                          [김은정](https://github.com/ezzkimm)                          |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 기술 스택
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Front-End
 
-### `npm run eject`
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
+<img src="https://img.shields.io/badge/React 18-61DAFB?style=for-the-badge&logo=React&logoColor=white">
+<img src="https://img.shields.io/badge/Create React App-09D3AC?style=for-the-badge&logo=Create%20React%20App&logoColor=white">
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<img src="https://img.shields.io/badge/Styled component-DB7093?style=for-the-badge&logo=Styled%20Components&logoColor=white">
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React%20Query&logoColor=white">
+<img src="https://img.shields.io/badge/Zustand-433E38?style=for-the-badge&logoColor=white">
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Back-end
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<img src="https://img.shields.io/badge/Java8-007396?style=for-the-badge&logo=Java&logoColor=white">
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
 
-## Learn More
+### Data
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 프로젝트 소개
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+밖에서 만나는 약속을 잡을 때, 신경쓰지 않을 수 없는 중요한 요소, 날씨! GDSC KNU 1기 프로젝트 1팀에서 제작한 서비스 '나온나'에서. 약속을 잡을 위치를 지정하면, 일주일간의 날씨를 계산해서, 여러분들께 최적의 날씨를 추천해 드립니다!
