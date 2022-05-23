@@ -19,13 +19,11 @@ const Main = () => {
       }}
     >
       <header style={{ textAlign: 'center', marginBottom: 5 }}>
-        <Link to="/">
-          <img
-            src={`/image/logo/NaonnaMain.png`}
-            alt="weather Icon"
-            style={{ width: '50%', height: '100%' }}
-          />
-        </Link>
+        <img
+          src={`/image/logo/NaonnaMain.png`}
+          alt="weather Icon"
+          style={{ width: '50%', height: '100%' }}
+        />
       </header>
       <Stack style={{ height: '100%' }}>
         <Link to="/option/1">
