@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { CalendarProps } from 'types/component-props';
+import Stack from './Stack';
 require('typeface-ibm-plex-sans');
 
 const Head = styled.div`
@@ -23,7 +24,7 @@ const Row = styled.div`
   height: 16px;
   left: 32px;
   top: 60px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 `;
 const Week = styled.div`
   float: left;
@@ -51,7 +52,9 @@ const DayButton = styled.button`
   width: 32px;
   height: 32px;
   margin-right: 8px;
-  margin-bottom: 1.5px;
+  margin-top: 1.5px;
+  justify-content: center;
+  align-items: center;
   font-family: IBM Plex Sans;
   font-weight: bold;
   font-size: 12px;
@@ -99,6 +102,7 @@ const Month = styled.button`
 `;
 const Today = styled.div`
   width: 27px;
+  height: 3px;
   margin-left: 6px;
   font-family: 'AppleSDGothicNeoB00';
   font-style: normal;
@@ -152,21 +156,23 @@ const Calendar = ({
                   ? 'selected'
                   : '';
               return (
-                <DayButton
-                  key={i}
-                  className={`${selected} ${
-                    dateList?.some(
-                      date => date.getDate() + '' == current.format('D'),
-                    )
-                      ? 'selected'
-                      : ''
-                  }`}
-                  disabled={isInvalid}
-                  data-month={current.month() + 1}
-                >
-                  <span>{current.format('D')}</span>
-                  {isSelected && <Today>오늘</Today>}
-                </DayButton>
+                <Stack key={i}>
+                  <DayButton
+                    className={`${selected} ${
+                      dateList?.some(
+                        date => date.getDate() + '' == current.format('D'),
+                      )
+                        ? 'selected'
+                        : ''
+                    }`}
+                    disabled={isInvalid}
+                    data-year={current.year()}
+                    data-month={current.month() + 1}
+                  >
+                    <span>{current.format('D')}</span>
+                  </DayButton>
+                  {isSelected ? <Today>오늘</Today> : <Today></Today>}
+                </Stack>
               );
             })}
         </div>,

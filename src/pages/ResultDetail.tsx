@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import WeatherMain from 'components/WeatherMain';
 import styled from 'styled-components';
 import Stack from 'components/Stack';
@@ -21,7 +21,7 @@ const MainWrapper = styled.div`
 `;
 
 const WeatherScore = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -56,7 +56,9 @@ const WeatherIcon = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 15px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TemperatureBox = styled.div`
@@ -121,10 +123,13 @@ const ResultDetail = () => {
     humidity,
   } = location.state as ResultWeatherType;
   const now = new Date();
+  const year = date.substring(0, 4);
+  const month = date.substring(5, 7);
+  const day = date.substring(8, 10);
   const targetDate = new Date(
-    parseInt(date.substring(0, 4)),
-    parseInt(date.substring(5, 7)) - 1,
-    parseInt(date.substring(8, 10)),
+    parseInt(year),
+    parseInt(month) - 1,
+    parseInt(day),
   );
   targetDate.setHours(targetDate.getHours() + 12);
   const unixTime = parseInt((targetDate.getTime() / 1000).toFixed(0));
@@ -161,16 +166,23 @@ const ResultDetail = () => {
   return (
     <MainWrapper>
       <Stack>
+        <Link to="/">
+          <img
+            src={`/image/logo/NaonnaMain.png`}
+            alt="weather Icon"
+            style={{ width: 142.5, height: 60, cursor: 'pointer' }}
+          />
+        </Link>
         <span
           style={{
-            fontSize: 25,
-            textAlign: 'center',
-            marginTop: 10,
-            marginBottom: 20,
+            fontSize: 15,
+            textAlign: 'right',
+            marginBottom: 5,
+            marginRight: 20,
           }}
-        >{`${parseInt(date.substring(5, 7))}월 ${parseInt(
-          date.substring(8, 10),
-        )}일`}</span>
+        >
+          {year}.{month}.{day}
+        </span>
         <WeatherMain
           locationName={requestedLocation}
           weatherCode={weatherCode}
@@ -182,7 +194,7 @@ const ResultDetail = () => {
             <WeatherBox>
               <Stack row>
                 <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
-                  <div style={{ marginTop: 3 }}>🌞</div>
+                  <div>🌞</div>
                 </WeatherIcon>
                 <div
                   style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
@@ -196,7 +208,7 @@ const ResultDetail = () => {
                     background: '#FFF7CC',
                   }}
                 >
-                  <div style={{ marginTop: 5 }}>{parseInt(uvi.toFixed())}</div>
+                  <div>{parseInt(uvi.toFixed())}</div>
                 </WeatherIcon>
               </Stack>
             </WeatherBox>
@@ -206,10 +218,10 @@ const ResultDetail = () => {
             <WeatherBox>
               <Stack row>
                 <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
-                  <div style={{ marginTop: 3 }}>💧</div>
+                  <div>💧</div>
                 </WeatherIcon>
                 <div
-                  style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
+                  style={{ marginTop: 4, width: '40%', textAlign: 'center' }}
                 >
                   {humidIndex}
                 </div>
@@ -220,7 +232,7 @@ const ResultDetail = () => {
                     background: '#FFCCCC',
                   }}
                 >
-                  <div style={{ marginTop: 5 }}>{humidity}</div>
+                  <div>{humidity}</div>
                 </WeatherIcon>
               </Stack>
             </WeatherBox>
@@ -230,7 +242,7 @@ const ResultDetail = () => {
             <WeatherBox>
               <Stack row>
                 <WeatherIcon style={{ marginRight: 25, background: '#f5f5f5' }}>
-                  <div style={{ marginTop: 3 }}>😷</div>
+                  <div>😷</div>
                 </WeatherIcon>
                 <div
                   style={{ marginTop: 5, width: '40%', textAlign: 'center' }}
@@ -244,9 +256,9 @@ const ResultDetail = () => {
                     background: '#CCFFE0',
                   }}
                 >
-                  <div style={{ marginTop: 5 }}>
+                  <div>
                     {dustIsLoading || dustError || dustData!.length == 0
-                      ? 0
+                      ? 'x'
                       : parseInt(dustData![0].pm.toFixed())}
                   </div>
                 </WeatherIcon>
