@@ -9,4 +9,6 @@ export type OptionData = {
   setWeather: (weather: weatherType) => void;
   wind: windType;
   setWind: (wind: windType) => void;
+  score:number[];
+  setScore : (score:number[]) => void;
 };

@@ -9,6 +9,7 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { HourlyWeatherType } from 'types/apiTypes';
 import WeatherMain from './WeatherMain';
+import { postWeatherinfo } from 'api/postWeatherData';
 
 const WeatherScore = styled.div`
   margin-top: 15px;
@@ -106,6 +107,14 @@ export const WeatherScoreList = () => {
       suspense: true,
     },
   );
+  const { data: scoreData } = useQuery(
+    ['scoreData', addressData!.address],
+    () => postWeatherinfo(addressData!.address, 'clear', 0),
+    {
+      enabled: !!addressData,
+      suspense: true,
+    },
+  );
   return (
     <>
       <WeatherMain
@@ -117,7 +126,7 @@ export const WeatherScoreList = () => {
       <WeatherScore>
         오늘의 날씨 점수는{' '}
         <strong style={{ fontSize: 20, marginLeft: 5 }}>
-          {currentData!.todayScore}
+          {parseInt(scoreData![0].toFixed())}
         </strong>
         점 입니다
       </WeatherScore>

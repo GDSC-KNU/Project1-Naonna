@@ -20,24 +20,6 @@ export const getWeatherData = (code: number) => {
       return { weather: 'clear', wind: 0 };
   }
 };
-
-export const getRecommendedDate = async (
-  requestData: RecommendRequestType,
-): Promise<RecommendResponseType> => {
-  new Promise(resolve => setTimeout(resolve, 1000));
-  return {
-    location: {
-      longitude: 36.21,
-      latitude: 128.3542,
-    },
-    recommendedDateList: [
-      new Date(2022, 4, 26),
-      new Date(2022, 4, 10),
-      new Date(2022, 4, 13),
-    ],
-  };
-};
-
 export const getFromServer = async () => {
   return await (
     await fetch('http://35.165.68.251/weaterhs/daily/daegu')

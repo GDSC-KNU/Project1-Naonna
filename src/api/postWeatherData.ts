@@ -5,7 +5,7 @@ export const postWeatherinfo: (
   location: string,
   weather: string,
   wind: number,
-) => Promise<void> = async (
+) => Promise<number[]> = async (
   location: string,
   weather: string,
   wind: number,
@@ -16,9 +16,13 @@ export const postWeatherinfo: (
     wind,
   };
   try {
-    const response = await axios.post('/', sendWeatherData);
-    console.log(response);
+    const { data } = await axios.post<number[]>(
+      `${process.env.REACT_APP_API_BASE_URL}/weathers/score`,
+      sendWeatherData,
+    );
+    return data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };

@@ -9,7 +9,6 @@ import {
 import Warn from '../../icon/Warning';
 import { useOptionStore } from 'store/store';
 import { useNavigate } from 'react-router-dom';
-// import { postWeatherinfo } from 'api/postWeatherData';
 
 const HorizontalItemsContainer = styled.div`
   border-radius: 10px;
@@ -51,7 +50,6 @@ const HorizontalItemsContainer = styled.div`
 
 const StepThree = () => {
   const navigate = useNavigate();
-  // const area = useOptionStore(state => state.selectedArea);
   const weather = useOptionStore(state => state.weather);
   const setWeather = useOptionStore(state => state.setWeather);
   const wind = useOptionStore(state => state.wind);
@@ -165,7 +163,6 @@ const StepThree = () => {
 
       <BottomButton
         onClick={() => {
-          // postWeatherinfo(area, weather, wind),
           navigate('/result');
         }}
       >
