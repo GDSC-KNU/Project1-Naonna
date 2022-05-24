@@ -17,11 +17,8 @@ export type RecommendRequestType = {
 };
 
 export type RecommendResponseType = {
-  location: {
-    longitude: number;
-    latitude: number;
-  };
-  recommendedDateList: Date[];
+  date: Date;
+  score: number;
 };
 
 export type HourlyWeatherType = {

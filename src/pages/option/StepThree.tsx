@@ -9,7 +9,7 @@ import {
 import Warn from '../../icon/Warning';
 import { useOptionStore } from 'store/store';
 import { useNavigate } from 'react-router-dom';
-// import { postWeatherinfo } from 'api/postWeatherData';
+import { updateWeatherPreference } from 'api/changeWeatherData';
 
 const HorizontalItemsContainer = styled.div`
   border-radius: 10px;
@@ -51,7 +51,6 @@ const HorizontalItemsContainer = styled.div`
 
 const StepThree = () => {
   const navigate = useNavigate();
-  // const area = useOptionStore(state => state.selectedArea);
   const weather = useOptionStore(state => state.weather);
   const setWeather = useOptionStore(state => state.setWeather);
   const wind = useOptionStore(state => state.wind);
@@ -73,7 +72,7 @@ const StepThree = () => {
         </div>
         <span>선택한 옵션에 따라 날씨별 점수가 다르게 산정됩니다.</span>
       </AdditionalExplain>
-      {/* <HorizontalItemsContainer style={{ marginTop: 20 }}>
+      <HorizontalItemsContainer style={{ marginTop: 20 }}>
         <div className="title">카테고리</div>
         <div className="content">
           <div className="item" onClick={() => updateWeatherPreference(1)}>
@@ -85,14 +84,8 @@ const StepThree = () => {
           <div className="item" onClick={() => updateWeatherPreference(3)}>
             골프
           </div>
-          <div className="item" onClick={() => updateWeatherPreference(1)}>
-            무언가
-          </div>
-          <div className="item" onClick={() => updateWeatherPreference(2)}>
-            또다른 무언가
-          </div>
         </div>
-      </HorizontalItemsContainer> */}
+      </HorizontalItemsContainer>
       <div style={{ height: '20px' }}></div>
       <HorizontalItemsContainer
         style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
@@ -165,7 +158,6 @@ const StepThree = () => {
 
       <BottomButton
         onClick={() => {
-          // postWeatherinfo(area, weather, wind),
           navigate('/result');
         }}
       >

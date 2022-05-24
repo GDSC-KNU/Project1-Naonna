@@ -8,6 +8,8 @@ import Pill from 'components/Pill';
 import { useOptionStore } from 'store/store';
 import { useQuery } from 'react-query';
 import { getDailyWeather } from 'api/getWeatherData';
+import { postWeatherinfo } from 'api/postWeatherData';
+import { RecommendResponseType } from 'types/apiTypes';
 
 const CalendarPos = styled.div`
   margin-top: 44px;
@@ -160,23 +162,52 @@ const FooterText = styled.div`
 `;
 const OptionResult = () => {
   const navigate = useNavigate();
-
   const dateList = useOptionStore(state => state.dateList);
+  const setDateList = useOptionStore(state => state.setDateList);
   const selectedArea = useOptionStore(state => state.selectedArea);
-  console.log(dateList);
-  const { isLoading, data } = useQuery(['dailyData', selectedArea], () =>
-    getDailyWeather(selectedArea),
+  const setSelectedArea = useOptionStore(state => state.setSelectedArea);
+  const weatherOption = useOptionStore(state => state.weather);
+  const setWeatherOption = useOptionStore(state => state.setWeather);
+  const windOption = useOptionStore(state => state.wind);
+  const setWind = useOptionStore(state => state.setWind);
+  const { isLoading: weatherIsLoading, data: weatherData } = useQuery(
+    ['dailyData', selectedArea],
+    () => getDailyWeather(selectedArea),
+  );
+  const { isLoading: scoreIsLoading, data: scoreData } = useQuery(
+    ['scoreData', selectedArea, weatherOption, windOption],
+    () => postWeatherinfo(selectedArea, weatherOption, windOption),
   );
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
-  const recommendedDateList = [
-    new Date(2022, 4, 26),
-    new Date(2022, 4, 25),
-    new Date(2022, 4, 27),
-  ];
+  const recommendedDateList: Date[] = [];
+  const rankDateList: RecommendResponseType[] = [];
+  if (typeof scoreData !== 'undefined' && !scoreIsLoading) {
+    dateList.forEach(Date => {
+      Date.setMonth(Date.getMonth() + 1);
+      const index = (Date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+      Date.setMonth(Date.getMonth() - 1);
+      const insert: RecommendResponseType = {
+        date: Date,
+        score: scoreData[index],
+      };
+      rankDateList.push(insert);
+    });
+    rankDateList.sort((a, b) => {
+      if (a.score < b.score) {
+        return 1;
+      }
+      if (a.score > b.score) {
+        return -1;
+      }
+      return 0;
+    });
+    rankDateList.forEach(Date => {
+      recommendedDateList.push(Date.date);
+    });
+  }
   const dateStringConvert = (date: Date) =>
     `${date.getMonth() + 1}월 ${date.getDate()}일`;
-
   const dateOnClick: React.MouseEventHandler<HTMLDivElement> = e => {
     const { target } = e;
     const closest = (target as HTMLDivElement).closest('button');
@@ -187,10 +218,14 @@ const OptionResult = () => {
     const btDay =
       (clickDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
     clickDate.setMonth(month - 1);
-    if (!isLoading && typeof data !== 'undefined') {
-      data[btDay].location = selectedArea;
-      data[btDay].score = 80;
-      navigate('./detail', { state: data[btDay] });
+    if (
+      !weatherIsLoading &&
+      typeof weatherData !== 'undefined' &&
+      !scoreIsLoading
+    ) {
+      weatherData[btDay].location = selectedArea;
+      weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
+      navigate('./detail', { state: weatherData[btDay] });
     }
   };
   const rankOnClick: React.MouseEventHandler<HTMLDivElement> = e => {
@@ -204,11 +239,21 @@ const OptionResult = () => {
       (recommendedDateList[index].getTime() - today.getTime()) /
       (1000 * 60 * 60 * 24);
     recommendedDateList[index].setMonth(month);
-    if (!isLoading && typeof data !== 'undefined') {
-      data[btDay].location = selectedArea;
-      data[btDay].score = 80;
-      navigate('./detail', { state: data[btDay] });
+    if (
+      !weatherIsLoading &&
+      typeof weatherData !== 'undefined' &&
+      !scoreIsLoading
+    ) {
+      weatherData[btDay].location = selectedArea;
+      weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
+      navigate('./detail', { state: weatherData[btDay] });
     }
+  };
+  const refresh = () => {
+    setDateList([]);
+    setSelectedArea('');
+    setWeatherOption('clear');
+    setWind(0);
   };
   return (
     <Stack
@@ -222,11 +267,15 @@ const OptionResult = () => {
       }}
     >
       <CalendarPos>
-        <Calendar
-          rankDateList={recommendedDateList}
-          dateOnClick={dateOnClick}
-          style={{ alignSelf: 'center' }}
-        />
+        {scoreIsLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <Calendar
+            rankDateList={recommendedDateList}
+            dateOnClick={dateOnClick}
+            style={{ alignSelf: 'center' }}
+          />
+        )}
       </CalendarPos>
       <Stack row style={{ marginLeft: 25 }}>
         <Warn />
@@ -247,30 +296,50 @@ const OptionResult = () => {
       <Stack row style={{ marginLeft: 20 }}>
         <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#FFF7CC' }}>
           <ButtonText title="0">
-            🥇 {dateStringConvert(recommendedDateList[0])}
+            🥇{' '}
+            {scoreIsLoading
+              ? 'error'
+              : dateStringConvert(recommendedDateList[0])}
           </ButtonText>
         </PillBtn>
-        <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#F1F1F1' }}>
-          <ButtonText title="1">
-            🥈 {dateStringConvert(recommendedDateList[1])}
-          </ButtonText>
-        </PillBtn>
-        <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#E5D6CC' }}>
-          <ButtonText title="2">
-            🥉 {dateStringConvert(recommendedDateList[2])}
-          </ButtonText>
-        </PillBtn>
+        {scoreIsLoading || recommendedDateList.length < 2 ? (
+          <></>
+        ) : (
+          <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#F1F1F1' }}>
+            <ButtonText title="1">
+              🥈 {dateStringConvert(recommendedDateList[1])}
+            </ButtonText>
+          </PillBtn>
+        )}
+        {scoreIsLoading || recommendedDateList.length < 3 ? (
+          <></>
+        ) : (
+          <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#E5D6CC' }}>
+            <ButtonText title="2">
+              🥉 {dateStringConvert(recommendedDateList[2])}
+            </ButtonText>
+          </PillBtn>
+        )}
       </Stack>
       <Footer>
-        <FooterButton onClick={() => navigate('../option/1')}>
+        <FooterButton
+          onClick={() => {
+            refresh(), navigate('../option/1');
+          }}
+        >
           <FooterText>다시 추천 받기</FooterText>
         </FooterButton>
         <FooterButton>
-          <FooterText onClick={() => navigate('/')}>약속 잡기 완료</FooterText>
+          <FooterText
+            onClick={() => {
+              refresh(), navigate('/');
+            }}
+          >
+            약속 잡기 완료
+          </FooterText>
         </FooterButton>
       </Footer>
     </Stack>
   );
 };
-
 export default OptionResult;
