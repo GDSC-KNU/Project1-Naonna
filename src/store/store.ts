@@ -19,8 +19,4 @@ export const useOptionStore = create<OptionData>(set => ({
   setWind: (wind: windType) => {
     set(state => ({ ...state, wind: wind }));
   },
-  score:[],
-  setScore:(scores:number[])=>{
-    set(state=>({...state, score:scores}));
-  },
 }));

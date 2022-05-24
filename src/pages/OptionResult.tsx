@@ -167,7 +167,6 @@ const OptionResult = () => {
   const selectedArea = useOptionStore(state => state.selectedArea);
   const weatherOption = useOptionStore(state => state.weather);
   const windOption = useOptionStore(state => state.wind);
-  let score = useOptionStore(state => state.score);
   console.log(dateList);
   const { isLoading: weatherIsLoading, data: weatherData } = useQuery(
     ['dailyData', selectedArea],
@@ -182,12 +181,14 @@ const OptionResult = () => {
   const recommendedDateList: Date[] = [];
   const rankDateList: RecommendResponseType[] = [];
   if (typeof scoreData !== 'undefined' && !scoreIsLoading) {
-    score = scoreData;
     dateList.forEach(Date => {
       Date.setMonth(Date.getMonth() + 1);
       const index = (Date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
       Date.setMonth(Date.getMonth() - 1);
-      const insert: RecommendResponseType = { date: Date, score: score[index] };
+      const insert: RecommendResponseType = {
+        date: Date,
+        score: scoreData[index],
+      };
       rankDateList.push(insert);
     });
     rankDateList.sort((a, b) => {
@@ -223,7 +224,7 @@ const OptionResult = () => {
       !scoreIsLoading
     ) {
       weatherData[btDay].location = selectedArea;
-      weatherData[btDay].score = parseInt(score[btDay].toFixed());
+      weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
       navigate('./detail', { state: weatherData[btDay] });
     }
   };
@@ -244,7 +245,7 @@ const OptionResult = () => {
       !scoreIsLoading
     ) {
       weatherData[btDay].location = selectedArea;
-      weatherData[btDay].score = parseInt(score[btDay].toFixed());
+      weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
       navigate('./detail', { state: weatherData[btDay] });
     }
   };
@@ -289,25 +290,30 @@ const OptionResult = () => {
       <Stack row style={{ marginLeft: 20 }}>
         <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#FFF7CC' }}>
           <ButtonText title="0">
-            🥇 {scoreIsLoading ? '' : dateStringConvert(recommendedDateList[0])}
+            🥇{' '}
+            {scoreIsLoading
+              ? 'error'
+              : dateStringConvert(recommendedDateList[0])}
           </ButtonText>
         </PillBtn>
-        <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#F1F1F1' }}>
-          <ButtonText title="1">
-            🥈{' '}
-            {scoreIsLoading || recommendedDateList.length < 2
-              ? ''
-              : dateStringConvert(recommendedDateList[1])}
-          </ButtonText>
-        </PillBtn>
-        <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#E5D6CC' }}>
-          <ButtonText title="2">
-            🥉{' '}
-            {scoreIsLoading || recommendedDateList.length < 3
-              ? ''
-              : dateStringConvert(recommendedDateList[2])}
-          </ButtonText>
-        </PillBtn>
+        {scoreIsLoading || recommendedDateList.length < 2 ? (
+          <></>
+        ) : (
+          <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#F1F1F1' }}>
+            <ButtonText title="1">
+              🥈 {dateStringConvert(recommendedDateList[1])}
+            </ButtonText>
+          </PillBtn>
+        )}
+        {scoreIsLoading || recommendedDateList.length < 3 ? (
+          <></>
+        ) : (
+          <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#E5D6CC' }}>
+            <ButtonText title="2">
+              🥉 {dateStringConvert(recommendedDateList[2])}
+            </ButtonText>
+          </PillBtn>
+        )}
       </Stack>
       <Footer>
         <FooterButton onClick={() => navigate('../option/1')}>
