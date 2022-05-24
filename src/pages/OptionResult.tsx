@@ -162,12 +162,14 @@ const FooterText = styled.div`
 `;
 const OptionResult = () => {
   const navigate = useNavigate();
-
   const dateList = useOptionStore(state => state.dateList);
+  const setDateList = useOptionStore(state => state.setDateList);
   const selectedArea = useOptionStore(state => state.selectedArea);
+  const setSelectedArea = useOptionStore(state => state.setSelectedArea);
   const weatherOption = useOptionStore(state => state.weather);
+  const setWeatherOption = useOptionStore(state => state.setWeather);
   const windOption = useOptionStore(state => state.wind);
-  console.log(dateList);
+  const setWind = useOptionStore(state => state.setWind);
   const { isLoading: weatherIsLoading, data: weatherData } = useQuery(
     ['dailyData', selectedArea],
     () => getDailyWeather(selectedArea),
@@ -204,10 +206,8 @@ const OptionResult = () => {
       recommendedDateList.push(Date.date);
     });
   }
-  console.log(rankDateList);
   const dateStringConvert = (date: Date) =>
     `${date.getMonth() + 1}월 ${date.getDate()}일`;
-
   const dateOnClick: React.MouseEventHandler<HTMLDivElement> = e => {
     const { target } = e;
     const closest = (target as HTMLDivElement).closest('button');
@@ -248,6 +248,12 @@ const OptionResult = () => {
       weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
       navigate('./detail', { state: weatherData[btDay] });
     }
+  };
+  const refresh = () => {
+    setDateList([]);
+    setSelectedArea('');
+    setWeatherOption('clear');
+    setWind(0);
   };
   return (
     <Stack
@@ -316,15 +322,24 @@ const OptionResult = () => {
         )}
       </Stack>
       <Footer>
-        <FooterButton onClick={() => navigate('../option/1')}>
+        <FooterButton
+          onClick={() => {
+            refresh(), navigate('../option/1');
+          }}
+        >
           <FooterText>다시 추천 받기</FooterText>
         </FooterButton>
         <FooterButton>
-          <FooterText onClick={() => navigate('/')}>약속 잡기 완료</FooterText>
+          <FooterText
+            onClick={() => {
+              refresh(), navigate('/');
+            }}
+          >
+            약속 잡기 완료
+          </FooterText>
         </FooterButton>
       </Footer>
     </Stack>
   );
 };
-
 export default OptionResult;
