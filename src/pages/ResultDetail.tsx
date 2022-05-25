@@ -11,6 +11,7 @@ import {
   changeDustData,
   changeHumidityData,
 } from 'api/changeWeatherData';
+import { useOptionStore } from 'store/store';
 
 const MainWrapper = styled.div`
   width: 390px;
@@ -111,6 +112,10 @@ const Temperature = styled.div`
 
 const ResultDetail = () => {
   const location = useLocation();
+  const setDateList = useOptionStore(state => state.setDateList);
+  const setSelectedArea = useOptionStore(state => state.setSelectedArea);
+  const setWeatherOption = useOptionStore(state => state.setWeather);
+  const setWind = useOptionStore(state => state.setWind);
   const {
     dt: date,
     location: requestedLocation,
@@ -163,6 +168,12 @@ const ResultDetail = () => {
   ) {
     dustIndex = changeDustData(dustData![0].pm);
   }
+  const refresh = () => {
+    setDateList([]);
+    setSelectedArea('');
+    setWeatherOption('clear');
+    setWind(0);
+  };
   return (
     <MainWrapper>
       <Stack>
@@ -171,6 +182,9 @@ const ResultDetail = () => {
             src={`/image/logo/NaonnaMain.png`}
             alt="weather Icon"
             style={{ width: 142.5, height: 60, cursor: 'pointer' }}
+            onClick={() => {
+              refresh();
+            }}
           />
         </Link>
         <span

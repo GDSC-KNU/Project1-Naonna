@@ -150,7 +150,7 @@ const Calendar = ({
                 });
               const isInvalid =
                 current.clone().subtract(-1, 'day').isBefore(today) ||
-                current.isAfter(today.clone().add(30, 'day'));
+                current.isAfter(today.clone().add(7, 'day'));
               const isSelected =
                 today.format('YYYYMMDD') === current.format('YYYYMMDD')
                   ? 'selected'
