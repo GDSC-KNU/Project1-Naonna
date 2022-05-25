@@ -98,6 +98,7 @@ const StepOne = () => {
       const target = e.target as HTMLElement;
       const closest = target.closest('button');
       if (!closest) return;
+      if (closest.disabled) return;
       const targetMonth = closest!.dataset.month;
       const targetYear = closest!.dataset.year;
       const targetDay = new Date(
@@ -115,12 +116,10 @@ const StepOne = () => {
           setDateList(dateList.concat([targetDay]));
         }
         closest.classList.toggle('selected');
-        console.log(closest);
       }
     },
     [dateList],
   );
-
   console.log(dateList);
   return (
     <ComponentContainer>

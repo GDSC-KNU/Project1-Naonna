@@ -294,14 +294,15 @@ const OptionResult = () => {
         추천 날짜 선택
       </span>
       <Stack row style={{ marginLeft: 20 }}>
-        <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#FFF7CC' }}>
-          <ButtonText title="0">
-            🥇{' '}
-            {scoreIsLoading
-              ? 'error'
-              : dateStringConvert(recommendedDateList[0])}
-          </ButtonText>
-        </PillBtn>
+        {scoreIsLoading ? (
+          <></>
+        ) : (
+          <PillBtn onClick={rankOnClick} style={{ backgroundColor: '#FFF7CC' }}>
+            <ButtonText title="0">
+              🥇 {dateStringConvert(recommendedDateList[0])}
+            </ButtonText>
+          </PillBtn>
+        )}
         {scoreIsLoading || recommendedDateList.length < 2 ? (
           <></>
         ) : (
