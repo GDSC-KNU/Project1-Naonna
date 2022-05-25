@@ -179,14 +179,12 @@ const OptionResult = () => {
     () => postWeatherinfo(selectedArea, weatherOption, windOption),
   );
   const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const recommendedDateList: Date[] = [];
   const rankDateList: RecommendResponseType[] = [];
   if (typeof scoreData !== 'undefined' && !scoreIsLoading) {
     dateList.forEach(Date => {
-      Date.setMonth(Date.getMonth() + 1);
       const index = (Date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
-      Date.setMonth(Date.getMonth() - 1);
       const insert: RecommendResponseType = {
         date: Date,
         score: scoreData[index],
@@ -212,9 +210,10 @@ const OptionResult = () => {
     const { target } = e;
     const closest = (target as HTMLDivElement).closest('button');
     if (!closest || closest.disabled) return;
-    const month = +closest.dataset.month!;
+    const month = +closest.dataset.month! - 1;
     const day = +closest.innerText;
     const clickDate = new Date(new Date().getFullYear(), month, day);
+    console.log(clickDate);
     const btDay =
       (clickDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
     clickDate.setMonth(month - 1);
@@ -233,12 +232,9 @@ const OptionResult = () => {
     const closest = (target as HTMLDivElement).closest('span');
     if (!closest) return;
     const index = parseInt(closest.title);
-    const month = recommendedDateList[index].getMonth();
-    recommendedDateList[index].setMonth(month + 1);
     const btDay =
       (recommendedDateList[index].getTime() - today.getTime()) /
       (1000 * 60 * 60 * 24);
-    recommendedDateList[index].setMonth(month);
     if (
       !weatherIsLoading &&
       typeof weatherData !== 'undefined' &&

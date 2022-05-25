@@ -106,7 +106,6 @@ const StepOne = () => {
         parseInt(targetMonth!) - 1,
         parseInt(closest.textContent!),
       );
-      console.log(dateList);
       if (closest) {
         if (dateList.some(day => day.getTime() === targetDay.getTime())) {
           setDateList(
