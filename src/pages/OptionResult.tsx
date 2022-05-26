@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Calendar from 'components/resultCalendar';
@@ -160,6 +160,10 @@ const FooterText = styled.div`
     cursor: pointer;
   }
 `;
+
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
 const OptionResult = () => {
   const navigate = useNavigate();
   const dateList = useOptionStore(state => state.dateList);
@@ -178,20 +182,86 @@ const OptionResult = () => {
     ['scoreData', selectedArea, weatherOption, windOption],
     () => postWeatherinfo(selectedArea, weatherOption, windOption),
   );
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const recommendedDateList: Date[] = [];
-  const rankDateList: RecommendResponseType[] = [];
-  if (typeof scoreData !== 'undefined' && !scoreIsLoading) {
-    dateList.forEach(Date => {
-      const index = (Date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
-      const insert: RecommendResponseType = {
-        date: Date,
-        score: scoreData[index],
-      };
-      rankDateList.push(insert);
-    });
-    rankDateList.sort((a, b) => {
+  const [recommendedDateList, setRecommendedDateList] = useState<Date[]>([]);
+  const [, setRankDateList] = useState<RecommendResponseType[]>([]);
+  const dateStringConvert = (date: Date) =>
+    `${date?.getMonth() + 1}월 ${date?.getDate()}일`;
+  const dateOnClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
+    e => {
+      const { target } = e;
+      const closest = (target as HTMLDivElement).closest('button');
+      if (!closest || closest.disabled) return;
+      const month = +closest.dataset.month! - 1;
+      const day = +closest.innerText;
+      const clickDate = new Date(new Date().getFullYear(), month, day);
+      console.log(clickDate);
+      const btDay =
+        (clickDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+      clickDate.setMonth(month - 1);
+      if (
+        !weatherIsLoading &&
+        typeof weatherData !== 'undefined' &&
+        !scoreIsLoading
+      ) {
+        weatherData[btDay].location = selectedArea;
+        weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
+        navigate('./detail', { state: weatherData[btDay] });
+      }
+    },
+    [weatherIsLoading, scoreIsLoading],
+  );
+  const rankOnClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
+    e => {
+      const { target } = e;
+      const closest = (target as HTMLDivElement).closest('span');
+      if (!closest) return;
+      const index = parseInt(closest.title);
+      const btDay =
+        (recommendedDateList[index].getTime() - today.getTime()) /
+        (1000 * 60 * 60 * 24);
+      if (
+        !weatherIsLoading &&
+        typeof weatherData !== 'undefined' &&
+        !scoreIsLoading
+      ) {
+        weatherData[btDay].location = selectedArea;
+        weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
+        navigate('./detail', { state: weatherData[btDay] });
+      }
+    },
+    [weatherIsLoading, scoreIsLoading],
+  );
+  const refresh = () => {
+    setDateList([]);
+    setSelectedArea('');
+    setWeatherOption('clear');
+    setWind(0);
+  };
+  useEffect(() => {
+    const tempList: RecommendResponseType[] = [];
+    if (typeof scoreData !== 'undefined' && !scoreIsLoading) {
+      dateList.forEach(Date => {
+        const index =
+          (Date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+        const insert: RecommendResponseType = {
+          date: Date,
+          score: scoreData[index],
+        };
+        tempList.push(insert);
+      });
+      tempList.sort(crit);
+      tempList.forEach(Date => {
+        setRecommendedDateList(prev => [...prev, Date.date]);
+      });
+      setRankDateList(tempList);
+    }
+    /**
+     * Criteria Function For Sorting Response Date by score in descending order
+     * @param {RecommendResponseType} a object to compare
+     * @param {RecommendResponseType} b another object to compare with
+     * @return {number} 1 if a.score < b.score -1 when vice versa  0 when same
+     */
+    function crit(a: RecommendResponseType, b: RecommendResponseType) {
       if (a.score < b.score) {
         return 1;
       }
@@ -199,58 +269,11 @@ const OptionResult = () => {
         return -1;
       }
       return 0;
-    });
-    rankDateList.forEach(Date => {
-      recommendedDateList.push(Date.date);
-    });
-  }
-  const dateStringConvert = (date: Date) =>
-    `${date.getMonth() + 1}월 ${date.getDate()}일`;
-  const dateOnClick: React.MouseEventHandler<HTMLDivElement> = e => {
-    const { target } = e;
-    const closest = (target as HTMLDivElement).closest('button');
-    if (!closest || closest.disabled) return;
-    const month = +closest.dataset.month! - 1;
-    const day = +closest.innerText;
-    const clickDate = new Date(new Date().getFullYear(), month, day);
-    console.log(clickDate);
-    const btDay =
-      (clickDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
-    clickDate.setMonth(month - 1);
-    if (
-      !weatherIsLoading &&
-      typeof weatherData !== 'undefined' &&
-      !scoreIsLoading
-    ) {
-      weatherData[btDay].location = selectedArea;
-      weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
-      navigate('./detail', { state: weatherData[btDay] });
     }
-  };
-  const rankOnClick: React.MouseEventHandler<HTMLDivElement> = e => {
-    const { target } = e;
-    const closest = (target as HTMLDivElement).closest('span');
-    if (!closest) return;
-    const index = parseInt(closest.title);
-    const btDay =
-      (recommendedDateList[index].getTime() - today.getTime()) /
-      (1000 * 60 * 60 * 24);
-    if (
-      !weatherIsLoading &&
-      typeof weatherData !== 'undefined' &&
-      !scoreIsLoading
-    ) {
-      weatherData[btDay].location = selectedArea;
-      weatherData[btDay].score = parseInt(scoreData![btDay].toFixed());
-      navigate('./detail', { state: weatherData[btDay] });
-    }
-  };
-  const refresh = () => {
-    setDateList([]);
-    setSelectedArea('');
-    setWeatherOption('clear');
-    setWind(0);
-  };
+  }, [scoreIsLoading]);
+  useEffect(() => {
+    console.log(recommendedDateList, 'recommendedDateList');
+  }, [recommendedDateList]);
   return (
     <Stack
       className="stacks"
@@ -263,9 +286,7 @@ const OptionResult = () => {
       }}
     >
       <CalendarPos>
-        {scoreIsLoading ? (
-          <div>Loading...</div>
-        ) : (
+        {!scoreIsLoading && (
           <Calendar
             rankDateList={recommendedDateList}
             dateOnClick={dateOnClick}
@@ -273,6 +294,7 @@ const OptionResult = () => {
           />
         )}
       </CalendarPos>
+
       <Stack row style={{ marginLeft: 25 }}>
         <Warn />
         <InfoText>
