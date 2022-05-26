@@ -12,10 +12,15 @@ const to = (i: number) => ({
   rot: -10 + Math.random() * 20,
   delay: i * 100,
 });
-const from = (_i: number) => ({ x: 0, rot: 0, scale: 1.5, y: -1000 });
+const from = (_i: number) => ({
+  x: 0,
+  rot: -10 + Math.random() * 20,
+  scale: 1.5,
+  y: -1000,
+});
 // This is being used down there in the view, it interpolates rotation and scale into a css transform
 const trans = (r: number, s: number) =>
-  `perspective(1500px) rotateY(${r / 10}deg) scale(${s})`;
+  `perspective(1500px) rotateX (20deg) rotateY(${r / 10}deg) scale(${s})`;
 
 const DeckDiv = styled(animated.div)`
   position: absolute;

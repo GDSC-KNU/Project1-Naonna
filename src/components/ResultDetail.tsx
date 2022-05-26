@@ -119,7 +119,8 @@ const ResultDetail = ({
   score,
   uvi,
   humidity,
-}: ResultWeatherType) => {
+  rank,
+}: ResultWeatherType & { rank: number }) => {
   const location = useLocation();
   const setDateList = useOptionStore(state => state.setDateList);
   const setSelectedArea = useOptionStore(state => state.setSelectedArea);
@@ -185,6 +186,7 @@ const ResultDetail = ({
             }}
           />
         </Link>
+        <span style={{ fontSize: 30 }}>{rank}위</span>
         <span
           style={{
             fontSize: 15,
