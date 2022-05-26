@@ -38,15 +38,3 @@ export const changeDustData: (dust: number) => string = (dust: number) => {
   }
   return result;
 };
-export const updateWeatherPreference = (code: number) => {
-  switch (code) {
-    case 1:
-      return { weather: 'clear', wind: 0 };
-    case 2:
-      return { weather: 'bitCloudy', wind: 0 };
-    case 3:
-      return { weather: 'cloudy', wind: 1 };
-    default:
-      return { weather: 'clear', wind: 0 };
-  }
-};

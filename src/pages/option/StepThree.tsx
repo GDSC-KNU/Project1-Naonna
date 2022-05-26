@@ -9,7 +9,7 @@ import {
 import Warn from '../../icon/Warning';
 import { useOptionStore } from 'store/store';
 import { useNavigate } from 'react-router-dom';
-import { updateWeatherPreference } from 'api/changeWeatherData';
+import { weatherType, windType } from 'types/component-props';
 
 const HorizontalItemsContainer = styled.div`
   border-radius: 10px;
@@ -55,6 +55,10 @@ const StepThree = () => {
   const setWeather = useOptionStore(state => state.setWeather);
   const wind = useOptionStore(state => state.wind);
   const setWind = useOptionStore(state => state.setWind);
+  const setCategory = (weather: weatherType, code: windType) => {
+    setWeather(weather);
+    setWind(code);
+  };
   return (
     <ComponentContainer>
       <TopTitle>
@@ -75,13 +79,28 @@ const StepThree = () => {
       <HorizontalItemsContainer style={{ marginTop: 20 }}>
         <div className="title">카테고리</div>
         <div className="content">
-          <div className="item" onClick={() => updateWeatherPreference(1)}>
+          <div
+            className={`item ${
+              weather === 'clear' && wind === 0 ? 'active' : ''
+            }`}
+            onClick={() => setCategory('clear', 0)}
+          >
             여행
           </div>
-          <div className="item" onClick={() => updateWeatherPreference(2)}>
+          <div
+            className={`item ${
+              weather === 'bitCloudy' && wind === 0 ? 'active' : ''
+            }`}
+            onClick={() => setCategory('bitCloudy', 0)}
+          >
             간단한 운동
           </div>
-          <div className="item" onClick={() => updateWeatherPreference(3)}>
+          <div
+            className={`item ${
+              weather === 'cloudy' && wind === 1 ? 'active' : ''
+            }`}
+            onClick={() => setCategory('cloudy', 1)}
+          >
             골프
           </div>
         </div>
