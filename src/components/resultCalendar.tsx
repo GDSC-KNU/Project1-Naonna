@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { CalendarProps } from 'types/component-props';
@@ -179,9 +179,7 @@ const Calendar = ({
       );
     }
     return calendar;
-  }, [date]);
-
-  const calendar = useMemo<JSX.Element[]>(() => generate(), [date]);
+  }, [date, rankDateList]);
 
   return (
     <div style={{ ...style, display: 'flex', flexDirection: 'column' }}>
@@ -198,7 +196,7 @@ const Calendar = ({
           </Week>
         ))}
       </Row>
-      <CalendarBody onClick={dateOnClick}>{calendar}</CalendarBody>
+      <CalendarBody onClick={dateOnClick}>{generate()}</CalendarBody>
     </div>
   );
 };
