@@ -10,6 +10,8 @@ import { useQuery } from 'react-query';
 import { getDailyWeather } from 'api/getWeatherData';
 import { postWeatherinfo } from 'api/postWeatherData';
 import { RecommendResponseType } from 'types/apiTypes';
+import Deck from 'components/Deck';
+import ResultDetail from '../components/ResultDetail';
 
 const CalendarPos = styled.div`
   margin-top: 44px;
@@ -183,7 +185,7 @@ const OptionResult = () => {
     () => postWeatherinfo(selectedArea, weatherOption, windOption),
   );
   const [recommendedDateList, setRecommendedDateList] = useState<Date[]>([]);
-  const [, setRankDateList] = useState<RecommendResponseType[]>([]);
+  const [cardList, setCardList] = useState<JSX.Element[]>([]);
   const dateStringConvert = (date: Date) =>
     `${date?.getMonth() + 1}월 ${date?.getDate()}일`;
   const dateOnClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
@@ -238,7 +240,7 @@ const OptionResult = () => {
     setWind(0);
   };
   useEffect(() => {
-    const tempList: RecommendResponseType[] = [];
+    const dateAndScoreList: RecommendResponseType[] = [];
     if (typeof scoreData !== 'undefined' && !scoreIsLoading) {
       dateList.forEach(Date => {
         const index =
@@ -247,13 +249,26 @@ const OptionResult = () => {
           date: Date,
           score: scoreData[index],
         };
-        tempList.push(insert);
+        dateAndScoreList.push(insert);
       });
-      tempList.sort(crit);
-      tempList.forEach(Date => {
+      dateAndScoreList.sort(crit);
+      dateAndScoreList.forEach(Date => {
         setRecommendedDateList(prev => [...prev, Date.date]);
       });
-      setRankDateList(tempList);
+      dateAndScoreList.forEach((data, idx) => {
+        const btDay =
+          (dateAndScoreList[idx].date.getTime() - today.getTime()) /
+          (1000 * 60 * 60 * 24);
+        setCardList((prev: JSX.Element[]) => [
+          ...prev,
+          <ResultDetail
+            {...weatherData![btDay]}
+            key={idx}
+            location={selectedArea}
+            score={parseInt(scoreData![btDay].toFixed())}
+          />,
+        ]);
+      });
     }
     /**
      * Criteria Function For Sorting Response Date by score in descending order
@@ -263,10 +278,10 @@ const OptionResult = () => {
      */
     function crit(a: RecommendResponseType, b: RecommendResponseType) {
       if (a.score < b.score) {
-        return 1;
+        return -1;
       }
       if (a.score > b.score) {
-        return -1;
+        return 1;
       }
       return 0;
     }
@@ -274,7 +289,7 @@ const OptionResult = () => {
   useEffect(() => {
     console.log(recommendedDateList, 'recommendedDateList');
   }, [recommendedDateList]);
-  return (
+  return false ? (
     <Stack
       className="stacks"
       style={{
@@ -359,6 +374,18 @@ const OptionResult = () => {
         </FooterButton>
       </Footer>
     </Stack>
+  ) : (
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        paddingTop: '15%',
+      }}
+    >
+      <Deck cards={cardList} />;
+    </div>
   );
 };
 export default OptionResult;
