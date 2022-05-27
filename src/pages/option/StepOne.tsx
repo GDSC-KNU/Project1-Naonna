@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import Calendar from 'components/resultCalendar';
+import Calendar from 'components/ResultCalendar';
 import styled from 'styled-components';
 import {
   BottomButton,

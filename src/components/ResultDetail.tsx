@@ -110,23 +110,22 @@ const Temperature = styled.div`
   color: #000000;
 `;
 
-const ResultDetail = () => {
+const ResultDetail = ({
+  dt: date,
+  location: requestedLocation,
+  weather_main: weatherCode,
+  temp_max: tempMax,
+  temp_min: tempMin,
+  score,
+  uvi,
+  humidity,
+  rank,
+}: ResultWeatherType & { rank: number }) => {
   const location = useLocation();
   const setDateList = useOptionStore(state => state.setDateList);
   const setSelectedArea = useOptionStore(state => state.setSelectedArea);
   const setWeatherOption = useOptionStore(state => state.setWeather);
   const setWind = useOptionStore(state => state.setWind);
-  const {
-    dt: date,
-    location: requestedLocation,
-    weather_main: weatherCode,
-    temp_max: tempMax,
-    temp_min: tempMin,
-    score,
-    uvi,
-    // wind_speed: windSpeed,
-    humidity,
-  } = location.state as ResultWeatherType;
   const now = new Date();
   const year = date.substring(0, 4);
   const month = date.substring(5, 7);
@@ -187,6 +186,7 @@ const ResultDetail = () => {
             }}
           />
         </Link>
+        <span style={{ fontSize: 30 }}>{rank}위</span>
         <span
           style={{
             fontSize: 15,
