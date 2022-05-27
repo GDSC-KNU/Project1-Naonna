@@ -1,3 +1,5 @@
+import { ResultWeatherType } from './apiTypes';
+
 export type WeatherMainProps = {
   locationName: string;
   weatherCode: string;
@@ -34,4 +36,15 @@ export type ResultDetailProps = {
   temperature: number;
   criteriaTime: string;
   score: number;
+};
+
+export type CardType = {
+  key: number;
+  location: string;
+  score: number;
+  rank: number;
+} & ResultWeatherType;
+
+export type DeckProps = {
+  cards: CardType[];
 };

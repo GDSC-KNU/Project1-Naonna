@@ -3,6 +3,75 @@ import React, { useState } from 'react';
 import { useSprings, animated, to as interpolate } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
+import { useOptionStore } from 'store/store';
+import { useNavigate } from 'react-router-dom';
+import { DeckProps } from 'types/component-props';
+import ResultDetail from './ResultDetail';
+
+const Footer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 100px 0px;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+`;
+const Buttons = styled.div`
+  display: flex;
+`;
+const FooterButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  position: static;
+  width: 120px;
+  height: 40px;
+  left: 171px;
+  top: 5.5px;
+  background: #ffffff;
+  border-radius: 30px;
+  border: 2px solid #001f8e;
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 19px;
+  &:active {
+    background: #001f8e;
+  }
+`;
+const FooterText = styled.div`
+  position: static;
+  width: 81px;
+  height: 20px;
+  left: 19.5px;
+  top: 10px;
+  font-family: 'AppleSDGothicNeoB00';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  /* identical to box height */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #000000;
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 10px;
+  &:active {
+    color: #ffffff;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 // These two are just helpers, they curate spring data, values that are later being interpolated into css
 const to = (i: number) => ({
@@ -45,9 +114,14 @@ const DeckDiv = styled(animated.div)`
   }
 `;
 
-function Deck({ cards }: { cards: JSX.Element[] }) {
+function Deck({ cards }: DeckProps) {
+  const setDateList = useOptionStore(state => state.setDateList);
+  const setSelectedArea = useOptionStore(state => state.setSelectedArea);
+  const setWeatherOption = useOptionStore(state => state.setWeather);
+  const setWind = useOptionStore(state => state.setWind);
+  const navigate = useNavigate();
   const [gone] = useState(() => new Set()); // The set flags all the cards that are flicked out
-  const [springs, api] = useSprings(cards.length, i => ({
+  const [springs, api] = useSprings(cards.length + 1, i => ({
     ...to(i),
     from: from(i),
   })); // Create a bunch of springs using the helpers above
@@ -84,18 +158,63 @@ function Deck({ cards }: { cards: JSX.Element[] }) {
     },
   );
   // Now we're just mapping the animated values to our view, that's it. Btw, this component only renders once. :-)
+  // eslint-disable-next-line no-unused-vars
+  const refresh = () => {
+    setDateList([]);
+    setSelectedArea('');
+    setWeatherOption('clear');
+    setWind(0);
+  };
   return (
     <>
-      {springs.map(({ x, y, rot, scale }, i) => (
-        <DeckDiv key={i} style={{ x, y }}>
+      <DeckDiv
+        style={{
+          x: springs[0].x,
+          y: springs[0].y,
+        }}
+      >
+        <animated.div
+          {...bind(0)}
+          style={{
+            transform: interpolate([springs[0].rot, springs[0].scale], trans),
+          }}
+        >
+          <Footer key={cards.length}>
+            <Buttons>
+              <FooterButton
+                onClick={() => {
+                  refresh(), navigate('../option/1');
+                }}
+              >
+                <FooterText>다시 추천 받기</FooterText>
+              </FooterButton>
+              <FooterButton>
+                <FooterText
+                  onClick={() => {
+                    refresh(), navigate('/');
+                  }}
+                >
+                  약속 잡기 완료
+                </FooterText>
+              </FooterButton>
+            </Buttons>
+            <span>
+              추천받았던 날짜를 확인하려면
+              <br />이 페이지를 스와이프 하세요!
+            </span>
+          </Footer>
+        </animated.div>
+      </DeckDiv>
+      {springs.slice(1, -1).map(({ x, y, rot, scale }, i) => (
+        <DeckDiv className="deckdiv" key={i + 1} style={{ x, y }}>
           {/* This is the card itself, we're binding our gesture to it (and inject its index so we know which is which) */}
           <animated.div
-            {...bind(i)}
+            {...bind(i + 1)}
             style={{
               transform: interpolate([rot, scale], trans),
             }}
           >
-            {cards[i]}
+            <ResultDetail {...cards[i + 1]} />
           </animated.div>
         </DeckDiv>
       ))}
