@@ -1,7 +1,7 @@
 # Project 1 - Naonna
 
 <div style="display:flex;justify-content:center;"><img alt="나온나 로고"src="public/image/logo/NaonnaMain.png"/></div>
-<div src="https://naonna.netlify.app">프로젝트 링크</div>
+<a href="https://naonna.netlify.app">프로젝트 링크</a>
 ## 목차
 
 - [🧑‍🤝‍🧑 팀원 소개](#팀원-소개)
