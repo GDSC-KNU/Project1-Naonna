@@ -52,3 +52,66 @@
 ### 프로젝트 소개
 
 밖에서 만나는 약속을 잡을 때, 신경쓰지 않을 수 없는 중요한 요소, 날씨! GDSC KNU 1기 프로젝트 1팀에서 제작한 서비스 '나온나'에서. 약속을 잡을 위치를 지정하면, 일주일간의 날씨를 계산해서, 여러분들께 최적의 날씨를 추천해 드립니다!
+
+### 프로젝트 Structure
+
+```
+src
+│  district.json
+│  index.css
+│  index.tsx
+│  
+├─api
+│      changeWeatherData.ts
+│      getWeatherData.ts
+│      postWeatherData.ts
+│      
+├─components
+│  │  App.tsx
+│  │  CategorySelect.tsx
+│  │  Deck.tsx
+│  │  Error.tsx
+│  │  ItemSelector.tsx
+│  │  OptionHeader.tsx
+│  │  Pill.tsx
+│  │  ResultCalendar.tsx
+│  │  ResultDetail.tsx
+│  │  Stack.tsx
+│  │  StepHeader.tsx
+│  │  WeatherMain.tsx
+│  │  WeatherScoreList.tsx
+│  │  
+│  ├─Loader
+│  │      index.css
+│  │      Loader.tsx
+│  │      
+│  └─styles
+│          common.ts
+│          
+├─icon
+│      Arrow.tsx
+│      Down.tsx
+│      Warning.tsx
+│      
+├─pages
+│  │  Main.tsx
+│  │  Option.tsx
+│  │  OptionResult.tsx
+│  │  
+│  └─option
+│          StepOne.tsx
+│          StepThree.tsx
+│          StepTwo.tsx
+│          
+├─routes
+│      RootRouter.tsx
+│      
+├─store
+│      store.ts
+│      
+└─types
+        apiTypes.ts
+        component-props.ts
+        districtType.ts
+        storeType.ts
+```
