@@ -20,7 +20,7 @@ const Main = () => {
     >
       <header style={{ textAlign: 'center', marginBottom: 5 }}>
         <img
-          src={`/image/logo/NaonnaMain.png`}
+          src="/image/logo/NaonnaMain.png"
           alt="weather Icon"
           style={{ width: '50%', height: '100%' }}
         />
