@@ -14,7 +14,7 @@ export const TopTitle = styled.div`
   margin-top: 33px;
   background-color: #fff;
   border-radius: 10px;
-  max-width: calc(100% - 30px);
+  width: 100%;
   font-size: 16px;
 `;
 

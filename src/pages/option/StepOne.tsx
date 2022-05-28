@@ -47,11 +47,11 @@ const SelectDes = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   padding: 0px;
   position: absolute;
-  width: 61px;
+  width: 351px;
   height: 22px;
-  left: 163px;
   top: 630px;
 `;
 const Ellipse = styled.div`

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { HeaderProps } from 'types/component-props';
 
 const Header = styled.div`
-  width: 390px;
+  width: 100%;
   height: 163px;
   left: 0px;
   top: 0px;
@@ -17,7 +17,7 @@ const Title = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 390px;
+  width: 100%;
   height: 38px;
   left: 0px;
   top: 60px;
@@ -46,7 +46,7 @@ const Back = styled(Link)`
   position: absolute;
   width: 24px;
   height: 24px;
-  left: 1px;
+  left: 30px;
   top: 7px;
   /* Inside auto layout */
   flex: none;
@@ -58,6 +58,7 @@ const Back = styled(Link)`
 `;
 const Step = styled.div`
   display: flex;
+  justify-content: center;
   position: absolute;
   width: 100%;
   height: 40px;

@@ -11,8 +11,8 @@ const Main = () => {
   return (
     <Stack
       style={{
-        width: 390,
-        height: 844,
+        minWidth: 390,
+        minHeight: 844,
         padding: 30,
         backgroundColor: '#f5f5f5',
         fontFamily: 'AppleSDGothicNeoB00',

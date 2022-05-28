@@ -10,7 +10,7 @@ import { useOptionStore } from 'store/store';
 
 const Wrapper = styled.div`
   position: relative;
-  width: 390px;
+  width: 100%;
   height: 844px;
   background: #f5f5f5;
   border-radius: 30px;
