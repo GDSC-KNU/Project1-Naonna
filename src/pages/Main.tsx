@@ -11,8 +11,8 @@ const Main = () => {
   return (
     <Stack
       style={{
-        width: 390,
-        height: 844,
+        minWidth: 390,
+        minHeight: 844,
         padding: 30,
         backgroundColor: '#f5f5f5',
         fontFamily: 'AppleSDGothicNeoB00',
@@ -20,7 +20,7 @@ const Main = () => {
     >
       <header style={{ textAlign: 'center', marginBottom: 5 }}>
         <img
-          src={`/image/logo/NaonnaMain.png`}
+          src="/image/logo/NaonnaMain.png"
           alt="weather Icon"
           style={{ width: '50%', height: '100%' }}
         />

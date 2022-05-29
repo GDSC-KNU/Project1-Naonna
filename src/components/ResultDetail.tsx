@@ -178,7 +178,7 @@ const ResultDetail = ({
       <Stack>
         <Link to="/">
           <img
-            src={`/image/logo/NaonnaMain.png`}
+            src="/image/logo/NaonnaMain.png"
             alt="weather Icon"
             style={{ width: 142.5, height: 60, cursor: 'pointer' }}
             onClick={() => {
