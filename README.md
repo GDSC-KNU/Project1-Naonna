@@ -36,7 +36,6 @@
 
 ## 🛠️ 기술 스택
 
-#### Front-End
 
 <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
 <img src="https://img.shields.io/badge/React 18-61DAFB?style=for-the-badge&logo=React&logoColor=white">
@@ -47,12 +46,6 @@
 <img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React%20Query&logoColor=white">
 <img src="https://img.shields.io/badge/Zustand-433E38?style=for-the-badge&logoColor=white">
 
-### Back-end
-
-<img src="https://img.shields.io/badge/Java8-007396?style=for-the-badge&logo=Java&logoColor=white">
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
-
-### Data
 
 ## ⚙ 프로젝트 구조
 
