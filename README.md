@@ -49,11 +49,11 @@
 
 ### Data
 
-### 프로젝트 소개
+### Intruduction
 
 밖에서 만나는 약속을 잡을 때, 신경쓰지 않을 수 없는 중요한 요소, 날씨! GDSC KNU 1기 프로젝트 1팀에서 제작한 서비스 '나온나'에서. 약속을 잡을 위치를 지정하면, 일주일간의 날씨를 계산해서, 여러분들께 최적의 날씨를 추천해 드립니다!
 
-### 프로젝트 Structure
+### Project Structure
 
 ```
 src
@@ -115,3 +115,14 @@ src
         districtType.ts
         storeType.ts
 ```
+### Project Detail
+
+
+![main](https://user-images![step1](https://user-images.githubusercontent.com/46878756/170858709-638ae928-f207-4c0b-bf67-0360650ddf1f.png)
+![step1](https://user-images.githubusercontent.com/46878756/170858715-ae6ab953-25cd-47bc-a644-c7f70477c3ff.png)
+![step2](https://user-images.githubusercontent.com/46878756/170858711-1183e7e5-7d91-46e4-8503-d592a4e9b30d.png)
+![step3](https://user-images.githubusercontent.com/46878756/170858718-5f0e9fd5-9b2d-4f7e-bd67-8853f13e969e.png)
+![result](https://user-images.githubusercontent.com/46878756/170858720-81c81779-1301-4b05-8ad0-b3d35eec893c.png)
+![swipe](https://user-images.githubusercontent.com/46878756/170858721-f550afa9-5a67-4cc2-80d7-2c254e6cbe48.png)
+
+
