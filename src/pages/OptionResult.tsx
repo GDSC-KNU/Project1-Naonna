@@ -79,8 +79,7 @@ const OptionResult = () => {
         width: '100vw',
         height: '100vh',
         display: 'flex',
-        justifyContent: 'center',
-        paddingTop: '40%',
+        paddingTop: '30vh',
       }}
     >
       <Deck cards={cardList} />
