@@ -8,6 +8,11 @@
   width: 390px;
 }
 
+@media screen and (min-width: 768px) {
+  #root {
+    justify-content: center;
+  }
+}
 @media screen and (max-width: 768px) {
   #root {
     padding: 0px 40px 0px 0px;
