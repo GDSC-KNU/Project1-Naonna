@@ -54,7 +54,6 @@ const LocationSelect = () => {
         items={townData}
         selected={secondArea}
         setSelected={selected => {
-          console.log(selected);
           setSecondArea(' ' + selected);
           setThirdArea('');
         }}

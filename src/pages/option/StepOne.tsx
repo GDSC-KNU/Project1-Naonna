@@ -119,7 +119,6 @@ const StepOne = () => {
     },
     [dateList],
   );
-  console.log(dateList);
   return (
     <ComponentContainer>
       <TopTitle>
