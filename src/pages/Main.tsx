@@ -5,7 +5,7 @@ import Pill from 'components/Pill';
 import { WeatherScoreList } from 'components/WeatherScoreList';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Error } from 'components/Error';
-import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loader';
 
 const Main = () => {
   return (

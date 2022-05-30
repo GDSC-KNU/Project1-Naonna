@@ -5,7 +5,7 @@ import { getDailyWeather } from 'api/getWeatherData';
 import { postWeatherinfo } from 'api/postWeatherData';
 import { RecommendResponseType } from 'types/apiTypes';
 import Deck from 'components/Deck';
-import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loader';
 import { CardType } from 'types/component-props';
 
 const now = new Date();
